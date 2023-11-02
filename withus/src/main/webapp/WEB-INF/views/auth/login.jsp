@@ -9,9 +9,9 @@
 </head>
 <body>
 	<h2>로그인 페이지</h2>
-	<form action="" method="post">
+	<form action="/login-proc" method="post">
 		<div>
-			<input type="text" name="username" placeholder="아이디">
+			<input type="text" name="memberId" placeholder="아이디">
 		</div>
 		<div>
 			<input type="password" name="password" placeholder="비밀번호">
