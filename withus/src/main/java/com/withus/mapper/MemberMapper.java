@@ -10,4 +10,6 @@ public interface MemberMapper {
 	// 회원가입
 	void join(MemberVo member);
 	
+	// 아이디로 회원 찾기
+	MemberVo findById(String memberId);
 }
