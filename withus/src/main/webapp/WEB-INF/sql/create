@@ -1,0 +1,19 @@
+CREATE TABLE member (
+	memberId	VARCHAR2(255)	PRIMARY KEY,
+	password	VARCHAR2(255)	NOT NULL,
+	name		VARCHAR2(255)	NOT NULL,
+	sex			VARCHAR2(50),
+	role		VARCHAR2(255),
+	regDate		DATE	DEFAULT	SYSDATE
+);
+
+-- 관리자 회원가입
+ex)
+ID : admin
+PW : 1234
+
+-- 일반 회원가입 후 관리자 권한 변경
+UPDATE member
+SET    role = 'ROLE_ADMIN'
+WHERE  memberId = 'admin';
+
