@@ -1,5 +1,6 @@
 package com.withus.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -8,11 +9,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.withus.config.oauth.PrincipalOauth2UserService;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	@Autowired
+	private PrincipalOauth2UserService principalOauth2UserService;
+	
 	// 해당 메서드의 리턴되는 오브젝트를 IOC로 등록해준다.(비밀번호 암호화)
 	@Bean
 	public BCryptPasswordEncoder encodePwd() {
@@ -32,6 +38,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.loginProcessingUrl("/login-proc")							// 로그인 진행 -> /login-proc (컨트롤러 만들지 않아도 시큐리티가 진행)
 			.usernameParameter("memberId")								// 로그인 form에서의 아이디 name
             .passwordParameter("password")								// 로그인 form에서의 비밀번호 name
-			.defaultSuccessUrl("/");									// 로그인 성공시 리다이렉트
+			.defaultSuccessUrl("/")										// 로그인 성공시 리다이렉트
+			.and()
+			.oauth2Login()
+			.loginPage("/login")
+			.userInfoEndpoint()
+			.userService(principalOauth2UserService);
 	}
+	
+//	@Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring().antMatchers("/js/**","/css/**","/img/**","/frontend/**");
+//    }
 }

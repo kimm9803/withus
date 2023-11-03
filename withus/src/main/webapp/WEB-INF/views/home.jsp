@@ -10,10 +10,13 @@
 </head>
 <body>
 <sec:authorize access="isAuthenticated()">
-<a href="/logout">로그아웃</a>
+	<a href="/logout">로그아웃</a>
 </sec:authorize>
 <sec:authorize access="isAnonymous()">
-<a href="/login">로그인</a>
+	<div style="margin-bottom: 10px;">
+		<a href="/login">로그인</a>
+	</div>
 </sec:authorize>
+
 </body>
 </html>
