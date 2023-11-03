@@ -30,6 +30,8 @@ dependencies {
     implementation 'org.mybatis:mybatis-spring'
 	implementation 'org.mybatis:mybatis'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.security:spring-security-taglibs:5.6.3'
+	
 	
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
