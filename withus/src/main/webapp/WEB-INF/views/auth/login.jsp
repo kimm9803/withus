@@ -18,6 +18,15 @@
 		</div>
 		<button type="submit">로그인</button>
 	</form>
-	<a href="/join">회원가입을 아직 하지 않으셨나요?</a>
+	<br>
+	<div>
+		<a href="/oauth2/authorization/google">
+			<img src="/img/google.png">
+		</a>
+	</div>
+	<div>
+		<a href="/join">회원가입을 아직 하지 않으셨나요?</a>
+	</div>
+	
 </body>
 </html>

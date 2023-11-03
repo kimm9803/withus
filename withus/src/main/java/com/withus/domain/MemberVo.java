@@ -18,4 +18,7 @@ public class MemberVo {
 	private String sex;
 	private String role;
 	private String regDate;
+	
+	private String provider;
+	private String providerId;
 }

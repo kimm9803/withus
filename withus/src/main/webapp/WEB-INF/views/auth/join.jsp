@@ -26,8 +26,8 @@
 			<label for="sex">성별</label>
 			<select name="sex" id="sex">
 				<option value="select">선택</option>
-				<option value="man">남자</option>
-				<option value="woman">여자</option>
+				<option value="male">남자</option>
+				<option value="female">여자</option>
 			</select>
 		</div>
 		<button type="submit">회원가입</button>
