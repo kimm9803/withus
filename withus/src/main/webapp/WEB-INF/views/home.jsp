@@ -14,7 +14,7 @@
 </sec:authorize>
 <sec:authorize access="isAnonymous()">
 	<div style="margin-bottom: 10px;">
-		<a href="/login">로그인</a>
+		<a href="/auth/login">로그인</a>
 	</div>
 </sec:authorize>
 

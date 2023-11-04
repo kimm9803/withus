@@ -35,14 +35,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.anyRequest().permitAll()									// 그 외 url은 다 가능
 			.and()
 			.formLogin()												// 폼 로그인 방식 사용
-			.loginPage("/login")										// 로그인 페이지 -> /login
-			.loginProcessingUrl("/login-proc")							// 로그인 진행 -> /login-proc (컨트롤러 만들지 않아도 시큐리티가 진행)
+			.loginPage("/auth/login")										// 로그인 페이지 -> /login
+			.loginProcessingUrl("/auth/login-proc")							// 로그인 진행 -> /login-proc (컨트롤러 만들지 않아도 시큐리티가 진행)
 			.usernameParameter("memberId")								// 로그인 form에서의 아이디 name
             .passwordParameter("password")								// 로그인 form에서의 비밀번호 name
 			.defaultSuccessUrl("/")										// 로그인 성공시 리다이렉트
 			.and()
 			.oauth2Login()
-			.loginPage("/login")
+			.loginPage("/auth/login")
 			.userInfoEndpoint()
 			.userService(principalOauth2UserService);
 	}
