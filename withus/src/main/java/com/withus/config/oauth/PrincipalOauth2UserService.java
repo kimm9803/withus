@@ -1,13 +1,13 @@
 package com.withus.config.oauth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.withus.config.auth.CustomPasswordEncoder;
 import com.withus.config.auth.PrincipalDetails;
 import com.withus.domain.MemberVo;
 import com.withus.mapper.MemberMapper;
@@ -16,8 +16,8 @@ import com.withus.mapper.MemberMapper;
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
 
 	@Autowired
-    private CustomPasswordEncoder bCryptPasswordEncoder;
-    
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
     private MemberMapper memberMapper;
 	
@@ -30,7 +30,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
 		String provider = userRequest.getClientRegistration().getRegistrationId();	// google
 		String providerId = oauth2User.getAttribute("sub");
 		String memberId = provider + "_" + providerId;	// google_113892990175733960828
-		String password = bCryptPasswordEncoder.encode("겟인데어");
+		String password = passwordEncoder.encode("겟인데어");
 		String name = oauth2User.getAttribute("name");
 		String gender = oauth2User.getAttribute("gender");
 		String role = "ROLE_USER";
