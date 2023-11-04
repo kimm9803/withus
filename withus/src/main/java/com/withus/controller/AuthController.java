@@ -1,22 +1,34 @@
 package com.withus.controller;
 
+import java.util.Map;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.withus.domain.MemberVo;
 import com.withus.mapper.MemberMapper;
+import com.withus.service.MemberService;
 
 @Controller
+@RequestMapping("/auth")
 public class AuthController {
 
 	@Autowired
 	private MemberMapper memberMapper;
+	
+	@Autowired
+	private MemberService memberService;
 	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -34,17 +46,31 @@ public class AuthController {
 	}
 	
 	// 회원가입
-	@PostMapping("/join-proc")
-	public String joinProc(MemberVo member) {
-		// 비밀번호 암호화 작업
-		String rawPassword = member.getPassword();
-		String encPassword = bCryptPasswordEncoder.encode(rawPassword);
+	@PostMapping("/join")
+	public String joinProc(@Valid MemberVo member, Errors errors, Model model) {
 		
-		member.setPassword(encPassword);
-		member.setRole("ROLE_USER");
-		
-		memberMapper.join(member);
-		return "redirect:/";
+		if (errors.hasErrors()) {
+			// 회원가입 실패시, 입력 데이터를 유지
+			model.addAttribute("member", member);
+			
+			// 유효성 통과 못한 필드와 메시지를 핸들링
+			Map<String, String> validatorResult = memberService.validateHandling(errors);
+			for (String key : validatorResult.keySet()) {
+				model.addAttribute(key, validatorResult.get(key));
+			}
+			
+			return "auth/join";
+		} else {
+			// 비밀번호 암호화 작업
+			String rawPassword = member.getPassword();
+			String encPassword = bCryptPasswordEncoder.encode(rawPassword);
+			
+			member.setPassword(encPassword);
+			member.setRole("ROLE_USER");
+			
+			memberMapper.join(member);
+			return "redirect:/";
+		}
 	}
 	
 	// secured 예제
