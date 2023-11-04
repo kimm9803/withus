@@ -12,4 +12,8 @@ public interface MemberMapper {
 	
 	// 아이디로 회원 찾기
 	MemberVo findById(String memberId);
+
+	// 아이디 중복검사
+	int idDuplicateCheck(String memberId);
+
 }
