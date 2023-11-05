@@ -41,6 +41,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .passwordParameter("password")								// 로그인 form에서의 비밀번호 name
 			.defaultSuccessUrl("/")										// 로그인 성공시 리다이렉트
 			.and()
+			.logout()
+			.logoutSuccessUrl("/")
+			.and()
 			.oauth2Login()
 			.loginPage("/auth/login")
 			.userInfoEndpoint()
