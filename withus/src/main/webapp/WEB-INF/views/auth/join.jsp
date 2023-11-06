@@ -111,13 +111,16 @@
 				}
 			});
 			
-			// 중복체크 여부 false or 비밀번호 확인 false => 폼 제출 막음
+			// 중복체크 여부 false / 비밀번호 확인 false / => 폼 제출 막음
 			$('.join-btn').on('click', function() {
 				if (duplicateCheck == false) {
 					alert('중복 검사를 해주세요!');
 					event.preventDefault();
 				} else if (passwordCheck == false) {
 					alert('비밀번호 확인을 해주세요!');
+					event.preventDefault();
+				} else if ($('#sex').val() === 'select') {
+					alert('성별 선택을 해주세요!');
 					event.preventDefault();
 				}
 			});
@@ -137,6 +140,9 @@
 					passwordCheck = false;
 				}
 			});
+			
+			
+			
 		})
 	</script>
 </body>
