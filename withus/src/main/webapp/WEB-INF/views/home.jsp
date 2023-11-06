@@ -17,6 +17,7 @@
 		<a href="/auth/login">로그인</a>
 	</div>
 </sec:authorize>
+<a href="/groups/create">그룹만들기</a>
 
 </body>
 </html>
