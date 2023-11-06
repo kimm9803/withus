@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.withus.mapper.GroupsMapper">
+
+	<!-- 그룹만들기 -->
+	<insert id="groupcreate">
+		INSERT INTO GROUPS (GNO, GNAME, GINTRO)
+		VALUES ((SELECT NVL(MAX(gno), 0) + 1 FROM groups),#{gname},#{gintro})
+	</insert>
+	
+	<!-- 그룹 목록 -->
+	<select id="groupList" resultType="com.withus.domain.GroupsVo">
+		SELECT gno,gname,TO_CHAR(gdate, 'YYYY-MM-DD') GDATE,gperson,glike
+		FROM groups
+		order by gdate desc
+	</select>
+	
+	<!-- 그룹 상세보기-->
+	<select id="groupview" parameterType="int" resultType="com.withus.domain.GroupsVo">
+		SELECT gno,gname,TO_CHAR(gdate, 'YYYY-MM-DD') GDATE,gperson,glike,gintro
+		FROM groups
+		where gno = #{gno}
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
