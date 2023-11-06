@@ -14,6 +14,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.withus.domain.MemberVo;
@@ -35,7 +36,12 @@ public class AuthController {
 	
 	// 로그인 페이지
 	@GetMapping("/login")
-	public String login() {
+	public String login(@RequestParam(value = "error", required = false) String error,
+						@RequestParam(value = "exception", required = false) String exception,
+						Model model) {
+		model.addAttribute("error", error);
+		model.addAttribute("exception", exception);
+		
 		return "auth/login";
 	}
 	
@@ -69,7 +75,7 @@ public class AuthController {
 			member.setRole("ROLE_USER");
 			
 			memberMapper.join(member);
-			return "redirect:/";
+			return "redirect:/auth/login";
 		}
 	}
 	
