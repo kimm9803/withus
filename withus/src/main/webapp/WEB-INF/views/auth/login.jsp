@@ -9,7 +9,7 @@
 </head>
 <body>
 	<h2>로그인 페이지</h2>
-	<form action="/login-proc" method="post">
+	<form action="/auth/login-proc" method="post">
 		<div>
 			<input type="text" name="memberId" placeholder="아이디">
 		</div>
@@ -18,6 +18,15 @@
 		</div>
 		<button type="submit">로그인</button>
 	</form>
-	<a href="/join">회원가입을 아직 하지 않으셨나요?</a>
+	<br>
+	<div>
+		<a href="/oauth2/authorization/google">
+			<img src="/img/google.png">
+		</a>
+	</div>
+	<div>
+		<a href="/auth/join">회원가입을 아직 하지 않으셨나요?</a>
+	</div>
+	
 </body>
 </html>
