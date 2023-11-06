@@ -22,11 +22,11 @@ public class CustomAuthFailureHandler extends SimpleUrlAuthenticationFailureHand
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 		String errorMessage = "";
 		if (exception instanceof BadCredentialsException) {
-			errorMessage = "아이디 또는 비밀번호가 존재하지 않습니다.";
+			errorMessage = "아이디 또는 비밀번호가 일치하지 않습니다.";
 		} else if (exception instanceof InternalAuthenticationServiceException) {
-			errorMessage = "아이디 또는 비밀번호가 존재하지 않습니다.";
+			errorMessage = "아이디 또는 비밀번호가 일치하지 않습니다.";
 		} else if (exception instanceof UsernameNotFoundException) {
-			errorMessage = "아이디 또는 비밀번호가 존재하지 않습니다.";
+			errorMessage = "아이디 또는 비밀번호가 일치하지 않습니다.";
 		} else if (exception instanceof AuthenticationCredentialsNotFoundException) {
 			errorMessage = "인증 요청이 거부되었습니다. 관리자에게 문의하세요.";
 		} else {

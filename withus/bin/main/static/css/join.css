@@ -33,7 +33,6 @@
 .homeBtn {
     background-color: transparent; /* 배경색 없애기 */
     color: white; /* 글자색 흰색으로 설정 */
-    margin-top: 50px;
     border: 1px solid white;
     border-radius: 20px;
     padding: 5px 30px;
@@ -54,7 +53,6 @@
     flex-direction: row;
     box-shadow: 10px black;
     border-radius: 10px;
-
 }
 .login-form-right-side{
     width: 50%; 
@@ -92,6 +90,10 @@
     background: rgb(255,255,255);
 background: linear-gradient(287deg, rgba(255,255,255,1) 0%, rgba(243,244,244,1) 0%, rgba(255,255,255,1) 100%);
 }
+.valid {
+	color: red;
+	font-size: 11px;
+}
 .login-form-left-side .login-top-wrap{
     display: flex;
     justify-content: flex-end;
@@ -115,7 +117,7 @@ background: linear-gradient(287deg, rgba(255,255,255,1) 0%, rgba(243,244,244,1) 
 
 }
 .login-input-container{
-    padding-top:80px;
+    padding-top:20px;
     width:300px;
 }
 .login-input-container .login-input-wrap{
@@ -143,7 +145,7 @@ background: linear-gradient(287deg, rgba(255,255,255,1) 0%, rgba(243,244,244,1) 
     outline: none;
 }
 .login-btn-wrap{
-    margin-top: 25px;
+    margin-top: 45px;
     display: flex;
     flex-direction: column;
     align-items: center;;

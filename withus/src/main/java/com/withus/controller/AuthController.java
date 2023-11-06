@@ -73,6 +73,9 @@ public class AuthController {
 			
 			member.setPassword(encPassword);
 			member.setRole("ROLE_USER");
+			if (member.getSex() == null) {
+				member.setSex("male");
+			}
 			
 			memberMapper.join(member);
 			return "redirect:/auth/login";
