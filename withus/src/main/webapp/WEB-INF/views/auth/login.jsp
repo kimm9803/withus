@@ -11,6 +11,7 @@
     <script src="https://kit.fontawesome.com/51db22a717.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -20,13 +21,14 @@
                 <div class="top-logo-wrap">
                     
                 </div>
-                <h1>How does a login system work?</h1>
-                <p>In computer security, logging in is the process by which an individual gains access to a computer system by identifying and authenticating themselves.</p>
+                <h1>Hello Friend!</h1>
+                <p style="margin-bottom: 40px;">Enter your personal details and start your journey with us.</p>
+                <button class="homeBtn" type="button">Home</button>
             </div>
             <div class="login-form-left-side">
                 <div class="login-top-wrap">
                     <span>Don't have an account?</span>
-                    <button class="create-account-btn shadow-light">Create Profile</button>
+                    <button class="create-account-btn shadow-light">Create Account</button>
                 </div>
                 <form action="/auth/login-proc" method="post">
                 
@@ -46,8 +48,14 @@
 					</div>
 				</c:if>
                 <div class="login-btn-wrap">
-                    <button class="login-btn" type="submit">Login</button>
-                    <div class="mt-3">
+                    <button class="login-btn" type="submit">Sign In</button>
+                    <div class="mt-4">
+						<a style="margin-right: 10px;" href="#">
+							<img src="/img/kakao.png" width="40" height="40">
+						</a>
+						<a style="margin-right: 10px;" href="#">
+							<img src="/img/naver.png" width="40" height="40">
+						</a>
 						<a href="/oauth2/authorization/google">
 							<img src="/img/google.png">
 						</a>
@@ -59,5 +67,16 @@
             </div>
         </div>
     </div>
+    <script>
+    	$(document).ready(function() {
+    		$('.create-account-btn').on('click', function() {
+    			location.href = '/auth/join';
+    		});
+    		
+    		$('.homeBtn').on('click', function() {
+    			location.href = '/';
+    		});
+    	})
+    </script>
 </body>
 </html>
