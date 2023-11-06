@@ -8,18 +8,18 @@
 		VALUES ((SELECT NVL(MAX(gno), 0) + 1 FROM groups),#{gname},#{gintro})
 	</insert>
 	
-	<!-- 아이디로 회원찾기 -->
-	<select id="findById" resultType="com.withus.domain.MemberVo">
-		SELECT memberId, password, name, sex, role, regDate
-		FROM member
-		WHERE memberId = #{memberId}
+	<!-- 그룹 목록 -->
+	<select id="groupList" resultType="com.withus.domain.GroupsVo">
+		SELECT gno,gname,TO_CHAR(gdate, 'YYYY-MM-DD') GDATE,gperson,glike
+		FROM groups
+		order by gdate desc
 	</select>
 	
-	<!-- 아이디 중복검사 -->
-	<select id="idDuplicateCheck" resultType="int">
-		SELECT COUNT(memberId)
-		FROM member
-		WHERE memberId = #{memberId}
+	<!-- 그룹 상세보기-->
+	<select id="groupview" parameterType="int" resultType="com.withus.domain.GroupsVo">
+		SELECT gno,gname,TO_CHAR(gdate, 'YYYY-MM-DD') GDATE,gperson,glike,gintro
+		FROM groups
+		where gno = #{gno}
 	</select>
 	
 </mapper>
