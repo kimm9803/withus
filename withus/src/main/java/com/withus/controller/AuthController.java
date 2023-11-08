@@ -7,6 +7,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -73,8 +75,8 @@ public class AuthController {
 			
 			member.setPassword(encPassword);
 			member.setRole("ROLE_USER");
-			if (member.getSex() == null) {
-				member.setSex("male");
+			if (member.getGender() == null) {
+				member.setGender("select");
 			}
 			
 			memberMapper.join(member);
