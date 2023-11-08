@@ -37,7 +37,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
 		
 		// 성별을 못 받아왔을 시 default 값 지정
 		if (gender == null) {
-			gender = "male";
+			gender = "select";
 		}
 		MemberVo findMember = memberMapper.findById(memberId);
 		
@@ -46,7 +46,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
 			member.setMemberId(memberId);
 			member.setPassword(password);
 			member.setName(name);
-			member.setSex(gender);
+			member.setGender(gender);
 			member.setRole(role);
 			memberMapper.join(member);
 			return new PrincipalDetails(member, oauth2User.getAttributes());

@@ -16,4 +16,6 @@ public interface MemberMapper {
 	// 아이디 중복검사
 	int idDuplicateCheck(String memberId);
 
+	// 성별 설정
+	void setGender(MemberVo memberVo);
 }

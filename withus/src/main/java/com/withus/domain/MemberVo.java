@@ -27,7 +27,7 @@ public class MemberVo {
 	@NotBlank(message = "이름은 필수 입력 값입니다.")
 	private String name;
 	
-	private String sex;
+	private String gender;
 	
 	private String role;
 	
