@@ -175,3 +175,11 @@ input {
     height: 24px;
   }
 }
+
+.select-gender {
+    position: absolute;
+    top: 100px; /* 원하는 위치로 조정하세요 */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 40px; /* 원하는 크기로 조정하세요 */
+}

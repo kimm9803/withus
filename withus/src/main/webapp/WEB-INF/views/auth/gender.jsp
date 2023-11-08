@@ -16,6 +16,7 @@
 </head>
 <body>
 	<div class="page-container">
+		<div class="select-gender">Select your gender!</div>
         <div class="gender-container shadow">
             <div class="left-side">
             	<input type="checkbox" id="male-chk" class="gender-checkbox-left">
