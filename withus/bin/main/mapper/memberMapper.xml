@@ -28,6 +28,12 @@
 		SET gender = #{gender}
 		WHERE memberId = #{memberId}
 	</update>
+	
+	<!-- 관심 카테고리 설정 -->
+	<insert id="setFavorCate">
+		INSERT INTO favorCate (favorCateId, memberId, cateId)
+		VALUES (favorCateSeq.nextVal, #{memberId}, #{cateId})
+	</insert>
 </mapper>
 
 

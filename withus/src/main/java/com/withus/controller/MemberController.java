@@ -1,8 +1,6 @@
 package com.withus.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -16,7 +14,11 @@ public class MemberController {
 	
 	@GetMapping("/user/gender")
 	public String setGenderPage() {
-		
 		return "auth/gender";
+	}
+	
+	@GetMapping("/user/category/favor")
+	public String setFavorCatePage() {
+		return "auth/favor";
 	}
 }
