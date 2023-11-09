@@ -1,6 +1,7 @@
 package com.withus.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.withus.domain.MemberVo;
 
@@ -18,4 +19,7 @@ public interface MemberMapper {
 
 	// 성별 설정
 	void setGender(MemberVo memberVo);
+
+	// 관심 카테고리 설정
+	void setFavorCate(@Param("memberId") String memberId, @Param("cateId") int cateId);
 }
