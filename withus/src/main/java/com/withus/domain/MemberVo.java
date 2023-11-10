@@ -35,4 +35,5 @@ public class MemberVo {
 	
 	private String provider;
 	private String providerId;
+
 }

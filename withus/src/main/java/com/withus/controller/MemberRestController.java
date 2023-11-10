@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.withus.domain.MemberVo;
 import com.withus.mapper.MemberMapper;
+import com.withus.service.MemberService;
 
 @RestController
 public class MemberRestController {
@@ -18,20 +19,24 @@ public class MemberRestController {
 	@Autowired
 	private MemberMapper memberMapper;
 	
+	@Autowired
+	private MemberService memberService;
+	
+	// 성별 설정
 	@PostMapping("/user/gender/set")
 	public String setGender(@RequestParam("gender") String gender, Authentication authentication) {
-		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-		MemberVo findMember = memberMapper.findById(userDetails.getUsername());
+		MemberVo findMember = memberMapper.findById(memberService.authMember(authentication));
 		findMember.setGender(gender);
 		memberMapper.setGender(findMember);
 		
 		return "success";
 	}
 	
+	// 선호 카테고리 설정
 	@PostMapping("/user/category/favor/set")
 	public String setFavorCate(@RequestParam(value="selectedImages[]") List<String> selectedImages, Authentication authentication) {
-		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-		String memberId = userDetails.getUsername();
+		
+		String memberId = memberService.authMember(authentication);
 		for (int i = 0; i < selectedImages.size(); i++) {
 			int cateId = Integer.parseInt(selectedImages.get(i));
 			memberMapper.setFavorCate(memberId, cateId);
