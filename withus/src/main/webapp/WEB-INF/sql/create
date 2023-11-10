@@ -2,23 +2,18 @@ CREATE TABLE member (
 	memberId	VARCHAR2(255)	PRIMARY KEY,
 	password	VARCHAR2(255)	NOT NULL,
 	name		VARCHAR2(255)	NOT NULL,
-	sex			VARCHAR2(50),
+	gender		VARCHAR2(50),
 	role		VARCHAR2(255),
 	regDate		DATE	DEFAULT	SYSDATE
 );
 
--- 관리자 회원가입
-ex)
-ID : admin
-PW : 1234
+INSERT INTO member (memberId, password, name, gender, role)
+VALUES  ('admin', '1234', '관리자', 'male', 'ROLE_ADMIN');
 
--- 일반 회원가입 후 관리자 권한 변경
-UPDATE member
-SET    role = 'ROLE_ADMIN'
-WHERE  memberId = 'admin';
+commit;
 
 
---그룹 테이블 초안-- 이미지 추가 / 등등 필요
+== 그룹 ==
 CREATE TABLE GROUPS (
     GNO     NUMBER(10) PRIMARY KEY,
     GNAME   VARCHAR2(255) NOT NULL,
@@ -28,3 +23,41 @@ CREATE TABLE GROUPS (
     GREPORT NUMBER(5) DEFAULT 0,
     GLIKE   NUMBER(5) DEFAULT 0
 );
+-- 그룹에 memberid 추가 --
+ALTER TABLE GROUPS
+ADD (MEMBERID VARCHAR2(255));
+
+ALTER TABLE GROUPS
+ADD CONSTRAINT FK_MEMBERID FOREIGN KEY (MEMBERID) REFERENCES MEMBER(MEMBERID);
+
+== 이미지 ==
+=======
+CREATE TABLE category (
+    cateId      NUMBER          PRIMARY KEY,
+    cateName    VARCHAR2(255)   NOT NULL
+);
+
+INSERT INTO category (cateId, cateName) VALUES (1, '아웃도어/여행');
+INSERT INTO category (cateId, cateName) VALUES (2, '운동/스포츠');
+INSERT INTO category (cateId, cateName) VALUES (3, '책/글');
+INSERT INTO category (cateId, cateName) VALUES (4, '외국/언어');
+INSERT INTO category (cateId, cateName) VALUES (5, '문화/공연/축제');
+INSERT INTO category (cateId, cateName) VALUES (6, '음악/악기');
+INSERT INTO category (cateId, cateName) VALUES (7, '사진/영상');
+INSERT INTO category (cateId, cateName) VALUES (8, '게임/오락');
+INSERT INTO category (cateId, cateName) VALUES (9, '차/오토바이');
+COMMIT;
+
+CREATE SEQUENCE favorCateSeq
+START WITH 1
+INCREMENT BY 1
+NOMAXVALUE;
+
+CREATE TABLE favorCate (
+    favorCateId     NUMBER          PRIMARY KEY,
+    memberId        VARCHAR2(255)   NOT NULL,
+    cateId          NUMBER          NOT NULL,
+    FOREIGN KEY (memberId)  REFERENCES  member(memberId),
+    FOREIGN KEY (cateId)    REFERENCES  category(cateId)
+);
+

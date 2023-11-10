@@ -9,9 +9,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 import com.withus.config.auth.CustomAuthFailureHandler;
+import com.withus.config.auth.CustomAuthSuccessHandler;
+import com.withus.config.auth.CustomSuccessHandler;
 import com.withus.config.oauth.PrincipalOauth2UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private PrincipalOauth2UserService principalOauth2UserService;
 	
 	/* 로그인 실패 핸들러 의존성 주입 */
-	private final AuthenticationFailureHandler customFailureHandler;
+	private final CustomAuthFailureHandler customFailureHandler;
+	
+	/* 로그인 성공 핸들러 의존성 주입*/
+	private final CustomAuthSuccessHandler customAuthSuccessHandler;
+	private final CustomSuccessHandler customSuccessHandler;
+	
 	
 	// 해당 메서드의 리턴되는 오브젝트를 IOC로 등록해준다.(비밀번호 암호화)
 	@Bean
@@ -47,14 +53,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.loginProcessingUrl("/auth/login-proc")							// 로그인 진행 -> /login-proc (컨트롤러 만들지 않아도 시큐리티가 진행)
 			.usernameParameter("memberId")								// 로그인 form에서의 아이디 name
             .passwordParameter("password")								// 로그인 form에서의 비밀번호 name
+            //.successHandler(customSuccessHandler)						// 로그인 성공 핸들러
+            .successHandler(customAuthSuccessHandler)					// 상동
             .failureHandler(customFailureHandler) 						// 로그인 실패 핸들러
-			.defaultSuccessUrl("/")										// 로그인 성공시 리다이렉트
 			.and()
 			.logout()
 			.logoutSuccessUrl("/")
 			.and()
 			.oauth2Login()
 			.loginPage("/auth/login")
+			.successHandler(customAuthSuccessHandler)					
 			.userInfoEndpoint()
 			.userService(principalOauth2UserService);
 	}

@@ -4,13 +4,13 @@
 
 	<!-- 회원가입 -->
 	<insert id="join">
-		INSERT INTO member (memberId, password, name, sex, role)
-		VALUES (#{memberId}, #{password}, #{name}, #{sex}, #{role})
+		INSERT INTO member (memberId, password, name, gender, role)
+		VALUES (#{memberId}, #{password}, #{name}, #{gender}, #{role})
 	</insert>
 	
 	<!-- 아이디로 회원찾기 -->
 	<select id="findById" resultType="com.withus.domain.MemberVo">
-		SELECT memberId, password, name, sex, role, regDate
+		SELECT memberId, password, name, gender, role, regDate
 		FROM member
 		WHERE memberId = #{memberId}
 	</select>
@@ -22,6 +22,26 @@
 		WHERE memberId = #{memberId}
 	</select>
 	
+	<!-- 성별 설정 -->
+	<update id="setGender">
+		UPDATE member
+		SET gender = #{gender}
+		WHERE memberId = #{memberId}
+	</update>
+	
+	<!-- 관심 카테고리 설정 -->
+	<insert id="setFavorCate">
+		INSERT INTO favorCate (favorCateId, memberId, cateId)
+		VALUES (favorCateSeq.nextVal, #{memberId}, #{cateId})
+	</insert>
+	
+	<!-- 관심 카테고리 찾기 -->
+	<select id="favorCateList" resultType="com.withus.domain.FavorCateVo">
+		SELECT f.favorCateId, f.memberId, f.cateId, c.cateName
+		FROM favorCate f
+		INNER JOIN category c ON c.cateId = f.cateId
+		WHERE f.memberId = #{memberId}
+	</select>
 </mapper>
 
 
