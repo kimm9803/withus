@@ -1,6 +1,7 @@
 package com.withus.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -14,5 +15,7 @@ public interface GroupsMapper {
 	List<GroupsVo> groupList();
 
 	GroupsVo groupview(int gno);
+
+	List<GroupsVo> getMoreGroups(Map<String, Object> params);
 
 }

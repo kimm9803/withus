@@ -20,6 +20,6 @@
 </sec:authorize>
 <a href="/groups/create">그룹만들기</a>
 <a href="/groups/list">그룹목록보기</a>
-
+<a href="/upload">이미지업로드 테스트</a>
 </body>
 </html>

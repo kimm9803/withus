@@ -1,49 +1,148 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>With Us</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link rel="stylesheet" href="/css/main.css" />
+    <meta charset="UTF-8">
+    <title>그룹 목록</title> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+		    * {
+		   font-family: 'Sunflower', sans-serif;
+		}
+        #main {
+            text-align: center;
+            width: 60%;
+            margin: 0 auto;       
+        }
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<style>
-#create{
- margin : 20px auto;
-}
-</style>
+        .card-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 0 auto;
+        }
+
+        .card {
+            width: calc(50% - 20px);
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            overflow: hidden; /* 추가된 부분: 둥근 테두리 적용 시 튀어나온 부분을 감춤 */
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card-header {
+            background-color: #E6E1E1;
+            color: black !important;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        a {
+            color: black;
+            text-decoration: none;
+        }
+
+        #create {
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        h5 {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 10px;
+        }
+
+        .card-text {
+            margin-bottom: 0;
+        }
+    </style>
 </head>
 <body>
-  <div id="main">
-    <h2>그룹 목록</h2>   
-    <a href="/groups/create" class="btn btn-dark" id="create">그룹 생성</a>
-		<div class="card-container">
-			<c:forEach var="group" items="${groupList}">
-				<div class="card">
-					<div class="card-header"><h5><a href="/groups/view/${group.gno}">그룹명 : ${group.gname}</a></h5></div>
-					<div class="card-body">						
-						<p class="card-text">번호: ${group.gno}</p>						
-						<p class="card-text">생성일: ${group.gdate}</p>
-						<p class="card-text">정원: ${group.gperson}</p>
-						<p class="card-text">추천: ${group.glike}</p>
-					</div>
-				</div>
-			</c:forEach>
-		</div>
-	</div> 
-  <script>
-  </script>
- 
-  
+    <div id="main">
+        <h2>그룹 목록</h2>
+        <a href="/groups/create" class="btn btn-dark" id="create">그룹 생성</a>
+        <div class="card-container" id="groupContainer">
+            <!-- 초기 데이터를 서버에서 받아와서 렌더링 -->
+        </div>
+        <button class="btn btn-dark" id="loadMore">더보기</button>
+    </div>
+    <script>
+        $(document).ready(function () {
+            var page = 1; // 현재 페이지
+            var pageSize = 4; // 한 번에 로드될 그룹 수
+
+            function loadInitialData() {
+                $.ajax({
+                    url: "/groups/loadMore",
+                    type: "GET",
+                    data: {
+                        page: page,
+                        pageSize: pageSize
+                    },
+                    success: function (data) {
+                        if (data.length > 0) {
+                            for (var i = 0; i < data.length; i++) {
+                                var cardHtml = "<div class='card border-dark'>" +
+                                    "<div class='card-header bg-light'>" +
+                                    "<div style='display: flex; align-items: center;'>";
+
+                                if (data[i].newImageName) {
+                                    cardHtml += "<img src='/" + data[i].newImageName + "' style='height: 100px; width: 100px; border: 1px solid black; margin-right: 10px;' class='rounded-circle'>";
+                                } else {
+                                    cardHtml += "<img src='/img/basic.jpg' style='height: 100px; width: 100px; border: 1px solid black; margin-right: 10px;' class='rounded-circle'>";
+                                }
+
+                                cardHtml += "<div style='flex-grow: 1;'>" +
+                                    "<h5><a href='/groups/view/" + data[i].gno + "' class='text-dark'>그룹명 : " + data[i].gname + "</a></h5>" +
+                                    "<div class='card-body d-flex flex-column'>" +
+                                    "<div class='d-flex justify-content-between mb-2'>" +
+                                    "<p class='card-text'>생성일: " + data[i].gdate + "</p>" +
+                                    "</div>" +
+                                    "<div class='d-flex justify-content-between'>" +
+                                    "<p class='card-text'>정원: " + data[i].gperson + "</p>" +
+                                    "<p class='card-text'>추천: " + data[i].glike + "</p>" +
+                                    "</div>" +
+                                    "</div>" +
+                                    "</div>" +
+                                    "</div>" +
+                                    "</div>";
+
+                                $("#groupContainer").append(cardHtml);
+                            }
+                            page++;
+                        } else {
+                            $("#loadMore").hide();
+                        }
+                    },
+                    error: function () {
+                        alert("데이터를 불러오는 데 실패했습니다.");
+                    }
+                });
+            }
+
+            // 초기 데이터 로드
+            loadInitialData();
+
+            // 더보기 버튼 클릭 이벤트
+            $("#loadMore").click(function () {
+                loadInitialData();
+            });
+        });
+    </script>
 </body>
 </html>
-
-
-
-
-

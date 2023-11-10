@@ -18,4 +18,5 @@ public class GroupsVo {
 	private int gperson; // 그룹 정원
 	private int greport; // 그룹 신고수
 	private int glike; // 그룹 추천추
+	private String newImageName;
 }
