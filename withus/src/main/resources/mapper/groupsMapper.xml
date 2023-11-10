@@ -10,16 +10,26 @@
 	
 	<!-- 그룹 목록 -->
 	<select id="groupList" resultType="com.withus.domain.GroupsVo">
-		SELECT gno,gname,TO_CHAR(gdate, 'YYYY-MM-DD') GDATE,gperson,glike
-		FROM groups
-		order by gdate desc
+		SELECT g.gno,g.gname,TO_CHAR(g.gdate, 'YYYY-MM-DD') GDATE,g.gperson,g.glike,I.new_image_name AS newImageName
+		FROM groups g LEFT JOIN GIMAGE I ON G.GNO = I.GNO
+		order by g.gdate desc
 	</select>
 	
 	<!-- 그룹 상세보기-->
 	<select id="groupview" parameterType="int" resultType="com.withus.domain.GroupsVo">
-		SELECT gno,gname,TO_CHAR(gdate, 'YYYY-MM-DD') GDATE,gperson,glike,gintro
-		FROM groups
-		where gno = #{gno}
+		SELECT g.gno,g.gname,TO_CHAR(g.gdate, 'YYYY-MM-DD') GDATE, g.gperson,g.glike,g.gintro, I.new_image_name AS newImageName
+		FROM groups g LEFT JOIN GIMAGE I ON G.GNO = I.GNO
+		where g.gno = #{gno}
+	</select>
+	<!-- 그룹 더보기 목록 -->
+	<select id="getMoreGroups" resultType="com.withus.domain.GroupsVo">
+	 SELECT gno, gname, gdate, gperson, glike, new_image_name AS newImageName
+        FROM (
+            SELECT g.gno, g.gname, TO_CHAR(g.gdate, 'YYYY-MM-DD') GDATE, g.gperson, g.glike, i.new_image_name,
+                   ROW_NUMBER() OVER (ORDER BY g.gdate DESC) AS rnum
+            FROM groups g LEFT JOIN gimage i ON g.gno = i.gno
+        )
+        WHERE rnum BETWEEN #{startRow} AND #{endRow}
 	</select>
 	
 </mapper>
