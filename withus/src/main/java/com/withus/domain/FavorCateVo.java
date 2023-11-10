@@ -9,4 +9,6 @@ public class FavorCateVo {
 	private int 	favorCateId;
 	private String 	memberId;
 	private int 	cateId;
+	
+	private String cateName;
 }

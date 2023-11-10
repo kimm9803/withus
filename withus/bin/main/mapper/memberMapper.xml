@@ -34,6 +34,14 @@
 		INSERT INTO favorCate (favorCateId, memberId, cateId)
 		VALUES (favorCateSeq.nextVal, #{memberId}, #{cateId})
 	</insert>
+	
+	<!-- 관심 카테고리 찾기 -->
+	<select id="favorCateList" resultType="com.withus.domain.FavorCateVo">
+		SELECT f.favorCateId, f.memberId, f.cateId, c.cateName
+		FROM favorCate f
+		INNER JOIN category c ON c.cateId = f.cateId
+		WHERE f.memberId = #{memberId}
+	</select>
 </mapper>
 
 
