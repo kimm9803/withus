@@ -25,4 +25,5 @@ public class GroupsVo {
 	private int rno; // 지역번호
 	private String rname; // 지역이름
 	private String name; // 그룹장 이름
+	private int memberCnt; // 그룹원 수
 }
