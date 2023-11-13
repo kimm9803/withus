@@ -42,6 +42,19 @@
 		INNER JOIN category c ON c.cateId = f.cateId
 		WHERE f.memberId = #{memberId}
 	</select>
+	
+	<!-- 메시지 전송 -->
+	<insert id="sendMessage">
+		INSERT INTO message (title, content, sender, receiver)
+		VALUES (#{title}, #{content}, #{sender}, #{receiver})
+	</insert>
+	
+	<!-- 쪽지함 -->
+	<select id="findByReceiverId" resultType="com.withus.domain.MessageVo">
+		SELECT title, content, sender, sendDate
+		FROM message
+		WHERE receiver = #{receiver}
+	</select>
 </mapper>
 
 

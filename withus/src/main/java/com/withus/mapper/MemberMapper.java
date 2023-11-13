@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.withus.domain.FavorCateVo;
 import com.withus.domain.MemberVo;
+import com.withus.domain.MessageVo;
 
 @Mapper
 public interface MemberMapper {
@@ -28,4 +29,10 @@ public interface MemberMapper {
 	
 	// 관심 카테고리 찾기
 	List<FavorCateVo> favorCateList(String memberId);
+
+	// 메시지 전송
+	void sendMessage(MessageVo message);
+
+	// 받은 쪽지함
+	List<MessageVo> findByReceiverId(String memberId);
 }
