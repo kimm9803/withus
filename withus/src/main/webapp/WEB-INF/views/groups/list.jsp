@@ -120,7 +120,8 @@
                                 "<h5><a href='/groups/view/" + data[i].gno + "' class='text-dark'>" + data[i].gname + "</a></h5>" +
                                 "<div class='card-body d-flex flex-column justify-content-between'>" +
                                 "<div class='d-flex justify-content-between mb-2'>" +
-                                "<p class='card-text'>생성일: " + data[i].gdate + "</p>" +
+                                "<div class='card-text'>생성일: " + data[i].gdate + "</div>" +
+                                "<div class='card-text'>그룹장: " + data[i].name + "</div>" +
                                 "</div>" +
                                 "<div class='d-flex justify-content-between'>" +
                                 "<div class='card-text '>정원: " + data[i].gperson + "</div>" +
