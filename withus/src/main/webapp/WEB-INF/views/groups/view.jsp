@@ -8,30 +8,59 @@
     <title>그룹 상세보기</title>
     <!-- Bootstrap 5 CSS 링크 추가 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery 추가 -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <style>
-        /* 컨텐츠를 중앙에 정렬 */
-        .content {
-            max-width: 60%;
-            margin: 0 auto;
-        }
+/* 컨텐츠를 중앙에 정렬 */
+.content {
+	max-width: 60%;
+	margin: 0 auto;
+}
 
-        /* 이미지 스타일 */
-        #groupImage {
-            height: 200px;
-            width: 100%;
-            border: 1px solid black;
-        }
+/* 이미지 스타일 */
+#groupImage {
+	height: 200px;
+	width: 100%;
+	border: 1px solid black;
+}
 
-        /* 버튼 간격 조절 */
-        .btn-group {
-            margin-top: 10px;
-        }
-        #image{
-        width:100%
-        }
-    </style>
+/* 버튼 간격 조절 */
+.btn-group {
+	margin-top: 10px;
+}
+
+#image {
+	width: 100%
+}
+
+.btn.dropdown-toggle::after {
+	content: none;
+}
+
+.btn.dropdown-toggle {
+	background-color: transparent;
+	color: black;
+}
+
+.btn.dropdown-toggle:hover {
+	border: 1px solid #ccc;
+}
+
+.dropdown-menu {
+	background-color: #fff;
+	border: 1px solid #ccc;
+}
+
+.dropdown-item {
+	color: #000;
+}
+
+.dropdown-item:hover {
+	background-color: #f8f9fa;
+	color: #000; 
+}
+</style>
 </head>
 <body>
     <div class="container mt-5">
@@ -61,8 +90,20 @@
             </div>
             <div class="card mt-3">
                 <div class="card-body">
-                    <h2 class="card-title">${group.gname}</h2>                    
-                    <p class="card-text">그룹장: ${group.name}</p>
+                    <h2 class="card-title">${group.gname}</h2>
+                    <p class="card-text">그룹장:
+	                    <div class="dropdown">
+						  <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+						     ${group.name}
+						  </a>
+						
+						  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+						    <li><a class="dropdown-item" href="#">회원정보</a></li>
+						    <li><a class="dropdown-item" href="/user/message?memberId=${group.memberid}">쪽지 보내기</a></li>
+						    <li><a class="dropdown-item" href="#">신고하기</a></li>
+						  </ul>
+						</div>                    
+                    </p>
                     <p class="card-text">추천: ${group.glike}</p>
                     <p class="card-text">그룹소개: ${group.gintro}</p>
                     <p class="card-text">생성일: ${group.gdate}</p>
@@ -79,7 +120,7 @@
                 <button type="button" class="btn btn-dark" id="joinButton">그룹 가입</button>
             </div>            
 			<c:out value="${groups.memberid}"/>
-			<c:if test="${memberid eq group.memberid}">
+			<c:if test="${memberId eq group.memberid}">
             <div class="btn-group">
                 <button type="button" class="btn btn-warning" onclick="location.href='/groups/joinlist'">가입신청 목록</button>
             </div>

@@ -12,6 +12,7 @@
 <sec:authorize access="isAuthenticated()">
 	<a href="/logout">로그아웃</a>
 	<a href="/user/mypage">마이페이지</a>
+	<a href="/user/mymessage">쪽지함</a>
 </sec:authorize>
 <sec:authorize access="isAnonymous()">
 	<div style="margin-bottom: 10px;">

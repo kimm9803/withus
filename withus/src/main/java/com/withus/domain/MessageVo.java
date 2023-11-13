@@ -9,6 +9,7 @@ public class MessageVo {
 	private int messageId;
 	private String title;
 	private String content;
-	private MemberVo sender;
-	private MemberVo receiver;
+	private String sender;
+	private String receiver;
+	private String sendDate;
 }
