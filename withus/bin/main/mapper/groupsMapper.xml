@@ -8,6 +8,12 @@
 		VALUES ((SELECT NVL(MAX(gno), 0) + 1 FROM groups),#{vo.gname},#{vo.gintro},#{memberId},#{vo.gperson},#{vo.cateid},#{vo.rno})
 	</insert>
 	
+	<!-- 그룹만들기 이후 자동 가입 -->
+    <insert id="createMember">
+	INSERT INTO GMEMBER(gmemberid, gno, memberid)
+    VALUES((SELECT NVL(MAX(GMEMBERID), 0) + 1 FROM GMEMBER), #{vo.gno}, #{memberId})
+	</insert>
+
 	<!-- 그룹 목록 -->
 	<select id="groupList" resultType="com.withus.domain.GroupsVo">
 		SELECT g.gno,g.gname,TO_CHAR(g.gdate, 'YYYY-MM-DD') GDATE,g.gperson,g.glike,I.new_image_name AS newImageName
@@ -23,23 +29,54 @@
 		where g.gno = #{gno}
 	</select>
 	
-	<!-- 그룹 더보기 목록 -->
-	<select id="getMoreGroups" resultType="com.withus.domain.GroupsVo">
-	SELECT gno, gname, gdate, gperson, glike, new_image_name AS
-	newImageName, catename,rname,memberid,name
-	FROM (
-	SELECT g.gno, g.gname, TO_CHAR(g.gdate, 'YYYY-MM-DD') AS GDATE, g.gperson,
-	g.glike, i.new_image_name, c.catename,r.rname,g.memberid,m.name,
-	ROW_NUMBER() OVER (ORDER BY g.gdate DESC) AS rnum
-	FROM category c
-	RIGHT JOIN groups g ON c.cateid = g.cateid
-	LEFT JOIN gimage i ON g.gno = i.gno
-	LEFT JOIN region r ON g.rno = r.rno
-	LEFT JOIN member m ON g.memberid = m.memberid
-	)
-	WHERE rnum BETWEEN #{startRow} AND #{endRow}
-
+	<!-- 그룹원 수 -->
+	<select id="memberCnt" resultType="int">
+	SELECT COUNT(gno)
+	from gmember
+	where gno = #{gno}
 	</select>
+
+	<!-- 그룹 더보기 목록 -->
+	<!-- getMoreGroups 쿼리 -->
+<select id="getMoreGroups" resultType="com.withus.domain.GroupsVo">
+    SELECT
+        gno,
+        gname,
+        gdate,
+        gperson,
+        glike,
+        new_image_name AS newImageName,
+        catename,
+        rname,
+        memberid,
+        name,
+        memberCnt
+    FROM (
+        SELECT
+            g.gno,
+            g.gname,
+            TO_CHAR(g.gdate, 'YYYY-MM-DD') AS GDATE,
+            g.gperson,
+            g.glike,
+            i.new_image_name,
+            c.catename,
+            r.rname,
+            g.memberid,
+            m.name,
+            ( SELECT COUNT(gm.gno)+1 FROM gmember gm WHERE gm.gno = g.gno 
+            ) AS memberCnt,
+            ROW_NUMBER() OVER (ORDER BY g.gdate DESC) AS rnum
+        FROM
+            category c
+            RIGHT JOIN groups g ON c.cateid = g.cateid
+            LEFT JOIN gimage i ON g.gno = i.gno
+            LEFT JOIN region r ON g.rno = r.rno
+            LEFT JOIN member m ON g.memberid = m.memberid
+    )
+    WHERE rnum BETWEEN #{startRow} AND #{endRow}
+</select>
+
+
 	<!-- 그룹 삭제 -->
 	<delete id="deleteGroup">
 	delete from groups
@@ -51,6 +88,42 @@
 	INSERT INTO GROUPJOIN(GJOINID,GNO,MEMBERID)
 	VALUES((SELECT NVL(MAX(GJOINID), 0) + 1 FROM GROUPJOIN),#{gno},#{memberid})
 	</insert>
+	
+	<!-- 가입신청 내역 -->
+	<select id="joinlist" resultType="com.withus.domain.GroupJoinVo">
+	SELECT j.gjoinid,j.gno,j.memberid,j.gpermit,j.gappdate,m.name
+	FROM groupjoin j LEFT JOIN member m ON j.memberid = m.memberid
+	where j.gno = #{gno}
+	order by j.gjoinid desc
+	</select>
+	
+	<!-- 가입신청 허가 -->
+	<update id="joinUpdate">
+	update groupjoin
+	set gpermit = 1
+	where gjoinid = #{gjoinid}
+	</update>
+	
+	<!-- 가입 허가 시 그룹 가입 -->
+	<insert id="joinMember">
+	INSERT INTO GMEMBER(gmemberid, gno, memberid)
+    VALUES((SELECT NVL(MAX(GMEMBERID), 0) + 1 FROM GMEMBER), #{gno}, #{memberid})
+	</insert>
+	
+	<!-- 그룹원 목록 -->
+	<select id="memberlist" resultType="com.withus.domain.GroupMemberVo">
+	select gm.memberid, m.name,gm.gauth,TO_CHAR(gm.gjoindate, 'YYYY-MM-DD') AS gjoindate
+	from gmember gm left join member m on gm.memberid = m.memberid
+	where gm.gno = #{gno}
+	order by gjoindate desc
+	</select>
+	
+	<!-- 그룹원 추방 -->
+	<delete id="memberBan">
+	delete from gmember
+	where memberid = #{memberid}
+	</delete>
+	
 	
 </mapper>
 

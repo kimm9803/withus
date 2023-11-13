@@ -124,7 +124,7 @@
                                 "<div class='card-text'>그룹장: " + data[i].name + "</div>" +
                                 "</div>" +
                                 "<div class='d-flex justify-content-between'>" +
-                                "<div class='card-text '>정원: " + data[i].gperson + "</div>" +
+                                "<div class='card-text '>정원: " + data[i].memberCnt +"/" + data[i].gperson + "</div>" +
                                 "<div class='card-text '>추천: " + data[i].glike + "</div>" +
                                 "<div class='card-text '>분류: " + (data[i].catename ? data[i].catename : "기타") + "</div>" +
                                 "<div class='card-text '>지역: " + (data[i].rname ? data[i].rname : "기타") + "</div>" +
