@@ -23,17 +23,13 @@ import oracle.jdbc.proxy.annotation.Post;
 @RequestMapping("/groups")
 public class GroupRestController {
 	
-	@Autowired
-	private MemberMapper memberMapper;
-	
+		
 	@Autowired
 	private MemberService memberService;
 	
 	@Autowired
-	private GroupsMapper groupsMapper;
+	private GroupsMapper groupsMapper;	
 	
-	@Autowired
-	private ImageMapper imageMapper;
 	
 	// 그룹삭제
 	@GetMapping("/delete/{gno}")
@@ -50,6 +46,23 @@ public class GroupRestController {
 		  params.put("gno", gno);
 		groupsMapper.joinGroup(params);
 	}
+	// 그룹 가입신청 허가
+	@GetMapping("/permit")
+	public void permit(@RequestParam("gjoinid") int gjoinid,@RequestParam("gno") int gno,@RequestParam("memberid") String memberid) {
+		groupsMapper.joinUpdate(gjoinid);
+		Map<String,Object> params = new HashMap<>();
+		params.put("memberid", memberid);
+		params.put("gjoinid", gjoinid);
+		params.put("gno", gno);
+		//허가 시 멤버 등록
+		groupsMapper.joinMember(params);
+	}
+	//그룹원 추방
+	@GetMapping("/memberban")
+	public void memberban(@RequestParam("memberid") String memberid) {		
+		groupsMapper.memberBan(memberid);
+	}
+	
 
 	
 

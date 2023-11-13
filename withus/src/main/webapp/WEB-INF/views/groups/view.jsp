@@ -66,7 +66,7 @@
                     <p class="card-text">추천: ${group.glike}</p>
                     <p class="card-text">그룹소개: ${group.gintro}</p>
                     <p class="card-text">생성일: ${group.gdate}</p>
-                    <p class="card-text">정원: ${group.gperson}</p>
+                    <p class="card-text">정원: ${memberCnt}/${group.gperson}</p>
                 </div>
             </div>
             <div class="btn-group">
@@ -75,13 +75,17 @@
             <div class="btn-group">
                 <button type="button" class="btn btn-warning" onclick="location.href='/groups/list'">목록으로</button>
             </div>
+            <c:if test="${memberCnt lt group.gperson}">
             <div class="btn-group">
                 <button type="button" class="btn btn-dark" id="joinButton">그룹 가입</button>
-            </div>            
-			<c:out value="${groups.memberid}"/>
+            </div>        
+			</c:if>
 			<c:if test="${memberid eq group.memberid}">
             <div class="btn-group">
-                <button type="button" class="btn btn-warning" onclick="location.href='/groups/joinlist'">가입신청 목록</button>
+                <button type="button" class="btn btn-light" onclick="location.href='/groups/joinlist/${group.gno}'">가입신청 목록</button>                
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-light" onclick="location.href='/groups/memberlist/${group.gno}'">그룹원 목록</button>                
             </div>
 			</c:if>
             
@@ -134,8 +138,8 @@
                         }
                     });
                 }
-            });
-
+            });            
+         
             // 이미지 삭제 버튼 클릭 이벤트
             $('#imagedelete').click(function() {
                 // 확인 다이얼로그를 띄우고 사용자가 확인하면 삭제 요청 전송
