@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.withus.domain.GroupsVo;
 import com.withus.mapper.GroupsMapper;
 import com.withus.mapper.ImageMapper;
+import com.withus.service.MemberService;
 
 @Controller
 @RequestMapping("/groups")
@@ -28,6 +30,9 @@ public class GroupsController {
 	@Autowired
 	private ImageMapper imageMapper;
 	
+	@Autowired
+	private MemberService memberService;
+	
 	
       //그룹 만들기 페이지	
 	  @GetMapping("/create")
@@ -36,9 +41,13 @@ public class GroupsController {
 	  }
 	  //그룹 만들기	  
 	  @PostMapping("/create")
-	  public ModelAndView create(GroupsVo vo) {
+	  public ModelAndView create(GroupsVo vo, Authentication authentication) {
 		  
-		  groupsMapper.groupcreate(vo);
+		  String memberId = memberService.authMember(authentication);
+		  Map<String,Object> params = new HashMap<>();
+		  params.put("memberId", memberId);
+		  params.put("vo", vo);
+		  groupsMapper.groupcreate(params);
 		  
 		  ModelAndView mv = new ModelAndView();
 		  mv.setViewName("home");

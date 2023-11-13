@@ -4,8 +4,8 @@
 
 	<!-- 그룹만들기 -->
 	<insert id="groupcreate">
-		INSERT INTO GROUPS (GNO, GNAME, GINTRO)
-		VALUES ((SELECT NVL(MAX(gno), 0) + 1 FROM groups),#{gname},#{gintro})
+		INSERT INTO GROUPS (GNO, GNAME, GINTRO,MEMBERID,GPERSON,cateid,rno)
+		VALUES ((SELECT NVL(MAX(gno), 0) + 1 FROM groups),#{vo.gname},#{vo.gintro},#{memberId},#{vo.gperson},#{vo.cateid},#{vo.rno})
 	</insert>
 	
 	<!-- 그룹 목록 -->
@@ -23,14 +23,25 @@
 	</select>
 	<!-- 그룹 더보기 목록 -->
 	<select id="getMoreGroups" resultType="com.withus.domain.GroupsVo">
-	 SELECT gno, gname, gdate, gperson, glike, new_image_name AS newImageName
-        FROM (
-            SELECT g.gno, g.gname, TO_CHAR(g.gdate, 'YYYY-MM-DD') GDATE, g.gperson, g.glike, i.new_image_name,
-                   ROW_NUMBER() OVER (ORDER BY g.gdate DESC) AS rnum
-            FROM groups g LEFT JOIN gimage i ON g.gno = i.gno
-        )
-        WHERE rnum BETWEEN #{startRow} AND #{endRow}
+	SELECT gno, gname, gdate, gperson, glike, new_image_name AS
+	newImageName, catename,rname
+	FROM (
+	SELECT g.gno, g.gname, TO_CHAR(g.gdate, 'YYYY-MM-DD') AS GDATE, g.gperson,
+	g.glike, i.new_image_name, c.catename,r.rname,
+	ROW_NUMBER() OVER (ORDER BY g.gdate DESC) AS rnum
+	FROM category c
+	RIGHT JOIN groups g ON c.cateid = g.cateid
+	LEFT JOIN gimage i ON g.gno = i.gno
+	LEFT JOIN region r ON g.rno = r.rno
+	)
+	WHERE rnum BETWEEN #{startRow} AND #{endRow}
+
 	</select>
+	<!-- 그룹 삭제 -->
+	<delete id="deleteGroup">
+	delete from groups
+	where gno = #{gno}
+	</delete>
 	
 </mapper>
 

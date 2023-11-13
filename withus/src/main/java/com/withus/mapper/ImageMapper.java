@@ -16,4 +16,6 @@ public interface ImageMapper {
 
 	void delete(int imageId);
 
+	void deleteImage(int gno);
+
 }

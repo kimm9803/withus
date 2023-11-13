@@ -30,6 +30,16 @@ ADD (MEMBERID VARCHAR2(255));
 ALTER TABLE GROUPS
 ADD CONSTRAINT FK_MEMBERID FOREIGN KEY (MEMBERID) REFERENCES MEMBER(MEMBERID);
 
+-- Groups 테이블에 CateID 열 추가
+ALTER TABLE Groups
+ADD CateID NUMBER;
+
+-- 외래 키 설정
+ALTER TABLE Groups
+ADD CONSTRAINT fk_Category
+FOREIGN KEY (CateID)
+REFERENCES Category(CateID);
+
 == 이미지 ==
 =======
 CREATE TABLE category (
@@ -61,3 +71,27 @@ CREATE TABLE favorCate (
     FOREIGN KEY (cateId)    REFERENCES  category(cateId)
 );
 
+-- 지역 --
+CREATE TABLE region (
+    RNO NUMBER PRIMARY KEY,
+    RNAME VARCHAR2(255) NOT NULL
+);
+
+-- 시도 데이터 삽입 --
+INSERT INTO region VALUES (1, '서울');
+INSERT INTO region VALUES (2, '부산');
+INSERT INTO region VALUES (3, '대구');
+INSERT INTO region VALUES (4, '인천');
+INSERT INTO region VALUES (5, '광주');
+INSERT INTO region VALUES (6, '대전');
+INSERT INTO region VALUES (7, '울산');
+INSERT INTO region VALUES (8, '세종');
+INSERT INTO region VALUES (9, '경기도');
+INSERT INTO region VALUES (10, '강원도');
+INSERT INTO region VALUES (11, '충청북도');
+INSERT INTO region VALUES (12, '충청남도');
+INSERT INTO region VALUES (13, '전라북도');
+INSERT INTO region VALUES (14, '전라남도');
+INSERT INTO region VALUES (15, '경상북도');
+INSERT INTO region VALUES (16, '경상남도');
+INSERT INTO region VALUES (17, '제주도');

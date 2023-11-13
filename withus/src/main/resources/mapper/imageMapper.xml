@@ -26,9 +26,9 @@
 		where gno = #{gno}
 	</update>
 	
-	<delete id="delete">
-	delete gimage
-	where gimageid = #{imageId}
+	<delete id="deleteImage">
+	delete from gimage
+	where gno = #{gno}
 	</delete>
 
 </mapper>
