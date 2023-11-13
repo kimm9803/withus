@@ -22,4 +22,6 @@ public interface GroupsMapper {
 
 	void deleteGroup(int gno);
 
+	void joinGroup(Map<String, Object> params);
+
 }

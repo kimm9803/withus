@@ -74,6 +74,9 @@
             <div class="btn-group">
                 <button type="button" class="btn btn-warning" onclick="location.href='/groups/list'">목록으로</button>
             </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-dark" id="joinButton">그룹 가입</button>
+            </div>
         </div>
     </div>
     <!-- 부트스트랩 5 JS 및 Popper.js 추가 -->
@@ -143,6 +146,25 @@
                         }
                     });
                 }
+            });
+            //가입신청
+            $("#joinButton").click(function () {
+                $.ajax({
+                    type: "POST",  // 또는 "GET" 등 필요한 HTTP 메서드 사용
+                    url: "/groups/join",  // 실제 가입 요청을 처리하는 엔드포인트의 URL
+                    data: {
+                        // 필요한 경우 가입에 필요한 데이터를 전송 (예: 그룹 ID 등)
+                        gno: ${group.gno}
+                        // 여기에 더 많은 데이터 추가 가능
+                    },
+                    success: function (response) {
+                        // 가입이 성공적으로 처리된 경우의 콜백 함수
+                        alert("가입 신청이 완료되었습니다.");
+                    },
+                    error: function (error) {                        
+                        alert("가입 신청 중 오류가 발생했습니다.");
+                    }
+                });
             });
         });
     </script>

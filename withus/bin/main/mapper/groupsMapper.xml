@@ -43,6 +43,12 @@
 	where gno = #{gno}
 	</delete>
 	
+	<!-- 그룹 가입신청 -->
+	<insert id="joinGroup">
+	INSERT INTO GROUPJOIN(GJOINID,GNO,MEMBERID)
+	VALUES((SELECT NVL(MAX(GJOINID), 0) + 1 FROM GROUPJOIN),#{gno},#{memberid})
+	</insert>
+	
 </mapper>
 
 
