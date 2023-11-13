@@ -59,27 +59,36 @@
         }
 
         h5 {
-            margin-top: 20px;
+            margin-top: 10px;
             font-weight: bold;
         }
 
         .card-body {
             padding: 10px;
         }
-
-        .card-text {
-            margin-bottom: 0;
+        .loadMore{
+            margin-bottom: 50px;
         }
+        #collapseBtn {
+        display: none;
+        }
+        .card-text{
+        margin-right: 4px;        
+        } 
     </style>
 </head>
 <body>
     <div id="main">
         <h2>그룹 목록</h2>
         <a href="/groups/create" class="btn btn-dark" id="create">그룹 생성</a>
+        <a href="/" class="btn btn-dark" id="create">홈으로</a>
         <div class="card-container" id="groupContainer">
             <!-- 초기 데이터를 서버에서 받아와서 렌더링 -->
         </div>
+        <div class="loadMore">    
         <button class="btn btn-dark" id="loadMore">더보기</button>
+        <button class="btn btn-dark" id="collapseBtn">접기</button>
+        </div>
     </div>
     <script>
         $(document).ready(function () {
@@ -97,36 +106,40 @@
                     success: function (data) {
                         if (data.length > 0) {
                             for (var i = 0; i < data.length; i++) {
-                                var cardHtml = "<div class='card border-dark'>" +
-                                    "<div class='card-header bg-light'>" +
-                                    "<div style='display: flex; align-items: center;'>";
+                            	var cardHtml = "<div class='card border-dark'>" +
+                                "<div class='card-header bg-light'>" +
+                                "<div style='display: flex; align-items: center;'>";
 
-                                if (data[i].newImageName) {
-                                    cardHtml += "<img src='/" + data[i].newImageName + "' style='height: 100px; width: 100px; border: 1px solid black; margin-right: 10px;' class='rounded-circle'>";
-                                } else {
-                                    cardHtml += "<img src='/img/basic.jpg' style='height: 100px; width: 100px; border: 1px solid black; margin-right: 10px;' class='rounded-circle'>";
-                                }
+                            if (data[i].newImageName) {
+                                cardHtml += "<img src='/" + data[i].newImageName + "' style='height: 100px; width: 100px; border: 1px solid black; margin-right: 10px;' class='rounded-circle'>";
+                            } else {
+                                cardHtml += "<img src='/img/basic.jpg' style='height: 100px; width: 100px; border: 1px solid black; margin-right: 10px;' class='rounded-circle'>";
+                            }
 
-                                cardHtml += "<div style='flex-grow: 1;'>" +
-                                    "<h5><a href='/groups/view/" + data[i].gno + "' class='text-dark'>그룹명 : " + data[i].gname + "</a></h5>" +
-                                    "<div class='card-body d-flex flex-column'>" +
-                                    "<div class='d-flex justify-content-between mb-2'>" +
-                                    "<p class='card-text'>생성일: " + data[i].gdate + "</p>" +
-                                    "</div>" +
-                                    "<div class='d-flex justify-content-between'>" +
-                                    "<p class='card-text'>정원: " + data[i].gperson + "</p>" +
-                                    "<p class='card-text'>추천: " + data[i].glike + "</p>" +
-                                    "</div>" +
-                                    "</div>" +
-                                    "</div>" +
-                                    "</div>" +
-                                    "</div>";
+                            cardHtml += "<div style='flex-grow: 1;'>" +
+                                "<h5><a href='/groups/view/" + data[i].gno + "' class='text-dark'>" + data[i].gname + "</a></h5>" +
+                                "<div class='card-body d-flex flex-column justify-content-between'>" +
+                                "<div class='d-flex justify-content-between mb-2'>" +
+                                "<p class='card-text'>생성일: " + data[i].gdate + "</p>" +
+                                "</div>" +
+                                "<div class='d-flex justify-content-between'>" +
+                                "<div class='card-text '>정원: " + data[i].gperson + "</div>" +
+                                "<div class='card-text '>추천: " + data[i].glike + "</div>" +
+                                "<div class='card-text '>분류: " + (data[i].catename ? data[i].catename : "기타") + "</div>" +
+                                "<div class='card-text '>지역: " + (data[i].rname ? data[i].rname : "기타") + "</div>" +
+                                "</div>" +
+                                "</div>" +
+                                "</div>" +
+                                "</div>" +
+                                "</div>";
+
 
                                 $("#groupContainer").append(cardHtml);
                             }
                             page++;
                         } else {
                             $("#loadMore").hide();
+                            $("#collapseBtn").show(); // 데이터가 없으면 접기 버튼을 보이게 함
                         }
                     },
                     error: function () {
@@ -141,6 +154,10 @@
             // 더보기 버튼 클릭 이벤트
             $("#loadMore").click(function () {
                 loadInitialData();
+            });
+            // 접기 버튼 클릭 이벤트
+            $("#collapseBtn").click(function () {
+                location.reload();
             });
         });
     </script>
