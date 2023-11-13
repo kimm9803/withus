@@ -17,22 +17,25 @@
 	
 	<!-- 그룹 상세보기-->
 	<select id="groupview" parameterType="int" resultType="com.withus.domain.GroupsVo">
-		SELECT g.gno,g.gname,TO_CHAR(g.gdate, 'YYYY-MM-DD') GDATE, g.gperson,g.glike,g.gintro, I.new_image_name AS newImageName
+		SELECT g.gno,g.gname,TO_CHAR(g.gdate, 'YYYY-MM-DD') GDATE, g.gperson,g.glike,g.gintro, I.new_image_name AS newImageName,g.memberid,m.name
 		FROM groups g LEFT JOIN GIMAGE I ON G.GNO = I.GNO
+		LEFT JOIN member m ON g.memberid = m.memberid
 		where g.gno = #{gno}
 	</select>
+	
 	<!-- 그룹 더보기 목록 -->
 	<select id="getMoreGroups" resultType="com.withus.domain.GroupsVo">
 	SELECT gno, gname, gdate, gperson, glike, new_image_name AS
-	newImageName, catename,rname
+	newImageName, catename,rname,memberid,name
 	FROM (
 	SELECT g.gno, g.gname, TO_CHAR(g.gdate, 'YYYY-MM-DD') AS GDATE, g.gperson,
-	g.glike, i.new_image_name, c.catename,r.rname,
+	g.glike, i.new_image_name, c.catename,r.rname,g.memberid,m.name,
 	ROW_NUMBER() OVER (ORDER BY g.gdate DESC) AS rnum
 	FROM category c
 	RIGHT JOIN groups g ON c.cateid = g.cateid
 	LEFT JOIN gimage i ON g.gno = i.gno
 	LEFT JOIN region r ON g.rno = r.rno
+	LEFT JOIN member m ON g.memberid = m.memberid
 	)
 	WHERE rnum BETWEEN #{startRow} AND #{endRow}
 

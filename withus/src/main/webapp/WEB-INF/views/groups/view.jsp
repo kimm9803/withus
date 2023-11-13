@@ -36,7 +36,7 @@
 <body>
     <div class="container mt-5">
         <div class="content">
-            <h1>그룹 상세보기</h1>
+            <h1>${group.gname }</h1>
             <div id="image">
                 <c:if test="${empty group.newImageName}">
                     <!-- image.newImageName이 null이나 비어 있을 때 -->
@@ -61,7 +61,8 @@
             </div>
             <div class="card mt-3">
                 <div class="card-body">
-                    <h2 class="card-title">${group.gname}</h2>
+                    <h2 class="card-title">${group.gname}</h2>                    
+                    <p class="card-text">그룹장: ${group.name}</p>
                     <p class="card-text">추천: ${group.glike}</p>
                     <p class="card-text">그룹소개: ${group.gintro}</p>
                     <p class="card-text">생성일: ${group.gdate}</p>
@@ -76,7 +77,14 @@
             </div>
             <div class="btn-group">
                 <button type="button" class="btn btn-dark" id="joinButton">그룹 가입</button>
+            </div>            
+			<c:out value="${groups.memberid}"/>
+			<c:if test="${memberid eq group.memberid}">
+            <div class="btn-group">
+                <button type="button" class="btn btn-warning" onclick="location.href='/groups/joinlist'">가입신청 목록</button>
             </div>
+			</c:if>
+            
         </div>
     </div>
     <!-- 부트스트랩 5 JS 및 Popper.js 추가 -->

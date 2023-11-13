@@ -79,10 +79,17 @@ public class GroupsController {
 	  
 	  //그룹 내용 보기
 	  @GetMapping("/view/{gno}")
-	  public ModelAndView view(@PathVariable int gno) {
-		  GroupsVo groupview = groupsMapper.groupview(gno);		      
+	  public ModelAndView view(@PathVariable int gno, Authentication authentication) {
+		  GroupsVo groupview = groupsMapper.groupview(gno);
+		  String memberId;
+		  if(authentication != null) {
+			  memberId = memberService.authMember(authentication);			  
+		  }else {
+			  memberId = null;
+		  }
 		  ModelAndView mv = new ModelAndView();
 		  mv.addObject("group", groupview);		  
+		  mv.addObject("memberid", memberId);		  
 		  mv.setViewName("groups/view");
 		  return mv;
 	  }

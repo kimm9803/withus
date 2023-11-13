@@ -34,6 +34,16 @@ ADD CONSTRAINT FK_MEMBERID FOREIGN KEY (MEMBERID) REFERENCES MEMBER(MEMBERID);
 ALTER TABLE Groups
 ADD CateID NUMBER;
 
+-- groups 테이블에 rno 컬럼 추가
+ALTER TABLE groups
+ADD rno NUMBER;
+
+-- groups 테이블에 외래키 추가
+ALTER TABLE groups
+ADD CONSTRAINT fk_groups_rno
+FOREIGN KEY (rno)
+REFERENCES region(rno);
+
 -- 외래 키 설정
 ALTER TABLE Groups
 ADD CONSTRAINT fk_Category
@@ -95,3 +105,14 @@ INSERT INTO region VALUES (14, '전라남도');
 INSERT INTO region VALUES (15, '경상북도');
 INSERT INTO region VALUES (16, '경상남도');
 INSERT INTO region VALUES (17, '제주도');
+
+
+--- 그룹 가입신청 ---
+CREATE TABLE GroupJoin (
+    GJOINID NUMBER PRIMARY KEY,
+    GNO NUMBER NOT NULL,
+    MEMBERID VARCHAR2(255) NOT NULL,
+    GPERMIT NUMBER DEFAULT 0,
+    GAPPDATE DATE DEFAULT SYSDATE,
+    CONSTRAINT fk_groupjoin_gno FOREIGN KEY (GNO) REFERENCES groups(GNO)
+);
