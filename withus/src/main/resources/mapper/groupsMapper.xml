@@ -163,9 +163,9 @@
 	<!-- 그룹원 목록 -->
 	<select id="memberlist"
 		resultType="com.withus.domain.GroupMemberVo">
-		select gm.memberid, m.name,gm.gauth,TO_CHAR(gm.gjoindate,
-		'YYYY-MM-DD') AS
-		gjoindate
+		select gm.memberid, m.name,gm.gauth,
+		TO_CHAR(gm.gjoindate,
+		'YYYY-MM-DD') AS gjoindate
 		from gmember gm left join member m on
 		gm.memberid = m.memberid
 		where gm.gno = #{gno}
@@ -175,7 +175,20 @@
 	<!-- 그룹원 추방 -->
 	<delete id="memberBan">
 		delete from gmember
-		where memberid = #{memberid}
+		where memberid = #{memberid} AND gno = #{gno}
+	</delete>
+	
+	<!-- 그룹원 존재 여부판단 -->
+	<select id="findById" resultType="int">
+	SELECT COUNT(gno)
+	FROM GMEMBER
+	WHERE gno = #{gno} AND memberid = #{memberId}
+	</select>
+	
+	<!-- 그룹원 탈퇴 -->
+	<delete id="memberleave">
+	delete from gmember
+	where memberid = #{memberid} AND gno = #{gno}
 	</delete>
 
 

@@ -44,7 +44,10 @@
             </tbody>
         </table>
     </c:if>
-</div>
+		<div class="btn-group">
+			<button type="button" class="btn btn-warning" onclick="location.href='/groups/list'">목록으로</button>
+		</div>
+	</div>
 
 <!-- 부트스트랩 5 스크립트 추가 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -57,13 +60,14 @@ $(document).ready(function () {
         if (confirm('정말 추방 시키시겠습니까?')) {
             // Ajax 요청 수행
             $.ajax({
-                url: "/groups/memberban",
+                url: "/groups/memberban/"+${gno},
                 method: "GET",
                 data: {
-                	memberid: memberid,                    
+                	memberid: memberid                	
                 },
                 success: function (data) {
-                    alert("추방되었습니다.");                    
+                    alert("추방되었습니다.");
+                    location.reload();
                 },
                 error: function (xhr, status, error) {
                     alert("추방이 되지 않았습니다.");

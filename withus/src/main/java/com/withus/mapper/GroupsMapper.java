@@ -35,9 +35,13 @@ public interface GroupsMapper {
     //그룹원 목록
 	List<GroupMemberVo> memberlist(int gno);
     //그룹원 추방
-	void memberBan(String memberid);
+	void memberBan(Map<String, Object> params);
     //그룹원 수
 	int memberCnt(int gno);
+	//그룹원 존재여부
+	int findById(Map<String, Object> params);
+	//그룹원 탈퇴
+	void memberleave(Map<String, Object> params);
 
 
 }
