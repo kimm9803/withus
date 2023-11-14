@@ -35,4 +35,10 @@ public interface MemberMapper {
 
 	// 받은 쪽지함
 	List<MessageVo> findByReceiverId(String memberId);
+
+	// 쪽지 상세
+	MessageVo getMessageView(int messageId);
+
+	// 보낸 쪽지함
+	List<MessageVo> findBySenderId(String memberId);
 }
