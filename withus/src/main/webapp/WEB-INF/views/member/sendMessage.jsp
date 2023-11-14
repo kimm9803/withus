@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>받은 쪽지함</title>
+<title>보낸 쪽지함</title>
 <script src="https://kit.fontawesome.com/51db22a717.js"
 	crossorigin="anonymous"></script>
 <link rel="stylesheet"
@@ -40,12 +40,12 @@
 			<tr>
 				<th scope="col">#</th>
 				<th scope="col">제목</th>
-				<th scope="col">보낸사람</th>
-				<th scope="col">받은날짜</th>
+				<th scope="col">받은사람</th>
+				<th scope="col">보낸날짜</th>
 			</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${receivedMessage}" var="message" varStatus="loop">
+		<c:forEach items="${sendMessage}" var="message" varStatus="loop">
 			<tr class="clickable-row" data-href="/user/mymessage/view/${message.messageId}">
 				<td>${loop.index + 1}</td>
 				<td>${message.title}</td>

@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>받은 쪽지함</title>
+<title>받은 쪽지 상세</title>
 <script src="https://kit.fontawesome.com/51db22a717.js"
 	crossorigin="anonymous"></script>
 <link rel="stylesheet"
@@ -29,38 +29,10 @@
 </style>
 </head>
 <body>
-	<div>
-		<a href="/user/mymessage">받은 쪽지함</a>
-	</div>
-	<div>
-		<a href="/user/send-message">보낸 쪽지함</a>
-	</div>
-	<table class="table table-hover">
-		<thead>
-			<tr>
-				<th scope="col">#</th>
-				<th scope="col">제목</th>
-				<th scope="col">보낸사람</th>
-				<th scope="col">받은날짜</th>
-			</tr>
-		</thead>
-		<tbody>
-		<c:forEach items="${receivedMessage}" var="message" varStatus="loop">
-			<tr class="clickable-row" data-href="/user/mymessage/view/${message.messageId}">
-				<td>${loop.index + 1}</td>
-				<td>${message.title}</td>
-				<td>${message.name}</td>
-				<td>${message.sendDate}</td>
-			</tr>
-		</c:forEach>
-		</tbody>
-	</table>
-	<script>
-		$(document).ready(function() {
-			$('.clickable-row').on('click', function() {
-				window.location = $(this).data('href');
-			});
-		})
-	</script>
+	<div><h2>${message.title}</h2></div>
+	<div style="margin-bottom: 10px;">보낸사람 <span style="background-color: #DCF5FA; border-radius: 10px; padding: 4px 8px 4px 8px;">${message.senderName}</span></div>
+	<div style="margin-bottom: 10px;">받는사람 <span style="background-color: #DCF5FA; border-radius: 10px; padding: 4px 8px 4px 8px;">${message.receiverName}</span></div>
+	<div>${message.sendDate}</div>
+	<div>${message.content}</div>
 </body>
 </html>
