@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.withus.mapper.MemberMapper">
+
+	<!-- 회원가입 -->
+	<insert id="join">
+		INSERT INTO member (memberId, password, name, gender, role)
+		VALUES (#{memberId}, #{password}, #{name}, #{gender}, #{role})
+	</insert>
+	
+	<!-- 아이디로 회원찾기 -->
+	<select id="findById" resultType="com.withus.domain.MemberVo">
+		SELECT memberId, password, name, gender, role, regDate
+		FROM member
+		WHERE memberId = #{memberId}
+	</select>
+	
+	<!-- 아이디 중복검사 -->
+	<select id="idDuplicateCheck" resultType="int">
+		SELECT COUNT(memberId)
+		FROM member
+		WHERE memberId = #{memberId}
+	</select>
+	
+	<!-- 성별 설정 -->
+	<update id="setGender">
+		UPDATE member
+		SET gender = #{gender}
+		WHERE memberId = #{memberId}
+	</update>
+	
+	<!-- 관심 카테고리 설정 -->
+	<insert id="setFavorCate">
+		INSERT INTO favorCate (favorCateId, memberId, cateId)
+		VALUES (favorCateSeq.nextVal, #{memberId}, #{cateId})
+	</insert>
+	
+	<!-- 관심 카테고리 찾기 -->
+	<select id="favorCateList" resultType="com.withus.domain.FavorCateVo">
+		SELECT f.favorCateId, f.memberId, f.cateId, c.cateName
+		FROM favorCate f
+		INNER JOIN category c ON c.cateId = f.cateId
+		WHERE f.memberId = #{memberId}
+	</select>
+	
+	<!-- 메시지 전송 -->
+	<insert id="sendMessage">
+		INSERT INTO message (title, content, sender, receiver)
+		VALUES (#{title}, #{content}, #{sender}, #{receiver})
+	</insert>
+	
+	<!-- 받은 쪽지함 -->
+	<select id="findByReceiverId" resultType="com.withus.domain.MessageVo">
+		SELECT m.messageId, m.title, m.content, m.sender, m.sendDate, mem.name
+	    FROM message m
+	    INNER JOIN member mem ON m.sender = mem.memberId
+	    WHERE m.receiver = #{memberId}
+	</select>
+	
+	<!-- 쪽지 상세 -->
+	<select id="getMessageView" resultType="com.withus.domain.MessageVo">
+		SELECT m.messageId, m.title, m.content, m.sender, m.receiver, m.sendDate, s.name AS senderName, r.name AS receiverName
+		FROM message m
+		INNER JOIN member s ON m.sender = s.memberId
+		INNER JOIN member r ON m.receiver = r.memberId
+		WHERE m.messageId = #{messageId}
+	</select>
+	
+	<!-- 보낸 쪽지함 -->
+	<select id="findBySenderId" resultType="com.withus.domain.MessageVo">
+		SELECT m.messageId, m.title, m.content, m.receiver, m.sendDate, mem.name
+		FROM message m
+		INNER JOIN member mem ON m.receiver = mem.memberId
+		WHERE m.sender = #{memberId}
+	</select>
+</mapper>
