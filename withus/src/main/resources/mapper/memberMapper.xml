@@ -42,16 +42,35 @@
 		INNER JOIN category c ON c.cateId = f.cateId
 		WHERE f.memberId = #{memberId}
 	</select>
+	
+	<!-- 메시지 전송 -->
+	<insert id="sendMessage">
+		INSERT INTO message (title, content, sender, receiver)
+		VALUES (#{title}, #{content}, #{sender}, #{receiver})
+	</insert>
+	
+	<!-- 받은 쪽지함 -->
+	<select id="findByReceiverId" resultType="com.withus.domain.MessageVo">
+		SELECT m.messageId, m.title, m.content, m.sender, m.sendDate, mem.name
+	    FROM message m
+	    INNER JOIN member mem ON m.sender = mem.memberId
+	    WHERE m.receiver = #{memberId}
+	</select>
+	
+	<!-- 쪽지 상세 -->
+	<select id="getMessageView" resultType="com.withus.domain.MessageVo">
+		SELECT m.messageId, m.title, m.content, m.sender, m.receiver, m.sendDate, s.name AS senderName, r.name AS receiverName
+		FROM message m
+		INNER JOIN member s ON m.sender = s.memberId
+		INNER JOIN member r ON m.receiver = r.memberId
+		WHERE m.messageId = #{messageId}
+	</select>
+	
+	<!-- 보낸 쪽지함 -->
+	<select id="findBySenderId" resultType="com.withus.domain.MessageVo">
+		SELECT m.messageId, m.title, m.content, m.receiver, m.sendDate, mem.name
+		FROM message m
+		INNER JOIN member mem ON m.receiver = mem.memberId
+		WHERE m.sender = #{memberId}
+	</select>
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-

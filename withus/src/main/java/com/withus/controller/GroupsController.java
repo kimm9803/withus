@@ -29,10 +29,10 @@ public class GroupsController {
 
 	@Autowired
 	private GroupsMapper groupsMapper;
-	
+
 	@Autowired
 	private ImageMapper imageMapper;
-	
+
 	@Autowired
 	private MemberService memberService;
 	
@@ -107,8 +107,4 @@ public class GroupsController {
 		  return mv;
 		  
 	  }
-
-	  
-	  
-  
 }
