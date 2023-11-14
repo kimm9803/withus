@@ -1,6 +1,7 @@
 package com.withus.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.withus.domain.GroupsVo;
 import com.withus.mapper.GroupsMapper;
 import com.withus.mapper.ImageMapper;
 import com.withus.mapper.MemberMapper;
@@ -62,7 +65,31 @@ public class GroupRestController {
 	public void memberban(@RequestParam("memberid") String memberid) {		
 		groupsMapper.memberBan(memberid);
 	}
-	
+	//그룹 더보기 목록 조회
+	@GetMapping("/loadMore")	
+	public List<GroupsVo> loadMoreGroups(
+	        @RequestParam("page") int page,
+	        @RequestParam("pageSize") int pageSize,
+	        @RequestParam(value = "searchType", required = false) String searchType,
+	        @RequestParam(value = "keyword", required = false) String keyword) {
+
+	    // 더보기 변수
+	    int startRow = (page - 1) * pageSize + 1;
+	    int endRow = page * pageSize;
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("startRow", startRow);
+	    params.put("endRow", endRow);
+
+	    // 검색 조건이 있다면 매퍼 메서드에 전달
+	    if (searchType != null && keyword != null) {
+	        params.put("searchType", searchType);
+	        params.put("keyword", keyword);
+	    }
+
+	    List<GroupsVo> additionalGroups = groupsMapper.getMoreGroups(params); // 추가 데이터를 가져오는 메서드 호출
+	    return additionalGroups;
+	}
+
 
 	
 

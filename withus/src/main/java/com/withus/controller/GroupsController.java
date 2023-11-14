@@ -67,20 +67,6 @@ public class GroupsController {
 		  mv.setViewName("groups/list");
 		  return mv;
 	  }
-	  //그룹 더보기 목록 조회
-	  @GetMapping("/loadMore")
-	  @ResponseBody
-	  public List<GroupsVo> loadMoreGroups(@RequestParam("page") int page, @RequestParam("pageSize") int pageSize) {
-		  //더보기 변수
-		  int startRow = (page - 1) * pageSize + 1;
-		  int endRow = page * pageSize;
-		  Map<String, Object> params = new HashMap<>();
-		  params.put("startRow", startRow);
-		  params.put("endRow", endRow);
-		  
-		  List<GroupsVo> additionalGroups = groupsMapper.getMoreGroups(params); // 추가 데이터를 가져오는 메서드 호출
-		  return additionalGroups;
-	  }
 	  
 	  //그룹 내용 보기
 	  @GetMapping("/view/{gno}")
