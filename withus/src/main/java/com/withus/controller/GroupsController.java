@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.withus.domain.GroupJoinVo;
@@ -28,10 +26,7 @@ import com.withus.service.MemberService;
 public class GroupsController {
 
 	@Autowired
-	private GroupsMapper groupsMapper;
-
-	@Autowired
-	private ImageMapper imageMapper;
+	private GroupsMapper groupsMapper;	
 
 	@Autowired
 	private MemberService memberService;
@@ -51,13 +46,12 @@ public class GroupsController {
 		  Map<String,Object> params = new HashMap<>();
 		  params.put("memberId", memberId);
 		  params.put("vo", vo);
-		  groupsMapper.groupcreate(params);
-		  //그룹 만들기 성공 시 자신도 자동 가입
-		  //groupsMapper.createMember(params);
+		  groupsMapper.groupcreate(params);		
 		  ModelAndView mv = new ModelAndView();
 		  mv.setViewName("home");
 		  return mv;
 	  }
+	  
 	  //그룹 목록 조회
 	  @GetMapping("/list")
 	  public ModelAndView list(GroupsVo vo) {		  
@@ -75,16 +69,24 @@ public class GroupsController {
 		  int memberCnt = (groupsMapper.memberCnt(gno)) + 1 ;
 		  //상세보기화면
 		  GroupsVo groupview = groupsMapper.groupview(gno);		  
-		  String memberId;
+		  String memberId = null;
 		  if(authentication != null) {
 			  memberId = memberService.authMember(authentication);			  
 		  }else {
-			  memberId = null;
+			  memberId = "";
 		  }
+          
+		  //그룹원 존재여부 (0 = 그룹원 아님, 1 = 그룹원 맞음)
+		  Map<String,Object> params = new HashMap<>();
+		  params.put("gno", gno);
+		  params.put("memberId", memberId);
+		  int findById = groupsMapper.findById(params);
+		  
 		  ModelAndView mv = new ModelAndView();
 		  mv.addObject("memberCnt", memberCnt);
 		  mv.addObject("group", groupview);		  
-		  mv.addObject("memberid", memberId);		  
+		  mv.addObject("memberid", memberId);
+		  mv.addObject("findById", findById);
 		  mv.setViewName("groups/view");
 		  return mv;
 	  }	  
@@ -103,6 +105,7 @@ public class GroupsController {
 		  ModelAndView mv = new ModelAndView();
 		  List<GroupMemberVo> memberlist = groupsMapper.memberlist(gno);
 		  mv.setViewName("groups/memberlist");
+		  mv.addObject("gno", gno);
 		  mv.addObject("memberlist", memberlist);
 		  return mv;
 		  

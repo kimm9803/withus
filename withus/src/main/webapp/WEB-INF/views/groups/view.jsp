@@ -116,12 +116,18 @@
             <div class="btn-group">
                 <button type="button" class="btn btn-warning" onclick="location.href='/groups/list'">목록으로</button>
             </div>
-            <c:if test="${memberCnt lt group.gperson}">
+            <!-- 정원이 남아있고 그룹원이 아니면 -->
+            <c:if test="${memberCnt lt group.gperson && findById eq 0 && not empty memberid}">
             <div class="btn-group">
                 <button type="button" class="btn btn-dark" id="joinButton">그룹 가입</button>
-
             </div>        
 			</c:if>
+            <c:if test="${findById eq 1}">
+            <div class="btn-group">
+                <button type="button" class="btn btn-dark" id="leaveButton">그룹 탈퇴</button>
+            </div>        
+			</c:if>
+			
 			<c:if test="${memberid eq group.memberid}">
 
             <div class="btn-group">
@@ -130,21 +136,21 @@
             <div class="btn-group">
                 <button type="button" class="btn btn-light" onclick="location.href='/groups/memberlist/${group.gno}'">그룹원 목록</button>                
             </div>
-			</c:if>
-            
+			</c:if>	            
         </div>
     </div>
     <!-- 부트스트랩 5 JS 및 Popper.js 추가 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-hZf+5sIo/1GTbMkEl9QAeRU3sJQl1LbSH+6l5f+4F1gPK6ES4kDl9Nvl7TZyH2Sm" crossorigin="anonymous"></script>
-    <script>
-	document.getElementById('groupImage').addEventListener('click', function() {
+<script>
+    document.getElementById('groupImage').addEventListener('click', function() {
         document.getElementById('fileInput').click();
     });
+
     // 파일이 변경되었을 때 실행되는 함수
     $('#fileInput').change(function() {
         var fileInput = document.getElementById('fileInput');
         var filePath = fileInput.value;
-        
+
         // 파일 확장자 확인
         var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
         if (!allowedExtensions.exec(filePath)) {
@@ -162,66 +168,84 @@
         reader.readAsDataURL(fileInput.files[0]);
     });
 
-        $(document).ready(function() {
-            // 그룹 삭제 버튼 클릭 이벤트
-            $('#deleteBtn').click(function() {
-                // 확인 다이얼로그를 띄우고 사용자가 확인하면 삭제 요청 전송
-                if (confirm('정말로 삭제하시겠습니까?')) {
-                    $.ajax({
-                        type: 'GET',
-                        url: '/groups/delete/${group.gno}', // 실제 삭제 요청을 처리할 서버의 URL
-                        success: function(response) {
-                            // 성공 시 동작
-                            alert("삭제 성공");
-                            location.href = "/groups/list";
-                        },
-                        error: function(error) {
-                            // 실패 시 동작
-                            console.error('삭제 실패', error);
-                        }
-                    });
-                }
-            });            
-         
-            // 이미지 삭제 버튼 클릭 이벤트
-            $('#imagedelete').click(function() {
-                // 확인 다이얼로그를 띄우고 사용자가 확인하면 삭제 요청 전송
-                if (confirm('정말로 삭제하시겠습니까?')) {
-                    $.ajax({
-                        type: 'GET',
-                        url: '/image/delete/${group.gno}', // 실제 삭제 요청을 처리할 서버의 URL
-                        success: function(response) {
-                            // 성공 시 동작
-                            alert("삭제 성공");
-                            location.reload();
-                        },
-                        error: function(error) {
-                            // 실패 시 동작
-                            console.error('삭제 실패', error);
-                        }
-                    });
-                }
-            });
-            //가입신청
-            $("#joinButton").click(function () {
+    $(document).ready(function() {
+        // 그룹 삭제 버튼 클릭 이벤트
+        $('#deleteBtn').click(function() {
+            // 확인 다이얼로그를 띄우고 사용자가 확인하면 삭제 요청 전송
+            if (confirm('정말로 삭제하시겠습니까?')) {
                 $.ajax({
-                    type: "POST",  // 또는 "GET" 등 필요한 HTTP 메서드 사용
-                    url: "/groups/join",  // 실제 가입 요청을 처리하는 엔드포인트의 URL
+                    type: 'GET',
+                    url: '/groups/delete/${group.gno}', // 실제 삭제 요청을 처리할 서버의 URL
+                    success: function(response) {
+                        // 성공 시 동작
+                        alert("삭제 성공");
+                        location.href = "/groups/list";
+                    },
+                    error: function(error) {
+                        // 실패 시 동작
+                        console.error('삭제 실패', error);
+                    }
+                });
+            }
+        });
+
+        // 이미지 삭제 버튼 클릭 이벤트
+		      $('#imagedelete').click(function() {
+		    // 확인 다이얼로그를 띄우고 사용자가 확인하면 삭제 요청 전송
+		    if (confirm('정말로 삭제하시겠습니까?')) {
+		        $.ajax({
+		            type: 'GET',
+		            url: '/image/delete/${group.gno}', // 실제 삭제 요청을 처리할 서버의 URL
+		            success: function(response) {
+		                // 성공 시 동작
+		                alert("삭제 성공");
+		                location.reload();
+		            },
+		            error: function(error) {
+		                // 실패 시 동작
+		                console.error('삭제 실패', error);
+		            }
+		        });
+		    }
+		});
+		        // 가입신청
+        $("#joinButton").click(function () {
+            if (confirm('정말로 가입하시겠습니까?')) {
+                $.ajax({
+                    type: "GET",
+                    url: "/groups/join",
                     data: {
-                        // 필요한 경우 가입에 필요한 데이터를 전송 (예: 그룹 ID 등)
-                        gno: ${group.gno}
-                        // 여기에 더 많은 데이터 추가 가능
+                        gno: '${group.gno}' // 백틱이 아닌 따옴표 사용
                     },
                     success: function (response) {
-                        // 가입이 성공적으로 처리된 경우의 콜백 함수
                         alert("가입 신청이 완료되었습니다.");
                     },
-                    error: function (error) {                        
+                    error: function (error) {
                         alert("가입 신청 중 오류가 발생했습니다.");
                     }
                 });
-            });
+            }
         });
-    </script>
+
+        $("#leaveButton").click(function () {
+            if (confirm('정말로 탈퇴하시겠습니까?')) {
+                $.ajax({
+                    type: "GET",
+                    url: "/groups/leave",
+                    data: {
+                        memberid: '${memberid}', // 백틱이 아닌 따옴표 사용
+                        gno: '${group.gno}' // 백틱이 아닌 따옴표 사용
+                    },
+                    success: function (response) {
+                        alert("탈퇴가 완료되었습니다.");
+                    },
+                    error: function (error) {
+                        alert("탈퇴가 실패했습니다.");
+                    }
+                });
+            }
+        });
+    });
+</script>
 </body>
 </html>
