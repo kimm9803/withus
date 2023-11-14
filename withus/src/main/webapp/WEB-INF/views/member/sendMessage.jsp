@@ -26,6 +26,34 @@
 * {
 	font-family: 'Sunflower', sans-serif;
 }
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+ul {
+    padding: 0;
+    list-style: none;
+    display: inline-block;
+}
+
+li {
+    display: inline-block;
+    margin: 0 2px;
+}
+
+a {
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    color: #333;
+    border-radius: 5px;
+}
+
+a:hover {
+    background-color: #f0f0f0;
+}
+
 </style>
 </head>
 <body>
@@ -55,6 +83,26 @@
 		</c:forEach>
 		</tbody>
 	</table>
+	
+	<div>
+		<ul>
+			<c:if test="${pageMaker.prev}">
+				<li><a
+					href="/user/send-message${pageMaker.makeQuery(pageMaker.startPage - 1)}">이전</a></li>
+			</c:if>
+
+			<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
+				var="idx">
+				<li><a href="/user/send-message${pageMaker.makeQuery(idx)}">${idx}</a></li>
+			</c:forEach>
+
+			<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+				<li><a
+					href="/user/send-message${pageMaker.makeQuery(pageMaker.endPage + 1)}">다음</a></li>
+			</c:if>
+		</ul>
+	</div>
+	
 	<script>
 		$(document).ready(function() {
 			$('.clickable-row').on('click', function() {

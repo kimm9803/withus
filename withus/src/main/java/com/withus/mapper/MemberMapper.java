@@ -1,10 +1,12 @@
 package com.withus.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.withus.domain.Criteria;
 import com.withus.domain.FavorCateVo;
 import com.withus.domain.MemberVo;
 import com.withus.domain.MessageVo;
@@ -41,4 +43,16 @@ public interface MemberMapper {
 
 	// 보낸 쪽지함
 	List<MessageVo> findBySenderId(String memberId);
+	
+	// 받은 쪽지 페이징
+	List<MessageVo> receivedListPage(Map<String, Object> map);
+	
+	// 받은 쪽지 갯수
+	int receivedCount(String memberId);
+	
+	// 보낸 쪽지 페이징
+	List<MessageVo> sendListPage(Map<String, Object> map);
+	
+	// 보낸 쪽지 갯수
+	int sendCount(String memberId);
 }
