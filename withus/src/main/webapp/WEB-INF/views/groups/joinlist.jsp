@@ -48,6 +48,9 @@
             </tbody>
         </table>
     </c:if>
+		<div class="btn-group">
+			<button type="button" class="btn btn-warning" onclick="location.href='/groups/list'">목록으로</button>
+		</div>    
 </div>
 
 <!-- 부트스트랩 5 스크립트 추가 -->
