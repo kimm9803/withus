@@ -200,30 +200,7 @@
 	values((SELECT NVL(MAX(GREPORTID), 0) + 1 FROM GREPORT),#{gno},#{memberid},#{rpcontent},#{rpcate})
 	</insert>
 
-	<!-- 그룹 신고 내역 -->
-	<select id="gReportList"
-		resultType="com.withus.domain.GroupReportVo">
-		SELECT memberid,gname,rpcate,reportdate,greportid
-		FROM ( SELECT r.memberid,g.gname,r.rpcate,r.reportdate,r.greportid,
-		row_number() over(order by r.gno desc) as rNum
-		FROM GREPORT r INNER JOIN GROUPS g ON r.gno = g.gno
-		) pr
-		WHERE rNum between #{rowStart} and #{rowEnd}		
-	</select>
 
-	<!-- 전체 그룹신고 수 -->
-	<select id="totalReportCount" resultType="int">
-		SELECT COUNT(greportid)
-		FROM greport		
-	</select>
-	
-	<!-- 그룹신고 내용 -->
-	<select id="gReportView"
-		resultType="com.withus.domain.GroupReportVo">
-		SELECT r.memberid,g.gname,r.rpcate,r.reportdate,r.greportid,r.rpcontent
-		FROM GREPORT r INNER JOIN GROUPS g ON r.gno = g.gno
-		WHERE r.greportid = #{greportid}
-	</select>
 
 </mapper>
 
