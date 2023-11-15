@@ -4,18 +4,14 @@
 
 	<!-- 그룹만들기 -->
 	<insert id="groupcreate">
-		INSERT INTO GROUPS (GNO, GNAME,
-		GINTRO,MEMBERID,GPERSON,cateid,rno)
-		VALUES ((SELECT NVL(MAX(gno), 0) +
-		1 FROM
-		groups),#{vo.gname},#{vo.gintro},#{memberId},#{vo.gperson},#{vo.cateid},#{vo.rno})
+		INSERT INTO GROUPS (GNO, GNAME,	GINTRO,MEMBERID,GPERSON,cateid,rno)
+		VALUES ((SELECT NVL(MAX(gno), 0) + 1 FROM groups),#{vo.gname},#{vo.gintro},#{memberId},#{vo.gperson},#{vo.cateid},#{vo.rno})
 	</insert>
 
 	<!-- 그룹만들기 이후 자동 가입 -->
 	<insert id="createMember">
 		INSERT INTO GMEMBER(gmemberid, gno, memberid)
-		VALUES((SELECT NVL(MAX(GMEMBERID), 0) + 1 FROM GMEMBER), #{vo.gno},
-		#{memberId})
+		VALUES((SELECT NVL(MAX(GMEMBERID), 0) + 1 FROM GMEMBER), #{vo.gno},	#{memberId})
 	</insert>
 
 	<!-- 그룹 목록 -->
@@ -190,6 +186,20 @@
 	delete from gmember
 	where memberid = #{memberid} AND gno = #{gno}
 	</delete>
+	
+	<!-- 신고 그룹명 -->
+	<select id="findByname" resultType="String">	
+	select gname
+	from groups
+	where gno = #{gno}
+	</select>
+	
+	<!-- 그룹 신고하기 -->
+	<insert id="reportGroup">
+	insert into GREPORT(greportid,gno,memberid,rpcontent,rpcate)
+	values((SELECT NVL(MAX(GREPORTID), 0) + 1 FROM GREPORT),#{gno},#{memberid},#{rpcontent},#{rpcate})
+	</insert>
+
 
 
 </mapper>

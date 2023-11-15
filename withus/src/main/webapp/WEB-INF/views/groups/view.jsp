@@ -8,15 +8,20 @@
     <title>그룹 상세보기</title>
     <!-- Bootstrap 5 CSS 링크 추가 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery 추가 -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <style>
-        /* 컨텐츠를 중앙에 정렬 */
-        .content {
-            max-width: 60%;
-            margin: 0 auto;
-        }
+
+* {
+	font-family: 'Sunflower', sans-serif;
+}
+/* 컨텐츠를 중앙에 정렬 */
+.content {
+	max-width: 60%;
+	margin: 0 auto;
+}
 
         /* 이미지 스타일 */
         #groupImage {
@@ -56,68 +61,96 @@
             color: #000;
         }
 
-        .dropdown-item:hover {
-            background-color: #f8f9fa;
-            color: #000;
-        }
-    </style>
+.dropdown-item:hover {
+	background-color: #f8f9fa;
+	color: #000;
+}
+
+.group-info {
+	margin-bottom: 20px; /* 그룹장 정보와 그룹 정보 사이 간격 조절 */
+}
+
+.group-details, .group-intro {
+	margin-top: 20px; /* 그룹 정보와 그룹 소개 사이 간격 조절 */
+	border: 1px solid #ccc; /* 테두리 추가 */
+	padding: 15px; /* 안쪽 여백 추가 */
+}
+
+</style>
 </head>
 <body>
-<div class="container mt-5">
-    <div class="content">
-        <h1>${group.gname }</h1>
-        <div id="image">
-            <c:if test="${empty group.newImageName}">
-                <!-- image.newImageName이 null이나 비어 있을 때 -->
-                <img id="groupImage" src="/img/basic.jpg" class="img-fluid rounded" alt="Group Image">
-                <form method="post" action="/upload/${group.gno}" enctype="multipart/form-data">
-                    <input type="hidden" name="gno" value="${group.gno}">
-                    <!-- 투명한 파일 입력 필드와 가짜 버튼 -->
-                    <input type="file" id="fileInput" name="image"style="opacity: 0; position: absolute; width: 1px; height: 1px;">
-                    <input type="submit" class="btn btn-primary mt-2" value="이미지 등록" />
-                </form>
-            </c:if>
-            <c:if test="${not empty group.newImageName}">
-                <!-- image.newImageName이 값이 있을 때 -->
-                <img id="groupImage" src="/${group.newImageName}" class="img-fluid rounded" alt="Group Image">
-                <form method="post" action="/modify/${group.gno}" enctype="multipart/form-data">
-                    <input type="file" id="fileInput" name="image"style="opacity: 0; position: absolute; width: 1px; height: 1px;">
-                    <input type="hidden" name="gno" value="${group.gno}">
-                    <input type="submit" class="btn btn-primary mt-2" value="이미지 수정" />
-                    <button type="button" class="btn btn-danger mt-2" id="imagedelete">이미지 삭제</button>
-                </form>
-            </c:if>
-        </div>
-        <div class="card mt-3">
-            <div class="card-body">
-                <h2 class="card-title">${group.gname}</h2>
-                <p class="card-text">그룹장:
-                <div class="dropdown">
-                    <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                        ${group.name}
-                    </a>
-
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">회원정보</a></li>
-                        <li><a class="dropdown-item" href="/user/message?memberId=${group.memberid}">쪽지 보내기</a></li>
-                        <li><a class="dropdown-item" href="#">신고하기</a></li>
-                    </ul>
-                </div>
-                </p>
-                <p class="card-text">추천: ${group.glike}</p>
-                <p class="card-text">그룹소개: ${group.gintro}</p>
-                <p class="card-text">생성일: ${group.gdate}</p>
-                <p class="card-text">정원: ${memberCnt}/${group.gperson}</p>
+    <div class="container mt-5">
+        <div class="content">
+            <h1>${group.gname }</h1>
+            <div id="image">
+                <c:if test="${empty group.newImageName}">
+                    <!-- image.newImageName이 null이나 비어 있을 때 -->
+                    <img id="groupImage" src="/img/basic.jpg" class="img-fluid rounded" alt="Group Image">
+                    <form method="post" action="/upload/${group.gno}" enctype="multipart/form-data">
+                        <input type="hidden" name="gno" value="${group.gno}">
+                        <!-- 투명한 파일 입력 필드와 가짜 버튼 -->
+						<input type="file" id="fileInput" name="image"style="opacity: 0; position: absolute; width: 1px; height: 1px;">				
+						<input type="submit" class="btn btn-primary mt-2" value="이미지 등록" />
+                    </form>
+                </c:if>
+                <c:if test="${not empty group.newImageName}">
+                    <!-- image.newImageName이 값이 있을 때 -->
+                    <img id="groupImage" src="/${group.newImageName}" class="img-fluid rounded" alt="Group Image">
+                    <form method="post" action="/modify/${group.gno}" enctype="multipart/form-data">
+                        <input type="file" id="fileInput" name="image"style="opacity: 0; position: absolute; width: 1px; height: 1px;">
+                        <input type="hidden" name="gno" value="${group.gno}">
+                        <input type="submit" class="btn btn-primary mt-2" value="이미지 수정" />
+                        <button type="button" class="btn btn-danger mt-2" id="imagedelete">이미지 삭제</button>
+                    </form>
+                </c:if>
             </div>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-danger" id="deleteBtn">그룹 삭제</button>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-warning" onclick="location.href='/groups/list'">목록으로</button>
-        </div>
-        <!-- 정원이 남아있고 그룹원이 아니면 -->
-        <c:if test="${memberCnt lt group.gperson && findById eq 0 && not empty memberid}">
+           <div class="card mt-3" >
+   			 <div class="card-body">
+		        <!-- 그룹 이름 -->
+		        <h2 class="card-title">${group.gname}</h2>
+		        <!-- 그룹 신고 -->
+		           <div id="report">
+					    <a href="#" id="reportLink">
+					        <img id="groupreport" src="/img/report.png" style="width: 30px; height: 30px; float: right;">
+					    </a>
+					</div>		
+		        <!-- 그룹장 정보 -->
+		        <div class="group-info">
+				    <div class="card-text">그룹장:
+				        <div class="dropdown d-inline">
+				            <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+				                ${group.name}
+				            </a>
+				            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+				                <li><a class="dropdown-item" href="#">회원정보</a></li>
+				                <li><a class="dropdown-item" href="/user/message?memberId=${group.memberid}">쪽지 보내기</a></li>
+				                <li><a class="dropdown-item" href="#">신고하기</a></li>
+				            </ul>
+				        </div>
+				    </div>
+				</div>		
+		        <!-- 그룹 정보 (추천, 생성일, 정원) -->
+		        <div class="group-details">
+		            <p class="card-text">추천: ${group.glike}</p>
+		            <p class="card-text">생성일: ${group.gdate}</p>
+		            <p class="card-text">정원: ${memberCnt}/${group.gperson}</p>
+		        </div>
+		
+		        <!-- 그룹 소개 -->
+		        <div class="group-intro">
+		            <p class="card-text">그룹소개: ${group.gintro}</p>
+		        </div>
+		    </div>
+		</div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-warning" onclick="location.href='/groups/list'">목록으로</button>
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-warning" onclick="location.href='/'">홈으로</button>
+            </div>
+            <!-- 정원이 남아있고 그룹원이 아니면 -->
+            <c:if test="${memberCnt lt group.gperson && findById eq 0 && not empty memberid}">
+
             <div class="btn-group">
                 <button type="button" class="btn btn-dark" id="joinButton">그룹 가입</button>
             </div>
@@ -125,10 +158,14 @@
         <c:if test="${findById eq 1}">
             <div class="btn-group">
                 <button type="button" class="btn btn-dark" id="leaveButton">그룹 탈퇴</button>
-            </div>
-        </c:if>
 
-        <c:if test="${memberid eq group.memberid}">
+            </div>        
+			</c:if>
+            
+			<c:if test="${memberid eq group.memberid}">
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger" id="deleteBtn">그룹 삭제</button>
+            </div>
 
             <div class="btn-group">
                 <button type="button" class="btn btn-light" onclick="location.href='/groups/joinlist/${group.gno}'">가입신청 목록</button>
@@ -231,7 +268,8 @@
                 });
             }
         });
-
+		        
+        //그룹원 탈퇴
         $("#leaveButton").click(function () {
             if (confirm('정말로 탈퇴하시겠습니까?')) {
                 $.ajax({
@@ -248,6 +286,21 @@
                         alert("탈퇴가 실패했습니다.");
                     }
                 });
+            }
+        });
+        //신고 버튼
+        $('#reportLink').click(function(e) {
+            e.preventDefault(); // 기본 동작 방지
+            var reportUrl = '/groups/reportform/'+${group.gno}; // 여기에 신고 URL을 지정하십시오.
+
+            // 새 창 열기
+            var reportWindow = window.open(reportUrl, '_blank', 'width=500, height=700, resizable=yes, scrollbars=yes');
+
+            // 새 창에서 신고 URL 열도록 설정
+            if (reportWindow) {
+                reportWindow.location.href = reportUrl;
+            } else {
+                alert('팝업 창이 차단되었습니다. 팝업 창을 허용해주세요.');
             }
         });
     });

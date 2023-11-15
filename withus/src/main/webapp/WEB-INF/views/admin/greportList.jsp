@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>받은 쪽지함</title>
+<title>신고 내역 목록</title>
 <script src="https://kit.fontawesome.com/51db22a717.js"
 	crossorigin="anonymous"></script>
 <link rel="stylesheet"
@@ -57,58 +57,66 @@ a:hover {
 </style>
 </head>
 <body>
-	<div>
-		<a href="/user/mymessage">받은 쪽지함</a>
-	</div>
-	<div>
-		<a href="/user/send-message">보낸 쪽지함</a>
-	</div>
+	
 	<table class="table table-hover">
 		<thead>
 			<tr>
 				<th scope="col">#</th>
-				<th scope="col">제목</th>
-				<th scope="col">보낸사람</th>
-				<th scope="col">받은날짜</th>
+				<th scope="col">신고자 아이디</th>
+				<th scope="col">신고 그룹명</th>
+				<th scope="col">신고 사유</th>
+				<th scope="col">신고날짜</th>
+				<th scope="col">선택</th>
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${receivedMessage}" var="message" varStatus="loop">
-				<tr class="clickable-row"
-					data-href="/user/mymessage/view/${message.messageId}">
-					<td>${loop.index + 1}</td>
-					<td>${message.title}</td>
-					<td>${message.name}</td>
-					<td>${message.sendDate}</td>
-				</tr>
-			</c:forEach>
+		<c:forEach items="${gReportList}" var="report" varStatus="loop">
+			<tr class="clickable-row"  data-href="/admin/group/reportview/${report.greportid}">			
+				<td>${loop.index + 1}</td>
+				<td>${report.memberid}</td>
+				<td>${report.gname}</td>
+				<td>${report.rpcate}</td>
+				<td>${report.reportdate}</td>
+				<td>
+					<div class="dropdown">
+			            <button class="btn btn-secondary btn-sm dropdown-toggle drop" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+			              신고확인여부
+			            </button>
+			            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			              <li><a class="dropdown-item" href="#">확인</a></li>
+			              <li><a class="dropdown-item" href="#">취소</a></li>			              
+			            </ul>
+			    	</div>
+				</td>
+			</tr>
+		</c:forEach>
 		</tbody>
 	</table>
-
+	
 	<div>
 		<ul>
 			<c:if test="${pageMaker.prev}">
 				<li><a
-					href="/user/mymessage${pageMaker.makeQuery(pageMaker.startPage - 1)}">이전</a></li>
+					href="/admin/group/reportlist${pageMaker.makeQuery(pageMaker.startPage - 1)}">이전</a></li>
 			</c:if>
 
 			<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
 				var="idx">
-				<li><a href="/user/mymessage${pageMaker.makeQuery(idx)}">${idx}</a></li>
+				<li><a href="/admin/group/reportlist${pageMaker.makeQuery(idx)}">${idx}</a></li>
 			</c:forEach>
 
 			<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
 				<li><a
-					href="/user/mymessage${pageMaker.makeQuery(pageMaker.endPage + 1)}">다음</a></li>
+					href="/admin/group/reportlist${pageMaker.makeQuery(pageMaker.endPage + 1)}">다음</a></li>
 			</c:if>
 		</ul>
-	</div>
+	</div>	
 	<script>
-		$(document).ready(function() {
-			$('.clickable-row').on('click', function() {
-				window.location = $(this).data('href');
-			});
-		})
+	$(document).ready(function() {
+		$('.clickable-row').on('click', function() {
+			window.location = $(this).data('href');
+		});
+	})
 	</script>
 </body>
 </html>
