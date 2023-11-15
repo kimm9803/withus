@@ -9,6 +9,9 @@
 <title>home</title>
 </head>
 <body>
+<sec:authorize access="hasRole('ROLE_ADMIN')">
+    <a href="/admin/user/list">회원 전체 목록</a>
+</sec:authorize>
 <sec:authorize access="isAuthenticated()">
 	<a href="/logout">로그아웃</a>
 	<a href="/user/mypage">마이페이지</a>

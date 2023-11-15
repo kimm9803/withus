@@ -9,7 +9,6 @@
 <title>받은 쪽지함</title>
 <script src="https://kit.fontawesome.com/51db22a717.js"
 	crossorigin="anonymous"></script>
-<link rel="stylesheet" href="/css/paging.css">
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap">
 <link

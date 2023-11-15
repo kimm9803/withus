@@ -55,4 +55,10 @@ public interface MemberMapper {
 	
 	// 보낸 쪽지 갯수
 	int sendCount(String memberId);
+	
+	// 회원 전체 리스트 페이징
+	List<MemberVo> getMemberList(Map<String, Object> map);
+	
+	// 전체 회원 수
+	int totalMemberCount();
 }

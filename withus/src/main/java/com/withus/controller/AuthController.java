@@ -86,7 +86,8 @@ public class AuthController {
 	
 	// secured 예제
 	// 특정한 메서드에만 권한 걸고 싶을 때 설정
-	@Secured("ROLE_ADMIN")
+	//@Secured("ROLE_ADMIN")
+	@Secured("ROLE_USER")
 	@GetMapping("/info")
 	public @ResponseBody String info() {
 		return "Secured 어노테이션 씀으로써 ROLE_ADMIN만 들어올 수 있음";

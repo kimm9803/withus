@@ -115,4 +115,24 @@
 		FROM message
 		WHERE messageId > 0 AND sender = #{memberId} 
 	</select>
+	
+	<!-- 회원 전체 리스트 -->
+	<select id="getMemberList" resultType="com.withus.domain.MemberVo">
+		SELECT memberId, name, gender, regDate
+			FROM (
+				SELECT memberId, name, gender, regDate,
+					row_number() over(order by regDate desc) as rNum
+				FROM member
+				WHERE role = #{role}
+			) mb
+		WHERE  rNum between #{rowStart} and #{rowEnd}
+			order by regDate desc
+	</select>
+	
+	<!-- 전체 회원 수 -->
+	<select id="totalMemberCount" resultType="int">
+		SELECT COUNT(memberId)
+		FROM member
+		WHERE role = 'ROLE_USER'
+	</select>
 </mapper>
