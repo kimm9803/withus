@@ -61,7 +61,4 @@ public interface MemberMapper {
 	
 	// 전체 회원 수
 	int totalMemberCount();
-
-	// 회원 강제 탈퇴
-	void deleteUser(String memberId);
 }
