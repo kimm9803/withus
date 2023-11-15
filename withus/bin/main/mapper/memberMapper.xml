@@ -135,4 +135,10 @@
 		FROM member
 		WHERE role = 'ROLE_USER'
 	</select>
+	
+	<!-- 회원 강제 탈퇴 -->
+	<delete id="deleteUser">
+		DELETE FROM member
+		WHERE memberId = #{meberId}
+	</delete>
 </mapper>
