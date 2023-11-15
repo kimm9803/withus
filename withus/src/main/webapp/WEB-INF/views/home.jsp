@@ -8,8 +8,6 @@
 <meta charset="UTF-8">
 <title>home</title>
 </head>
-<>
-
 <sec:authorize access="isAuthenticated()">
 	<a href="/logout">로그아웃</a>
 	<a href="/user/mypage">마이페이지</a>

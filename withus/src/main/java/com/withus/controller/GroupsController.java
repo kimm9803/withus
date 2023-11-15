@@ -16,9 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.withus.domain.GroupJoinVo;
 import com.withus.domain.GroupMemberVo;
+import com.withus.domain.GroupReportVo;
 import com.withus.domain.GroupsVo;
 import com.withus.mapper.GroupsMapper;
-import com.withus.mapper.ImageMapper;
 import com.withus.service.MemberService;
 
 @Controller
@@ -110,4 +110,24 @@ public class GroupsController {
 		  return mv;
 		  
 	  }
+	  //그룹 신고창 열기
+	  @GetMapping("/reportform/{gno}")
+	  public ModelAndView reportform(@PathVariable("gno") int gno, Authentication authentication) {
+		  String memberid = memberService.authMember(authentication);
+		  //신고 그룹명 찾기
+		  String gname = groupsMapper.findByname(gno);
+		  ModelAndView mv = new ModelAndView();
+		  mv.addObject("gno", gno);
+		  mv.addObject("gname", gname);
+		  mv.addObject("memberid", memberid);
+		  mv.setViewName("groups/report");
+		  return mv;
+	  }
+	  //그룹 신고
+	  @PostMapping("/report/{gno}")
+	  public String reportGroup(GroupReportVo vo) {
+		  groupsMapper.reportGroup(vo);
+		  return "close";
+	  }
+	  
 }

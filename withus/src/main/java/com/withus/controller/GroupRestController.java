@@ -68,7 +68,7 @@ public class GroupRestController {
 	//그룹원 탈퇴
 	@GetMapping("/leave")
 	public void memberleave(@RequestParam("memberid") String memberid, @RequestParam("gno") int gno) {
-		System.out.println(gno);
+		
 		Map<String,Object> params = new HashMap<>();
 		params.put("memberid", memberid);
 		params.put("gno", gno);
