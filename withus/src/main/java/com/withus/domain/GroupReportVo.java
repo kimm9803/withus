@@ -17,4 +17,5 @@ public class GroupReportVo {
 	private String rpcontent;
 	private String rpcate;
 	private String reportdate;
+	private String gname;
 }

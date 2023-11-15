@@ -12,6 +12,7 @@
 
 <sec:authorize access="hasRole('ROLE_ADMIN')">
     <a href="/admin/user/list">회원 전체 목록</a>
+    <a href="/admin/group/reportlist">그룹 신고 내역</a>
 </sec:authorize>
 
 <sec:authorize access="isAuthenticated()">
