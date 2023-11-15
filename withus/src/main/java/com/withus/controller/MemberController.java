@@ -1,6 +1,8 @@
 package com.withus.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -11,9 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.withus.domain.Criteria;
 import com.withus.domain.FavorCateVo;
 import com.withus.domain.MemberVo;
 import com.withus.domain.MessageVo;
+import com.withus.domain.PageMaker;
 import com.withus.mapper.MemberMapper;
 import com.withus.service.MemberService;
 
@@ -73,10 +77,21 @@ public class MemberController {
 	
 	// 받은 쪽지함
 	@GetMapping("/user/mymessage")
-	public String getReceivedMessage(Authentication authentication, Model model) {
+	public String getReceivedMessage(Criteria cri, Authentication authentication, Model model) {
 		String memberId = memberService.authMember(authentication);
-		List<MessageVo> receivedMessage = memberMapper.findByReceiverId(memberId);
+		//List<MessageVo> receivedMessage = memberMapper.findByReceiverId(memberId);
+		Map<String, Object> map = new HashMap<>();
+		map.put("rowStart", cri.getRowStart());
+		map.put("rowEnd", cri.getRowEnd());
+		map.put("memberId", memberId);
+		List<MessageVo> receivedMessage = memberMapper.receivedListPage(map);
 		model.addAttribute("receivedMessage", receivedMessage);
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(memberMapper.receivedCount(memberId));
+		model.addAttribute("pageMaker", pageMaker);
+		
 		return "member/receivedMessage";
 	}
 	
@@ -88,12 +103,24 @@ public class MemberController {
 		return "member/messageView";
 	}
 	
+	
 	// 보낸 쪽지함
 	@GetMapping("/user/send-message")
-	public String getSendMessage(Authentication authentication, Model model) {
+	public String getSendMessage(Criteria cri, Authentication authentication, Model model) {
 		String memberId = memberService.authMember(authentication);
-		List<MessageVo> sendMessage = memberMapper.findBySenderId(memberId);
+		Map<String, Object> map = new HashMap<>();
+		map.put("rowStart", cri.getRowStart());
+		map.put("rowEnd", cri.getRowEnd());
+		map.put("memberId", memberId);
+		List<MessageVo> sendMessage = memberMapper.sendListPage(map);
 		model.addAttribute("sendMessage", sendMessage);
+
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(memberMapper.sendCount(memberId));
+		model.addAttribute("pageMaker", pageMaker);
+
 		return "member/sendMessage";
 	}
+
 }

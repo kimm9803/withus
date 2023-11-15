@@ -73,4 +73,46 @@
 		INNER JOIN member mem ON m.receiver = mem.memberId
 		WHERE m.sender = #{memberId}
 	</select>
+	
+	<!-- 받은 쪽지 페이징 -->
+	<select id="receivedListPage" resultType="com.withus.domain.MessageVo" parameterType="hashMap">
+	    select messageId, title, content, sender, sendDate, name
+	       from (
+	           select m.messageId, m.title, m.content, m.sender, m.sendDate, mem.name,
+	               row_number() over(order by m.messageId desc) as rNum
+	           from message m
+	           INNER JOIN member mem ON m.sender = mem.memberId
+			   WHERE m.receiver = #{memberId}
+	     ) mb
+	    where rNum between #{rowStart} and #{rowEnd}
+	        order by messageId desc
+	</select>
+	
+	<!-- 받은 쪽지 갯수 -->
+	<select id="receivedCount" resultType="int">
+		SELECT count(messageId)
+		FROM message
+		WHERE messageId > 0 AND receiver = #{memberId} 
+	</select>
+	
+	<!-- 보낸 쪽지 페이징 -->
+	<select id="sendListPage" resultType="com.withus.domain.MessageVo" parameterType="hashMap">
+	    select messageId, title, content, receiver, sendDate, name
+	       from (
+	           select m.messageId, m.title, m.content, m.receiver, m.sendDate, mem.name,
+	               row_number() over(order by m.messageId desc) as rNum
+	           from message m
+	           INNER JOIN member mem ON m.receiver = mem.memberId
+			   WHERE m.sender = #{memberId}
+	     ) mb
+	    where rNum between #{rowStart} and #{rowEnd}
+	        order by messageId desc
+	</select>
+	
+	<!-- 보낸 쪽지 갯수 -->
+	<select id="sendCount" resultType="int">
+		SELECT count(messageId)
+		FROM message
+		WHERE messageId > 0 AND sender = #{memberId} 
+	</select>
 </mapper>

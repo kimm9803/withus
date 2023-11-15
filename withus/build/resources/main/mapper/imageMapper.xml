@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.withus.mapper.ImageMapper">
+
+	<!-- 이미지 저장 -->
+	<insert id="save">
+		INSERT INTO gimage(gimageid,origin_image_name,
+		new_image_name, image_path,gno)
+		VALUES((SELECT NVL(MAX(gimageid), 0) + 1
+		FROM gimage),
+		#{imageVo.originImageName}, #{imageVo.newImageName}, #{imageVo.imagePath},#{gno})
+	</insert>
+
+	<select id="getImageById" resultType="com.withus.domain.ImageVo">
+		SELECT gimageid,
+		origin_image_name AS originImageName, new_image_name AS newImageName,
+		image_path AS imagePath,gno
+		FROM gimage
+		WHERE gno = #{gno}
+	</select>
+
+	<update id="modify">
+		update gimage
+		set origin_image_name = #{imageVo.originImageName}, new_image_name =
+		#{imageVo.newImageName}
+		where gno = #{gno}
+	</update>
+	
+	<delete id="deleteImage">
+	delete from gimage
+	where gno = #{gno}
+	</delete>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

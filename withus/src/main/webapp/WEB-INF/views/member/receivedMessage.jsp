@@ -9,6 +9,7 @@
 <title>받은 쪽지함</title>
 <script src="https://kit.fontawesome.com/51db22a717.js"
 	crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/css/paging.css">
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap">
 <link
@@ -26,6 +27,34 @@
 * {
 	font-family: 'Sunflower', sans-serif;
 }
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+ul {
+    padding: 0;
+    list-style: none;
+    display: inline-block;
+}
+
+li {
+    display: inline-block;
+    margin: 0 2px;
+}
+
+a {
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    color: #333;
+    border-radius: 5px;
+}
+
+a:hover {
+    background-color: #f0f0f0;
+}
+
 </style>
 </head>
 <body>
@@ -45,16 +74,36 @@
 			</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${receivedMessage}" var="message" varStatus="loop">
-			<tr class="clickable-row" data-href="/user/mymessage/view/${message.messageId}">
-				<td>${loop.index + 1}</td>
-				<td>${message.title}</td>
-				<td>${message.name}</td>
-				<td>${message.sendDate}</td>
-			</tr>
-		</c:forEach>
+			<c:forEach items="${receivedMessage}" var="message" varStatus="loop">
+				<tr class="clickable-row"
+					data-href="/user/mymessage/view/${message.messageId}">
+					<td>${loop.index + 1}</td>
+					<td>${message.title}</td>
+					<td>${message.name}</td>
+					<td>${message.sendDate}</td>
+				</tr>
+			</c:forEach>
 		</tbody>
 	</table>
+
+	<div>
+		<ul>
+			<c:if test="${pageMaker.prev}">
+				<li><a
+					href="/user/mymessage${pageMaker.makeQuery(pageMaker.startPage - 1)}">이전</a></li>
+			</c:if>
+
+			<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
+				var="idx">
+				<li><a href="/user/mymessage${pageMaker.makeQuery(idx)}">${idx}</a></li>
+			</c:forEach>
+
+			<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+				<li><a
+					href="/user/mymessage${pageMaker.makeQuery(pageMaker.endPage + 1)}">다음</a></li>
+			</c:if>
+		</ul>
+	</div>
 	<script>
 		$(document).ready(function() {
 			$('.clickable-row').on('click', function() {
