@@ -8,10 +8,14 @@
     <title>그룹 상세보기</title>
     <!-- Bootstrap 5 CSS 링크 추가 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery 추가 -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <style>
+* {
+	font-family: 'Sunflower', sans-serif;
+}
 /* 컨텐츠를 중앙에 정렬 */
 .content {
 	max-width: 60%;
@@ -58,7 +62,17 @@
 
 .dropdown-item:hover {
 	background-color: #f8f9fa;
-	color: #000; 
+	color: #000;
+}
+
+.group-info {
+	margin-bottom: 20px; /* 그룹장 정보와 그룹 정보 사이 간격 조절 */
+}
+
+.group-details, .group-intro {
+	margin-top: 20px; /* 그룹 정보와 그룹 소개 사이 간격 조절 */
+	border: 1px solid #ccc; /* 테두리 추가 */
+	padding: 15px; /* 안쪽 여백 추가 */
 }
 </style>
 </head>
@@ -88,31 +102,39 @@
                     </form>
                 </c:if>
             </div>
-            <div class="card mt-3">
-                <div class="card-body">
-                    <h2 class="card-title">${group.gname}</h2>
-                    <p class="card-text">그룹장:
-	                    <div class="dropdown">
-						  <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-						     ${group.name}
-						  </a>
-						
-						  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-						    <li><a class="dropdown-item" href="#">회원정보</a></li>
-						    <li><a class="dropdown-item" href="/user/message?memberId=${group.memberid}">쪽지 보내기</a></li>
-						    <li><a class="dropdown-item" href="#">신고하기</a></li>
-						  </ul>
-						</div>                    
-                    </p>
-                    <p class="card-text">추천: ${group.glike}</p>
-                    <p class="card-text">그룹소개: ${group.gintro}</p>
-                    <p class="card-text">생성일: ${group.gdate}</p>
-                    <p class="card-text">정원: ${memberCnt}/${group.gperson}</p>
-                </div>
-            </div>
-            <div class="btn-group">
-                <button type="button" class="btn btn-danger" id="deleteBtn">그룹 삭제</button>
-            </div>
+           <div class="card mt-3">
+   			 <div class="card-body">
+		        <!-- 그룹 이름 -->
+		        <h2 class="card-title">${group.gname}</h2>
+		
+		        <!-- 그룹장 정보 -->
+		        <div class="group-info">
+				    <div class="card-text">그룹장:
+				        <div class="dropdown d-inline">
+				            <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+				                ${group.name}
+				            </a>
+				            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+				                <li><a class="dropdown-item" href="#">회원정보</a></li>
+				                <li><a class="dropdown-item" href="/user/message?memberId=${group.memberid}">쪽지 보내기</a></li>
+				                <li><a class="dropdown-item" href="#">신고하기</a></li>
+				            </ul>
+				        </div>
+				    </div>
+				</div>		
+		        <!-- 그룹 정보 (추천, 생성일, 정원) -->
+		        <div class="group-details">
+		            <p class="card-text">추천: ${group.glike}</p>
+		            <p class="card-text">생성일: ${group.gdate}</p>
+		            <p class="card-text">정원: ${memberCnt}/${group.gperson}</p>
+		        </div>
+		
+		        <!-- 그룹 소개 -->
+		        <div class="group-intro">
+		            <p class="card-text">그룹소개: ${group.gintro}</p>
+		        </div>
+		    </div>
+		</div>
             <div class="btn-group">
                 <button type="button" class="btn btn-warning" onclick="location.href='/groups/list'">목록으로</button>
             </div>
@@ -127,9 +149,11 @@
                 <button type="button" class="btn btn-dark" id="leaveButton">그룹 탈퇴</button>
             </div>        
 			</c:if>
-			
+            
 			<c:if test="${memberid eq group.memberid}">
-
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger" id="deleteBtn">그룹 삭제</button>
+            </div>
             <div class="btn-group">
                 <button type="button" class="btn btn-light" onclick="location.href='/groups/joinlist/${group.gno}'">가입신청 목록</button>                
             </div>
