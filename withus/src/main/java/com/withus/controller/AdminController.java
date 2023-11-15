@@ -8,11 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.withus.domain.Criteria;
+import com.withus.domain.GroupReportVo;
 import com.withus.domain.MemberVo;
 import com.withus.domain.PageMaker;
+import com.withus.mapper.GroupsMapper;
 import com.withus.mapper.MemberMapper;
 
 @Controller
@@ -21,6 +24,9 @@ public class AdminController {
 
 	@Autowired
 	private MemberMapper memberMapper;
+	
+	@Autowired
+	private GroupsMapper groupsMapper;
 	
 	// 회원 전체 리스트
 	@GetMapping("/user/list")
@@ -40,4 +46,27 @@ public class AdminController {
 		
 		return "admin/memberList";
 	}
+	// 그룹 신고 내역 
+	@GetMapping("/group/reportlist")
+	public String groupReportList(Criteria cri, Model model) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("rowStart", cri.getRowStart());
+		map.put("rowEnd", cri.getRowEnd());
+		List<GroupReportVo> gReportList = groupsMapper.gReportList(map);
+		model.addAttribute("gReportList", gReportList);
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(groupsMapper.totalReportCount());
+		model.addAttribute("pageMaker", pageMaker);
+		
+		return "admin/greportList";
+	}
+	// 그룹 신고 내용
+	@GetMapping("/group/reportview/{greportid}")
+	public String groupReportView(@PathVariable("greportid") int greportid, Model model) {
+		GroupReportVo gReportView = groupsMapper.gReportView(greportid);
+		model.addAttribute("report", gReportView);
+		return "admin/greportView";
+	}	
 }
