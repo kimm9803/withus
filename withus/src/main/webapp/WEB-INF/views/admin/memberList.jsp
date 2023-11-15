@@ -83,7 +83,7 @@ a:hover {
 			            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 			              <li><a class="dropdown-item" href="#">회원정보</a></li>
 			              <li><a class="dropdown-item" href="/user/message?memberId=${member.memberId}">쪽지 보내기</a></li>
-			              <li><a class="dropdown-item" href="#" class="deleteMember" data-memberId="${member.memberId}">강제탈퇴</a></li>
+			              <li><a class="dropdown-item deleteMember" href="#">강제탈퇴</a></li>
 			            </ul>
 			    	</div>
 				</td>
@@ -96,17 +96,17 @@ a:hover {
 		<ul>
 			<c:if test="${pageMaker.prev}">
 				<li><a
-					href="/user/send-message${pageMaker.makeQuery(pageMaker.startPage - 1)}">이전</a></li>
+					href="/admin/user/list${pageMaker.makeQuery(pageMaker.startPage - 1)}">이전</a></li>
 			</c:if>
 
 			<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
 				var="idx">
-				<li><a href="/user/send-message${pageMaker.makeQuery(idx)}">${idx}</a></li>
+				<li><a href="/admin/user/list${pageMaker.makeQuery(idx)}">${idx}</a></li>
 			</c:forEach>
 
 			<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
 				<li><a
-					href="/user/send-message${pageMaker.makeQuery(pageMaker.endPage + 1)}">다음</a></li>
+					href="/admin/user/list${pageMaker.makeQuery(pageMaker.endPage + 1)}">다음</a></li>
 			</c:if>
 		</ul>
 	</div>
@@ -118,18 +118,16 @@ a:hover {
 				console.log(memberId);
 			});
 			
-			$('.deleteMember').on('click', function(e) {
-				e.preventDefault();	// 기본 동작 방지
-				
-				var memberId = $(this).data('memberId');
-				var confirmation = confirm('정말로 이 회원을 강제 탈퇴시키겠습니까?');
-				
-				if (confirmation) {
-					location.href = '/admin/user/delete?memberId=' + memberId;
-				} else {
-					// 아무 동작도 수행하지 않음
-				}
-			})
+			$('.dropdown-menu .deleteMember').on('click', function(e) {
+			    var confirmation = confirm('정말로 이 회원을 강제 탈퇴시키겠습니까?');
+			        
+			    if (confirmation) {
+			        var memberId = $(this).closest('tr').find('td:eq(1)').text();
+			        location.href = '/admin/user/delete?memberId=' + memberId;
+			    } else {
+			     	e.preventDefault();
+			    }
+			});
 		});
 	</script>
 </body>

@@ -9,10 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.withus.domain.Criteria;
 import com.withus.domain.MemberVo;
 import com.withus.domain.PageMaker;
+import com.withus.mapper.AdminMapper;
 import com.withus.mapper.MemberMapper;
 
 @Controller
@@ -21,6 +23,9 @@ public class AdminController {
 
 	@Autowired
 	private MemberMapper memberMapper;
+	
+	@Autowired
+	private AdminMapper adminMapper;
 	
 	// 회원 전체 리스트
 	@GetMapping("/user/list")
@@ -39,5 +44,12 @@ public class AdminController {
 		model.addAttribute("pageMaker", pageMaker);
 		
 		return "admin/memberList";
+	}
+	
+	// 회원 강제 탈퇴
+	@GetMapping("/user/delete")
+	public String deleteUser(@RequestParam("memberId") String memberId) {
+		adminMapper.deleteUser(memberId);
+		return "redirect:/admin/user/list";
 	}
 }
