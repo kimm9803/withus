@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.withus.domain.GroupJoinVo;
 import com.withus.domain.GroupMemberVo;
+import com.withus.domain.GroupReportVo;
 import com.withus.domain.GroupsVo;
 
 @Mapper
@@ -41,7 +42,11 @@ public interface GroupsMapper {
 	//그룹원 존재여부
 	int findById(Map<String, Object> params);
 	//그룹원 탈퇴
-	void memberleave(Map<String, Object> params);
+	void memberleave(Map<String, Object> params);	
+	//신고그룹명
+	String findByname(int gno);
+	//그룹신고하기
+	void reportGroup(GroupReportVo vo);
 
 
 }

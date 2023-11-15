@@ -74,6 +74,7 @@
 	border: 1px solid #ccc; /* 테두리 추가 */
 	padding: 15px; /* 안쪽 여백 추가 */
 }
+
 </style>
 </head>
 <body>
@@ -102,11 +103,16 @@
                     </form>
                 </c:if>
             </div>
-           <div class="card mt-3">
+           <div class="card mt-3" >
    			 <div class="card-body">
 		        <!-- 그룹 이름 -->
 		        <h2 class="card-title">${group.gname}</h2>
-		
+		        <!-- 그룹 신고 -->
+		           <div id="report">
+					    <a href="#" id="reportLink">
+					        <img id="groupreport" src="/img/report.png" style="width: 30px; height: 30px; float: right;">
+					    </a>
+					</div>		
 		        <!-- 그룹장 정보 -->
 		        <div class="group-info">
 				    <div class="card-text">그룹장:
@@ -137,6 +143,9 @@
 		</div>
             <div class="btn-group">
                 <button type="button" class="btn btn-warning" onclick="location.href='/groups/list'">목록으로</button>
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-warning" onclick="location.href='/'">홈으로</button>
             </div>
             <!-- 정원이 남아있고 그룹원이 아니면 -->
             <c:if test="${memberCnt lt group.gperson && findById eq 0 && not empty memberid}">
@@ -250,7 +259,8 @@
                 });
             }
         });
-
+		        
+        //그룹원 탈퇴
         $("#leaveButton").click(function () {
             if (confirm('정말로 탈퇴하시겠습니까?')) {
                 $.ajax({
@@ -267,6 +277,21 @@
                         alert("탈퇴가 실패했습니다.");
                     }
                 });
+            }
+        });
+        //신고 버튼
+        $('#reportLink').click(function(e) {
+            e.preventDefault(); // 기본 동작 방지
+            var reportUrl = '/groups/reportform/'+${group.gno}; // 여기에 신고 URL을 지정하십시오.
+
+            // 새 창 열기
+            var reportWindow = window.open(reportUrl, '_blank', 'width=500, height=700, resizable=yes, scrollbars=yes');
+
+            // 새 창에서 신고 URL 열도록 설정
+            if (reportWindow) {
+                reportWindow.location.href = reportUrl;
+            } else {
+                alert('팝업 창이 차단되었습니다. 팝업 창을 허용해주세요.');
             }
         });
     });
