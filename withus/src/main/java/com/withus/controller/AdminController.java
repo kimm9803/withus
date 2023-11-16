@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.withus.domain.Criteria;
 import com.withus.domain.GroupReportVo;
+import com.withus.domain.MemberReportVo;
 import com.withus.domain.MemberVo;
 import com.withus.domain.PageMaker;
 import com.withus.mapper.AdminMapper;
@@ -74,6 +75,27 @@ public class AdminController {
 		return "admin/greportView";
 	}	
 
+	// 회원 신고 내역
+	@GetMapping("/user/report-list")
+	public String memberReportList(Criteria cri, Model model) {
+		List<MemberReportVo> mReportList = adminMapper.mReportList(cri);
+		model.addAttribute("mReportList", mReportList);
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(adminMapper.totalMemberReportCount());
+		model.addAttribute("pageMaker", pageMaker);
+		
+		return "admin/mreportList";
+	}
+	
+	// 회원 신고 내용
+	@GetMapping("/user/reportview/{mreportId}")
+	public String memberReportView(@PathVariable("mreportId") int mreportId, Model model) {
+		MemberReportVo mReportView = adminMapper.mReportView(mreportId);
+		model.addAttribute("report", mReportView);
+		return "admin/mreportView";
+	}
 	
 	// 회원 강제 탈퇴
 	@GetMapping("/user/delete")

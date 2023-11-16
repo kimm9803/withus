@@ -5,7 +5,9 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.withus.domain.Criteria;
 import com.withus.domain.GroupReportVo;
+import com.withus.domain.MemberReportVo;
 
 @Mapper
 public interface AdminMapper {
@@ -22,4 +24,12 @@ public interface AdminMapper {
 	//신고 내역 상세보기
 	GroupReportVo gReportView(int greportid);
 
+	// 회원 신고 내역 목록
+	List<MemberReportVo> mReportList(Criteria cri);
+	
+	// 회원 전체 신고 수
+	int totalMemberReportCount();
+
+	// 회원 신고 내역 상세보기
+	MemberReportVo mReportView(int mreportId);
 }

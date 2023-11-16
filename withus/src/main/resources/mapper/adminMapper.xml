@@ -33,4 +33,28 @@
 		WHERE r.greportid = #{greportid}
 	</select>
 	
+	<!-- 회원 신고 내역 -->
+	<select id="mReportList" resultType="com.withus.domain.MemberReportVo">
+		select mreportId, reporterId, reportedId, rpcontent, rpcate, reportDate
+	       from (
+	           select mreportId, reporterId, reportedId, rpcontent, rpcate, reportDate,
+	               row_number() over(order by mreportId desc) as rNum
+	           from mreport
+	     ) mb
+	    where rNum between #{rowStart} and #{rowEnd}
+	        order by mreportId desc
+	</select>
+	
+	<!-- 회원 전체 신고 수 -->
+	<select id="totalMemberReportCount" resultType="int">
+		SELECT COUNT(mreportId)
+		FROM mreport
+	</select>
+	
+	<!-- 회원신고 내용 -->
+	<select id="mReportView" resultType="com.withus.domain.MemberReportVo">
+		SELECT mreportId, reporterId, reportedId, rpcontent, rpcate, reportDate
+		FROM mreport
+		WHERE mreportId = #{mreportId}
+	</select>
 </mapper>
