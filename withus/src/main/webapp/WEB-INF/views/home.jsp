@@ -15,6 +15,7 @@
     <a href="/admin/group/reportlist">그룹 신고 내역</a>
 </sec:authorize>
 
+
 <sec:authorize access="isAuthenticated()">
 	<a href="/logout">로그아웃</a>
 	<a href="/user/mypage">마이페이지</a>
@@ -32,7 +33,9 @@
 <a href ="/upload">이미지업로드 테스트</a>
 <a href ="  ">모임 만들기</a>
 <a href ="  ">모임 홈</a>
-<a href ="  ">게시판 작성</a>
+<br>
+<a href ="/gboard/create">게시판 작성</a>
+
 <a href ="  ">게시판</a>
 
 

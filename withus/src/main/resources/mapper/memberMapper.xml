@@ -135,4 +135,17 @@
 		FROM member
 		WHERE role = 'ROLE_USER'
 	</select>
+	
+	<!-- 회원 신고 -->
+	<insert id="reportMember">
+		INSERT INTO mreport (mreportId, reporterId, reportedId, rpcontent, rpcate)
+		VALUES (mreport_sequence.nextVal, #{reporterId}, #{reportedId}, #{rpcontent}, #{rpcate})
+	</insert>
+	
+	<!-- 피신고자 신고 횟수 +1 -->
+	<update id="reportIncrease">
+		UPDATE member
+		SET report = report + 1
+		WHERE memberId = #{reportedId}
+	</update>
 </mapper>

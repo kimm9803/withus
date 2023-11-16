@@ -1,0 +1,137 @@
+== 회원 ==
+
+CREATE TABLE member (
+	memberId	VARCHAR2(255)	PRIMARY KEY,
+	password	VARCHAR2(255)	NOT NULL,
+	name		VARCHAR2(255)	NOT NULL,
+	gender		VARCHAR2(50),
+	role		VARCHAR2(255),
+	regDate		DATE	DEFAULT	SYSDATE
+);
+
+INSERT INTO member (memberId, password, name, gender, role)
+VALUES  ('admin', '1234', '관리자', 'male', 'ROLE_ADMIN');
+
+commit;
+
+
+== 그룹 ==
+CREATE TABLE GROUPS (
+    GNO     NUMBER(10) PRIMARY KEY,
+    GNAME   VARCHAR2(255) NOT NULL,
+    GINTRO  VARCHAR2(4000),
+    GDATE   DATE DEFAULT SYSDATE NULL,
+    GPERSON NUMBER(10) DEFAULT 1,
+    GREPORT NUMBER(5) DEFAULT 0,
+    GLIKE   NUMBER(5) DEFAULT 0
+);
+-- 그룹에 memberid 추가 --
+ALTER TABLE GROUPS
+ADD (MEMBERID VARCHAR2(255));
+
+ALTER TABLE GROUPS
+ADD CONSTRAINT FK_MEMBERID FOREIGN KEY (MEMBERID) REFERENCES MEMBER(MEMBERID);
+
+-- Groups 테이블에 CateID 열 추가
+ALTER TABLE Groups
+ADD CateID NUMBER;
+
+-- groups 테이블에 rno 컬럼 추가
+ALTER TABLE groups
+ADD rno NUMBER;
+
+-- groups 테이블에 외래키 추가
+ALTER TABLE groups
+ADD CONSTRAINT fk_groups_rno
+FOREIGN KEY (rno)
+REFERENCES region(rno);
+
+-- 외래 키 설정
+ALTER TABLE Groups
+ADD CONSTRAINT fk_Category
+FOREIGN KEY (CateID)
+REFERENCES Category(CateID);
+
+== 이미지 ==
+=======
+CREATE TABLE category (
+    cateId      NUMBER          PRIMARY KEY,
+    cateName    VARCHAR2(255)   NOT NULL
+);
+
+INSERT INTO category (cateId, cateName) VALUES (1, '아웃도어/여행');
+INSERT INTO category (cateId, cateName) VALUES (2, '운동/스포츠');
+INSERT INTO category (cateId, cateName) VALUES (3, '책/글');
+INSERT INTO category (cateId, cateName) VALUES (4, '외국/언어');
+INSERT INTO category (cateId, cateName) VALUES (5, '문화/공연/축제');
+INSERT INTO category (cateId, cateName) VALUES (6, '음악/악기');
+INSERT INTO category (cateId, cateName) VALUES (7, '사진/영상');
+INSERT INTO category (cateId, cateName) VALUES (8, '게임/오락');
+INSERT INTO category (cateId, cateName) VALUES (9, '차/오토바이');
+COMMIT;
+
+CREATE SEQUENCE favorCateSeq
+START WITH 1
+INCREMENT BY 1
+NOMAXVALUE;
+
+CREATE TABLE favorCate (
+    favorCateId     NUMBER          PRIMARY KEY,
+    memberId        VARCHAR2(255)   NOT NULL,
+    cateId          NUMBER          NOT NULL,
+    FOREIGN KEY (memberId)  REFERENCES  member(memberId),
+    FOREIGN KEY (cateId)    REFERENCES  category(cateId)
+);
+
+-- 지역 --
+CREATE TABLE region (
+    RNO NUMBER PRIMARY KEY,
+    RNAME VARCHAR2(255) NOT NULL
+);
+
+-- 시도 데이터 삽입 --
+INSERT INTO region VALUES (1, '서울');
+INSERT INTO region VALUES (2, '부산');
+INSERT INTO region VALUES (3, '대구');
+INSERT INTO region VALUES (4, '인천');
+INSERT INTO region VALUES (5, '광주');
+INSERT INTO region VALUES (6, '대전');
+INSERT INTO region VALUES (7, '울산');
+INSERT INTO region VALUES (8, '세종');
+INSERT INTO region VALUES (9, '경기도');
+INSERT INTO region VALUES (10, '강원도');
+INSERT INTO region VALUES (11, '충청북도');
+INSERT INTO region VALUES (12, '충청남도');
+INSERT INTO region VALUES (13, '전라북도');
+INSERT INTO region VALUES (14, '전라남도');
+INSERT INTO region VALUES (15, '경상북도');
+INSERT INTO region VALUES (16, '경상남도');
+INSERT INTO region VALUES (17, '제주도');
+
+
+--- 그룹 가입신청 ---
+CREATE TABLE GroupJoin (
+    GJOINID NUMBER PRIMARY KEY,
+    GNO NUMBER NOT NULL,
+    MEMBERID VARCHAR2(255) NOT NULL,
+    GPERMIT NUMBER DEFAULT 0,
+    GAPPDATE DATE DEFAULT SYSDATE,
+    CONSTRAINT fk_groupjoin_gno FOREIGN KEY (GNO) REFERENCES groups(GNO)
+);
+-- 가입신청 외래키 추가 --
+ALTER TABLE GroupJoin
+ADD CONSTRAINT fk_groupjoin_memberid
+FOREIGN KEY (MEMBERID)
+REFERENCES member(MEMBERID);
+
+-- 그룹원 테이블 --
+CREATE TABLE GMember (
+    GMEMBERID NUMBER NOT NULL,
+    GNO NUMBER NOT NULL,
+    MEMBERID VARCHAR2(255) NOT NULL,
+    GAUTH NUMBER DEFAULT 1,
+    GJOINDATE DATE DEFAULT SYSDATE,
+    CONSTRAINT pk_gmember PRIMARY KEY (GMEMBERID),
+    CONSTRAINT fk_gmember_gno FOREIGN KEY (GNO) REFERENCES Groups(GNO),
+    CONSTRAINT fk_gmember_memberid FOREIGN KEY (MEMBERID) REFERENCES MEMBER(MEMBERID)
+);

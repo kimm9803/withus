@@ -13,6 +13,7 @@
     <!-- jQuery 추가 -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <style>
+
 * {
 	font-family: 'Sunflower', sans-serif;
 }
@@ -22,43 +23,43 @@
 	margin: 0 auto;
 }
 
-/* 이미지 스타일 */
-#groupImage {
-	height: 200px;
-	width: 100%;
-	border: 1px solid black;
-}
+        /* 이미지 스타일 */
+        #groupImage {
+            height: 200px;
+            width: 100%;
+            border: 1px solid black;
+        }
 
-/* 버튼 간격 조절 */
-.btn-group {
-	margin-top: 10px;
-}
+        /* 버튼 간격 조절 */
+        .btn-group {
+            margin-top: 10px;
+        }
 
-#image {
-	width: 100%
-}
+        #image {
+            width: 100%
+        }
 
-.btn.dropdown-toggle::after {
-	content: none;
-}
+        .btn.dropdown-toggle::after {
+            content: none;
+        }
 
-.btn.dropdown-toggle {
-	background-color: transparent;
-	color: black;
-}
+        .btn.dropdown-toggle {
+            background-color: transparent;
+            color: black;
+        }
 
-.btn.dropdown-toggle:hover {
-	border: 1px solid #ccc;
-}
+        .btn.dropdown-toggle:hover {
+            border: 1px solid #ccc;
+        }
 
-.dropdown-menu {
-	background-color: #fff;
-	border: 1px solid #ccc;
-}
+        .dropdown-menu {
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
 
-.dropdown-item {
-	color: #000;
-}
+        .dropdown-item {
+            color: #000;
+        }
 
 .dropdown-item:hover {
 	background-color: #f8f9fa;
@@ -123,7 +124,7 @@
 				            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 				                <li><a class="dropdown-item" href="#">회원정보</a></li>
 				                <li><a class="dropdown-item" href="/user/message?memberId=${group.memberid}">쪽지 보내기</a></li>
-				                <li><a class="dropdown-item" href="#">신고하기</a></li>
+				                <li><a class="dropdown-item" href="#" id="userReport">신고하기</a></li>
 				            </ul>
 				        </div>
 				    </div>
@@ -149,13 +150,15 @@
             </div>
             <!-- 정원이 남아있고 그룹원이 아니면 -->
             <c:if test="${memberCnt lt group.gperson && findById eq 0 && not empty memberid}">
+
             <div class="btn-group">
                 <button type="button" class="btn btn-dark" id="joinButton">그룹 가입</button>
-            </div>        
-			</c:if>
-            <c:if test="${findById eq 1}">
+            </div>
+        </c:if>
+        <c:if test="${findById eq 1}">
             <div class="btn-group">
                 <button type="button" class="btn btn-dark" id="leaveButton">그룹 탈퇴</button>
+
             </div>        
 			</c:if>
             
@@ -163,17 +166,23 @@
             <div class="btn-group">
                 <button type="button" class="btn btn-danger" id="deleteBtn">그룹 삭제</button>
             </div>
+
             <div class="btn-group">
-                <button type="button" class="btn btn-light" onclick="location.href='/groups/joinlist/${group.gno}'">가입신청 목록</button>                
+                <button type="button" class="btn btn-light" onclick="location.href='/groups/joinlist/${group.gno}'">가입신청 목록</button>
             </div>
             <div class="btn-group">
-                <button type="button" class="btn btn-light" onclick="location.href='/groups/memberlist/${group.gno}'">그룹원 목록</button>                
+                <button type="button" class="btn btn-light" onclick="location.href='/groups/memberlist/${group.gno}'">그룹원 목록</button>
             </div>
-			</c:if>	            
-        </div>
+        </c:if>
+
+        <a href="/gboard/create/${group.gno}">gboard작성</a>
     </div>
-    <!-- 부트스트랩 5 JS 및 Popper.js 추가 -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-hZf+5sIo/1GTbMkEl9QAeRU3sJQl1LbSH+6l5f+4F1gPK6ES4kDl9Nvl7TZyH2Sm" crossorigin="anonymous"></script>
+</div>
+
+
+
+<!-- 부트스트랩 5 JS 및 Popper.js 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-hZf+5sIo/1GTbMkEl9QAeRU3sJQl1LbSH+6l5f+4F1gPK6ES4kDl9Nvl7TZyH2Sm" crossorigin="anonymous"></script>
 <script>
     document.getElementById('groupImage').addEventListener('click', function() {
         document.getElementById('fileInput').click();
@@ -223,25 +232,25 @@
         });
 
         // 이미지 삭제 버튼 클릭 이벤트
-		      $('#imagedelete').click(function() {
-		    // 확인 다이얼로그를 띄우고 사용자가 확인하면 삭제 요청 전송
-		    if (confirm('정말로 삭제하시겠습니까?')) {
-		        $.ajax({
-		            type: 'GET',
-		            url: '/image/delete/${group.gno}', // 실제 삭제 요청을 처리할 서버의 URL
-		            success: function(response) {
-		                // 성공 시 동작
-		                alert("삭제 성공");
-		                location.reload();
-		            },
-		            error: function(error) {
-		                // 실패 시 동작
-		                console.error('삭제 실패', error);
-		            }
-		        });
-		    }
-		});
-		        // 가입신청
+        $('#imagedelete').click(function() {
+            // 확인 다이얼로그를 띄우고 사용자가 확인하면 삭제 요청 전송
+            if (confirm('정말로 삭제하시겠습니까?')) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/image/delete/${group.gno}', // 실제 삭제 요청을 처리할 서버의 URL
+                    success: function(response) {
+                        // 성공 시 동작
+                        alert("삭제 성공");
+                        location.reload();
+                    },
+                    error: function(error) {
+                        // 실패 시 동작
+                        console.error('삭제 실패', error);
+                    }
+                });
+            }
+        });
+        // 가입신청
         $("#joinButton").click(function () {
             if (confirm('정말로 가입하시겠습니까?')) {
                 $.ajax({
@@ -283,6 +292,24 @@
         $('#reportLink').click(function(e) {
             e.preventDefault(); // 기본 동작 방지
             var reportUrl = '/groups/reportform/'+${group.gno}; // 여기에 신고 URL을 지정하십시오.
+
+            // 새 창 열기
+            var reportWindow = window.open(reportUrl, '_blank', 'width=500, height=700, resizable=yes, scrollbars=yes');
+
+            // 새 창에서 신고 URL 열도록 설정
+            if (reportWindow) {
+                reportWindow.location.href = reportUrl;
+            } else {
+                alert('팝업 창이 차단되었습니다. 팝업 창을 허용해주세요.');
+            }
+        });
+        
+        //회원 신고 버튼
+        $('#userReport').click(function(e) {
+        	var memberid = '${group.memberid}';
+        	console.log(memberid);
+            e.preventDefault(); // 기본 동작 방지
+            var reportUrl = '/user/reportform?memberid='+memberid; // 여기에 신고 URL을 지정하십시오.
 
             // 새 창 열기
             var reportWindow = window.open(reportUrl, '_blank', 'width=500, height=700, resizable=yes, scrollbars=yes');

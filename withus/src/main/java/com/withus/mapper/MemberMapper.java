@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.withus.domain.Criteria;
 import com.withus.domain.FavorCateVo;
+import com.withus.domain.MemberReportVo;
 import com.withus.domain.MemberVo;
 import com.withus.domain.MessageVo;
 
@@ -61,4 +62,10 @@ public interface MemberMapper {
 	
 	// 전체 회원 수
 	int totalMemberCount();
+
+	// 회원 신고
+	void reportMember(MemberReportVo vo);
+	
+	// 피신고자 신고 횟수 +1
+	void reportIncrease(String reportedId);
 }
