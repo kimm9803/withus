@@ -33,6 +33,8 @@ public class MemberVo {
 	
 	private String regDate;
 	
+	private int report;
+	
 	private String provider;
 	private String providerId;
 

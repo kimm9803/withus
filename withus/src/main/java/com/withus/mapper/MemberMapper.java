@@ -65,4 +65,7 @@ public interface MemberMapper {
 
 	// 회원 신고
 	void reportMember(MemberReportVo vo);
+	
+	// 피신고자 신고 횟수 +1
+	void reportIncrease(String reportedId);
 }
