@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,8 +10,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
           crossorigin="anonymous">
-
+	<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap">
     <style>
+		   * {
+			font-family: 'Sunflower', sans-serif;
+		}
         /* 추가한 스타일들 */
         body {
             background-color: #f8f9fa;
@@ -27,10 +32,14 @@
 
         table {
             background-color: #fff;
+            border-collapse: separate; /* border-collapse 추가 */
+            border-spacing: 0; /* border-spacing 추가 */
         }
 
         th, td {
             text-align: center;
+            border: 1px solid #dee2e6; /* 안쪽 선 색상 지정 */
+            padding:8px;
         }
 
         .clickable-row {
@@ -40,12 +49,17 @@
         .dropdown-menu {
             min-width: auto;
         }
-
-        /* 수정된 스타일 */
+        
         .custom-table {
-          
             border-radius: 15px;
             overflow: hidden;
+            border: 1px solid black; /* 테두리 추가 */
+        }
+
+       
+        .custom-table th,
+        .custom-table td {
+            vertical-align: middle;
         }
     </style>
 </head>
@@ -71,6 +85,23 @@
                     <td>${report.reportdate}</td>
                 </tr>
                 <tr>
+                    <th>신고 진행상태</th>
+                    <c:choose>
+					  <c:when test="${report.rpstatus eq 0}">
+					    <td>확인중</td>
+					  </c:when>
+					  <c:when test="${report.rpstatus eq 1}">
+					    <td>확인</td>
+					  </c:when>
+					  <c:when test="${report.rpstatus eq 2}">
+					    <td>거부</td>
+					  </c:when>
+					  <c:otherwise>
+					    <td>알 수 없음</td>
+					  </c:otherwise>
+					</c:choose>		
+                </tr>
+                <tr>
                     <th>신고 내용</th>
                     <td>
                         <textarea class="form-control" rows="5" readonly>${report.rpcontent}</textarea>
@@ -82,6 +113,10 @@
         <div class="mt-3">
             <a href="#" onclick="history.go(-1)" class="btn btn-secondary">이전</a>
             <a href="/admin/group/reportlist" class="btn btn-primary">목록</a>
+            <c:if test="${report.rpstatus eq 0}">
+            <a href="/admin/group/reportadmit/${report.greportid}" class="btn btn-secondary" id="confirmAdmitBtn">확인</a>
+            <a href="/admin/group/reportreject/${report.greportid}" class="btn btn-primary" id="confirmRejectBtn">거부</a>
+            </c:if>
         </div>
     </div>
 
@@ -90,5 +125,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous"></script>
+	<script>
+	document.getElementById('confirmAdmitBtn').addEventListener('click', function() {
+        var isConfirmed = confirm('신고를 허락하시겠습니까?');
+        if (isConfirmed) {
+            window.location.href = '/admin/group/reportadmit/${report.greportid}';
+        }
+    });
+
+    document.getElementById('confirmRejectBtn').addEventListener('click', function() {
+        var isConfirmed = confirm('신고를 거부하시겠습니까?');
+        if (isConfirmed) {
+            window.location.href = '/admin/group/reportreject/${report.greportid}';
+        }
+    });
+	</script>            
 </body>
 </html>
