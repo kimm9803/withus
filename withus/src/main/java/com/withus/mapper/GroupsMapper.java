@@ -73,6 +73,13 @@ public interface GroupsMapper {
 
 	//그룹 신고 내용 보기
 	GroupReportVo gReportView(int greportid);
+	
+	//그룹 리스트 
+	List<GroupsVo> getGroupList(Map<String, Object> map);
+
+	//전체 그룹 수
+	int totalGroupCount();
+
 
 
 }
