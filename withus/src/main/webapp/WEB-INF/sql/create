@@ -208,3 +208,5 @@ FOREIGN KEY (reportedId)
 REFERENCES member(memberId)
 ON DELETE CASCADE;
 
+-- 회원 신고테이블 상태 추가(0 = 확인중, 1= 확인, 2= 거절)---
+ALTER TABLE MREPORT ADD rpstatus NUMBER(1) DEFAULT 0;

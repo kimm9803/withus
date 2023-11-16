@@ -44,4 +44,13 @@ public interface AdminMapper {
 
 	// 회원 신고 내역 상세보기
 	MemberReportVo mReportView(int mreportId);
+	
+	// 회원 신고 인정
+	void mReportAdmit(int mreportId);
+	
+	// 회원 신고 거부
+	void mReportReject(int mreportId);
+	
+	// 피신고자 신고 횟수 +1
+	void reportIncrease(String reportedId);
 }
