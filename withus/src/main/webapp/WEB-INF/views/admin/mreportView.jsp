@@ -84,7 +84,23 @@
                     <th>신고 날짜</th>
                     <td>${report.reportDate}</td>
                 </tr>
-                
+                <tr>
+                    <th>신고 진행상태</th>
+                    <c:choose>
+					  <c:when test="${report.rpstatus eq 0}">
+					    <td>확인중</td>
+					  </c:when>
+					  <c:when test="${report.rpstatus eq 1}">
+					    <td>확인</td>
+					  </c:when>
+					  <c:when test="${report.rpstatus eq 2}">
+					    <td>거부</td>
+					  </c:when>
+					  <c:otherwise>
+					    <td>알 수 없음</td>
+					  </c:otherwise>
+					</c:choose>		
+                </tr>
                 <tr>
                     <th>신고 내용</th>
                     <td>
@@ -97,6 +113,10 @@
         <div class="mt-3">
             <a href="#" onclick="history.go(-1)" class="btn btn-secondary">이전</a>
             <a href="/admin/user/report-list" class="btn btn-primary">목록</a>
+            <c:if test="${report.rpstatus eq 0}">
+            <a href="/admin/user/reportadmit/${report.mreportId}" class="btn btn-secondary" id="confirmAdmitBtn">확인</a>
+            <a href="/admin/user/reportreject/${report.mreportId}" class="btn btn-primary" id="confirmRejectBtn">거부</a>
+            </c:if>
         </div>
     </div>
 
@@ -105,5 +125,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous"></script>
+    <script>
+	    document.getElementById('confirmAdmitBtn').addEventListener('click', function() {
+	        var isConfirmed = confirm('신고를 허락하시겠습니까?');
+	        if (isConfirmed) {
+	            window.location.href = '/admin/user/reportadmit/${report.mreportId}';
+	        }
+	    });
+	
+	    document.getElementById('confirmRejectBtn').addEventListener('click', function() {
+	        var isConfirmed = confirm('신고를 거부하시겠습니까?');
+	        if (isConfirmed) {
+	            window.location.href = '/admin/user/reportreject/${report.mreportId}';
+	        }
+	    });
+    </script>
 </body>
 </html>

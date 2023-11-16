@@ -140,9 +140,6 @@ public class MemberController {
 	// 회원 신고
 	@PostMapping("/user/report")
 	public String reportMember(MemberReportVo vo) {
-		// 피신고자 신고당한 횟수 +1
-		memberMapper.reportIncrease(vo.getReportedId());
-		
 		// 신고
 		memberMapper.reportMember(vo);
 
