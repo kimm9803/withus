@@ -73,6 +73,28 @@ public class AdminController {
 		model.addAttribute("report", gReportView);
 		return "admin/greportView";
 	}	
+	// 그룹 신고 인정
+	@GetMapping("/group/reportadmit/{greportid}")
+	public String groupReportAdmit(@PathVariable("greportid") int greportid) {
+		//그룹신고 인정 후 신고상태 변경
+		adminMapper.gReportAdmit(greportid);
+		
+		//그룹번호찾기
+		int gno = adminMapper.findGno(greportid);
+		
+		//신고인정 그룹 신고수 + 1 
+		adminMapper.gGroupReport(gno);
+		
+		return "redirect:/admin/group/reportlist";
+	}
+	
+	// 그룹 신고 거부
+	@GetMapping("/group/reportreject/{greportid}")
+	public String groupReportReject(@PathVariable("greportid") int greportid) {
+		//그룹신고 거부 후 신고상태 변경
+		adminMapper.gReportReject(greportid);
+		return "redirect:/admin/group/reportlist";
+	}
 
 	
 	// 회원 강제 탈퇴

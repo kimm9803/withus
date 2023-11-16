@@ -22,4 +22,16 @@ public interface AdminMapper {
 	//신고 내역 상세보기
 	GroupReportVo gReportView(int greportid);
 
+	//신고 인정
+	void gReportAdmit(int greportid);
+	
+    //신고 그룹번호찾기	
+	int findGno(int greportid);
+
+	//신고인정 그룹 신고수 + 1
+	void gGroupReport(int gno);
+
+	//신고 거부
+	void gReportReject(int greportid);
+
 }

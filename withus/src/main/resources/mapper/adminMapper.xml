@@ -11,8 +11,8 @@
 	<!-- 그룹 신고 내역 -->
 	<select id="gReportList"
 		resultType="com.withus.domain.GroupReportVo">
-		SELECT memberid,gname,rpcate,reportdate,greportid
-		FROM ( SELECT r.memberid,g.gname,r.rpcate,r.reportdate,r.greportid,
+		SELECT memberid,gname,rpcate,reportdate,greportid,rpstatus
+		FROM ( SELECT r.memberid,g.gname,r.rpcate,r.reportdate,r.greportid,r.rpstatus,
 		row_number() over(order by r.gno desc) as rNum
 		FROM GREPORT r INNER JOIN GROUPS g ON r.gno = g.gno
 		) pr
@@ -28,9 +28,37 @@
 	<!-- 그룹신고 내용 -->
 	<select id="gReportView"
 		resultType="com.withus.domain.GroupReportVo">
-		SELECT r.memberid,g.gname,r.rpcate,r.reportdate,r.greportid,r.rpcontent
+		SELECT r.memberid,g.gname,r.rpcate,r.reportdate,r.greportid,r.rpcontent,r.rpstatus
 		FROM GREPORT r INNER JOIN GROUPS g ON r.gno = g.gno
 		WHERE r.greportid = #{greportid}
 	</select>
+	
+	<!-- 그룹신고 인정 -->
+	<update id="gReportAdmit">
+	update greport
+	set rpstatus = 1
+	where greportid = #{greportid}
+	</update>
+	
+	<!-- 그룹신고 거부 -->
+	<update id="gReportReject">
+	update greport
+	set rpstatus = 2
+	where greportid = #{greportid}
+	</update>
+	
+	<!-- 신고그룹번호 찾기 -->
+	<select id="findGno" resultType="int">
+	select gno
+	from greport
+	where greportid = #{greportid} 
+	</select>
+	
+	<!-- 신고인정 그룹 신고수 + 1 -->
+	<update id="gGroupReport">
+	update groups
+	set greport = greport + 1
+	where gno = #{gno}
+	</update>
 	
 </mapper>
