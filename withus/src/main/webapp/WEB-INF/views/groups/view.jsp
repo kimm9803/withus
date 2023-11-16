@@ -123,7 +123,7 @@
 				            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 				                <li><a class="dropdown-item" href="#">회원정보</a></li>
 				                <li><a class="dropdown-item" href="/user/message?memberId=${group.memberid}">쪽지 보내기</a></li>
-				                <li><a class="dropdown-item" href="#">신고하기</a></li>
+				                <li><a class="dropdown-item" href="#" id="userReport">신고하기</a></li>
 				            </ul>
 				        </div>
 				    </div>
@@ -283,6 +283,24 @@
         $('#reportLink').click(function(e) {
             e.preventDefault(); // 기본 동작 방지
             var reportUrl = '/groups/reportform/'+${group.gno}; // 여기에 신고 URL을 지정하십시오.
+
+            // 새 창 열기
+            var reportWindow = window.open(reportUrl, '_blank', 'width=500, height=700, resizable=yes, scrollbars=yes');
+
+            // 새 창에서 신고 URL 열도록 설정
+            if (reportWindow) {
+                reportWindow.location.href = reportUrl;
+            } else {
+                alert('팝업 창이 차단되었습니다. 팝업 창을 허용해주세요.');
+            }
+        });
+        
+        //회원 신고 버튼
+        $('#userReport').click(function(e) {
+        	var memberid = '${group.memberid}';
+        	console.log(memberid);
+            e.preventDefault(); // 기본 동작 방지
+            var reportUrl = '/user/reportform?memberid='+memberid; // 여기에 신고 URL을 지정하십시오.
 
             // 새 창 열기
             var reportWindow = window.open(reportUrl, '_blank', 'width=500, height=700, resizable=yes, scrollbars=yes');

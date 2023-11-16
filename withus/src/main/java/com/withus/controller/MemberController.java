@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.withus.domain.Criteria;
 import com.withus.domain.FavorCateVo;
+import com.withus.domain.MemberReportVo;
 import com.withus.domain.MemberVo;
 import com.withus.domain.MessageVo;
 import com.withus.domain.PageMaker;
@@ -122,5 +123,24 @@ public class MemberController {
 
 		return "member/sendMessage";
 	}
-
+	
+	// 회원 신고창
+	@GetMapping("/user/reportform")
+	public String reportForm(@RequestParam("memberid") String reportedId, Authentication authentication, Model model) {
+		/* 
+		 * 피신고자	: reportedId
+		 * 신고자		: reporterId
+		 */
+		String reporterId = memberService.authMember(authentication);
+		model.addAttribute("reporterId", reporterId);
+		model.addAttribute("reportedId", reportedId);
+		return "member/report";
+	}
+	
+	// 회원 신고
+	@PostMapping("/user/report")
+	public String reportMember(MemberReportVo vo) {
+		memberMapper.reportMember(vo);
+		return "close";
+	}
 }

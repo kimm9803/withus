@@ -151,3 +151,36 @@ CONSTRAINT FK_GREPORT_GNO FOREIGN KEY (GNO) REFERENCES GROUPS(GNO)
 -- 회원테이블 신고수 추가--
 ALTER TABLE member
 ADD Report DEFAULT 0;
+
+
+
+
+-- 회원 신고 시퀀스
+CREATE SEQUENCE mreport_sequence
+START WITH   1
+INCREMENT BY 1
+NOCACHE;
+
+-- 회원 신고 테이블
+CREATE TABLE mreport (
+    mreportId   NUMBER          PRIMARY KEY,
+    reporterId  VARCHAR2(255)   NOT NULL,
+    reportedId  VARCHAR2(255)   NOT NULL,
+    rpcontent   VARCHAR2(4000)  NOT NULL,
+    rpcate      VARCHAR2(255),
+    reportDate  DATE    DEFAULT SYSDATE
+);
+
+-- reporterId 열에 대한 외래 키 생성 (CASCADE 옵션)
+ALTER TABLE mreport
+ADD CONSTRAINT fk_reporterId
+FOREIGN KEY (reporterId)
+REFERENCES member(memberId)
+ON DELETE CASCADE;
+
+-- reportedId 열에 대한 외래 키 생성 (CASCADE 옵션)
+ALTER TABLE mreport
+ADD CONSTRAINT fk_reportedId
+FOREIGN KEY (reportedId)
+REFERENCES member(memberId)
+ON DELETE CASCADE;
