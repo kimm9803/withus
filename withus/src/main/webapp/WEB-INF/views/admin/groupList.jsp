@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>신고 내역 목록</title>
+<title>그룹 전체 목록</title>
 <script src="https://kit.fontawesome.com/51db22a717.js"
 	crossorigin="anonymous"></script>
 <link rel="stylesheet"
@@ -62,6 +62,9 @@ a:hover {
     width: 100%;
     text-align: left;
 }
+h2{
+text-align: center;
+}
 .pagination-wrapper {
     text-align: center;
     margin-top: 20px;
@@ -69,7 +72,7 @@ a:hover {
 </style>
 </head>
 <body>
-	<h2>신고 내역 목록</h2>
+	<h2>그룹 전체 목록</h2>
 	<div class="btn-group">
 		<button type="button" class="btn btn-warning" onclick="location.href='/'">홈으로</button>
 	</div>
@@ -77,35 +80,48 @@ a:hover {
 		<thead>
 			<tr>
 				<th scope="col">#</th>
-				<th scope="col">신고자 아이디</th>
-				<th scope="col">신고 그룹명</th>
-				<th scope="col">신고 사유</th>
-				<th scope="col">신고날짜</th>				
-				<th scope="col">신고확인여부</th>				
+				<th scope="col">그룹명</th>
+				<th scope="col">그룹장 ID</th>
+				<th scope="col">카테고리</th>
+				<th scope="col">지역</th>
+				<th scope="col">정원</th>				
+				<th scope="col">그룹원 수</th>				
+				<th scope="col">생성일</th>				
+				<th scope="col">추천수</th>				
+				<th scope="col">신고수</th>				
 			</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${gReportList}" var="report" varStatus="loop">
-			<tr class="clickable-row"  data-href="/admin/group/reportview/${report.greportid}">			
+		<c:forEach items="${groupList}" var="group" varStatus="loop">
+			<tr class="clickable-row"  data-href="">			
 				<td>${loop.index + 1}</td>
-				<td>${report.memberid}</td>
-				<td>${report.gname}</td>
-				<td>${report.rpcate}</td>
-				<td>${report.reportdate}</td>				
-				<c:choose>
-				  <c:when test="${report.rpstatus eq 0}">
-				    <td>확인중</td>
-				  </c:when>
-				  <c:when test="${report.rpstatus eq 1}">
-				    <td>확인</td>
-				  </c:when>
-				  <c:when test="${report.rpstatus eq 2}">
-				    <td>거부</td>
-				  </c:when>
-				  <c:otherwise>
-				    <td>알 수 없음</td>
-				  </c:otherwise>
-				</c:choose>				
+                <td>${group.gname}</td>
+                <td>${group.memberid}</td>
+                <td>
+				    <c:choose>
+				        <c:when test="${group.catename eq null}">
+				            기타
+				        </c:when>
+				        <c:otherwise>
+				            ${group.catename}
+				        </c:otherwise>
+				    </c:choose>
+				</td>
+	            <td>
+				    <c:choose>
+				        <c:when test="${group.rname eq null}">
+				            기타
+				        </c:when>
+				        <c:otherwise>
+				            ${group.rname}
+				        </c:otherwise>
+				    </c:choose>
+				</td>
+                <td>${group.gperson}</td>
+                <td>${group.memberCnt}</td>
+                <td>${group.gdate}</td>
+                <td>${group.glike}</td>
+                <td>${group.greport}</td>					
 			</tr>
 		</c:forEach>
 		</tbody>
@@ -115,27 +131,21 @@ a:hover {
 		<ul>
 			<c:if test="${pageMaker.prev}">
 				<li><a
-					href="/admin/group/reportlist${pageMaker.makeQuery(pageMaker.startPage - 1)}">이전</a></li>
+					href="/admin/group/list${pageMaker.makeQuery(pageMaker.startPage - 1)}">이전</a></li>
 			</c:if>
 
 			<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
 				var="idx">
-				<li><a href="/admin/group/reportlist${pageMaker.makeQuery(idx)}">${idx}</a></li>
+				<li><a href="/admin/group/list${pageMaker.makeQuery(idx)}">${idx}</a></li>
 			</c:forEach>
 
 			<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
 				<li><a
-					href="/admin/group/reportlist${pageMaker.makeQuery(pageMaker.endPage + 1)}">다음</a></li>
+					href="/admin/group/list${pageMaker.makeQuery(pageMaker.endPage + 1)}">다음</a></li>
 			</c:if>
 		</ul>
 	</div>	
 	<script>
-	$(document).ready(function() {
-	    $('.clickable-row').on('click', function() {
-	        var href = $(this).data('href');
-	        window.location.href = href; // 클릭한 링크로 이동
-	    });
-	});
 	</script>
 </body>
 </html>

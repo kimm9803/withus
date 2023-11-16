@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.withus.domain.Criteria;
 import com.withus.domain.GroupReportVo;
+import com.withus.domain.GroupsVo;
 import com.withus.domain.MemberVo;
 import com.withus.domain.PageMaker;
 import com.withus.mapper.AdminMapper;
+import com.withus.mapper.GroupsMapper;
 import com.withus.mapper.MemberMapper;
 
 @Controller
@@ -29,6 +31,9 @@ public class AdminController {
  
 	@Autowired
 	private AdminMapper adminMapper;
+	
+	@Autowired
+	private GroupsMapper groupsMapper;
 
 	
 	// 회원 전체 리스트
@@ -48,6 +53,22 @@ public class AdminController {
 		model.addAttribute("pageMaker", pageMaker);
 		
 		return "admin/memberList";
+	}
+	// 그룹 전체 리스트
+	@GetMapping("/group/list")
+	public String getGroupList(Criteria cri, Model model) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("rowStart", cri.getRowStart());
+		map.put("rowEnd", cri.getRowEnd());
+		
+		List<GroupsVo> groupList = groupsMapper.getGroupList(map);
+		model.addAttribute("groupList", groupList);
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(groupsMapper.totalGroupCount());
+		model.addAttribute("pageMaker", pageMaker);
+		return "admin/groupList";
 	}
 
 	// 그룹 신고 내역 
@@ -102,6 +123,6 @@ public class AdminController {
 	public String deleteUser(@RequestParam("memberId") String memberId) {
 		adminMapper.deleteUser(memberId);
 		return "redirect:/admin/user/list";
-	}
+	}	
 
 }

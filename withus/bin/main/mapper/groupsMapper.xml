@@ -42,20 +42,7 @@
 		SELECT COUNT(gno)
 		from gmember
 		where gno = #{gno}
-	</select>
-
-	<!-- getMoreGroups 쿼리 -->
-	<!-- <select id="getMoreGroups" resultType="com.withus.domain.GroupsVo"> 
-		SELECT gno, gname, gdate, gperson, glike, new_image_name AS newImageName, 
-		catename, rname, memberid, name, memberCnt FROM ( SELECT g.gno, g.gname, 
-		TO_CHAR(g.gdate, 'YYYY-MM-DD') AS GDATE, g.gperson, g.glike, i.new_image_name, 
-		c.catename, r.rname, g.memberid, m.name, ( SELECT COUNT(gm.gno)+1 FROM gmember 
-		gm WHERE gm.gno = g.gno ) AS memberCnt, ROW_NUMBER() OVER (ORDER BY g.gdate 
-		DESC) AS rnum FROM category c RIGHT JOIN groups g ON c.cateid = g.cateid 
-		LEFT JOIN gimage i ON g.gno = i.gno LEFT JOIN region r ON g.rno = r.rno LEFT 
-		JOIN member m ON g.memberid = m.memberid ) WHERE rnum BETWEEN #{startRow} 
-		AND #{endRow} </select> -->
-		
+	</select>		
 		
 	<!-- 그룹 더보기 목록 + 검색 -->
 	<select id="getMoreGroups"
@@ -199,6 +186,25 @@
 	insert into GREPORT(greportid,gno,memberid,rpcontent,rpcate)
 	values((SELECT NVL(MAX(GREPORTID), 0) + 1 FROM GREPORT),#{gno},#{memberid},#{rpcontent},#{rpcate})
 	</insert>
+	
+	<!-- 그룹 리스트 -->
+	<select id="getGroupList" resultType="com.withus.domain.GroupsVo">
+		SELECT gname,gdate,gperson,catename,glike,greport,memberid,memberCnt,rname
+			FROM (
+				SELECT g.gname,g.gperson,c.catename,g.glike,g.greport,g.memberid,r.rname,TO_CHAR(g.gdate, 'YYYY-MM-DD') GDATE,
+				(SELECT COUNT(gm.gno) + 1 FROM gmember gm WHERE gm.gno = g.gno) AS memberCnt,
+				row_number() over(order by gdate desc) as rNum
+				FROM groups g LEFT JOIN category c ON g.cateid = c.cateid
+				LEFT JOIN region r ON g.rno = r.rno						
+			) mb
+		WHERE  rNum between #{rowStart} and #{rowEnd}			
+	</select>
+	
+	<!-- 전체 그룹 수 -->
+	<select id="totalGroupCount" resultType="int">
+		SELECT COUNT(gno)
+		FROM groups		
+	</select>
 
 
 
