@@ -51,9 +51,17 @@ a {
 }
 
 a:hover {
-    background-color: #f0f0f0;
+    font-weight: bold;
+}
+.dropdown-menu {
+    text-align: center;
 }
 
+.dropdown-menu a {
+    display: block;
+    width: 100%;
+    text-align: left;
+}
 </style>
 </head>
 <body>
@@ -65,8 +73,8 @@ a:hover {
 				<th scope="col">신고자 아이디</th>
 				<th scope="col">신고 그룹명</th>
 				<th scope="col">신고 사유</th>
-				<th scope="col">신고날짜</th>
-				<th scope="col">선택</th>
+				<th scope="col">신고날짜</th>				
+				<th scope="col">신고확인여부</th>				
 			</tr>
 		</thead>
 		<tbody>
@@ -76,18 +84,21 @@ a:hover {
 				<td>${report.memberid}</td>
 				<td>${report.gname}</td>
 				<td>${report.rpcate}</td>
-				<td>${report.reportdate}</td>
-				<td>
-					<div class="dropdown">
-			            <button class="btn btn-secondary btn-sm dropdown-toggle drop" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-			              신고확인여부
-			            </button>
-			            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			              <li><a class="dropdown-item" href="#">확인</a></li>
-			              <li><a class="dropdown-item" href="#">취소</a></li>			              
-			            </ul>
-			    	</div>
-				</td>
+				<td>${report.reportdate}</td>				
+				<c:choose>
+				  <c:when test="${report.rpstatus eq 0}">
+				    <td>확인중</td>
+				  </c:when>
+				  <c:when test="${report.rpstatus eq 1}">
+				    <td>확인</td>
+				  </c:when>
+				  <c:when test="${report.rpstatus eq 2}">
+				    <td>거부</td>
+				  </c:when>
+				  <c:otherwise>
+				    <td>알 수 없음</td>
+				  </c:otherwise>
+				</c:choose>				
 			</tr>
 		</c:forEach>
 		</tbody>
@@ -113,10 +124,11 @@ a:hover {
 	</div>	
 	<script>
 	$(document).ready(function() {
-		$('.clickable-row').on('click', function() {
-			window.location = $(this).data('href');
-		});
-	})
+	    $('.clickable-row').on('click', function() {
+	        var href = $(this).data('href');
+	        window.location.href = href; // 클릭한 링크로 이동
+	    });
+	});
 	</script>
 </body>
 </html>
