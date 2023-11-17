@@ -9,7 +9,7 @@
 <title>home</title>
 </head>
 <body>
-
+<%@ include file="header.jsp" %>
 <sec:authorize access="hasRole('ROLE_ADMIN')">
     <a href="/admin/user/list">회원 전체 목록</a>
     <a href="/admin/group/reportlist">그룹 신고 내역</a>
@@ -31,7 +31,7 @@
 </sec:authorize>
 
 <a href ="/groups/create">그룹만들기</a>
-<a href ="/groups/list">그룹목록보기</a>
+<a href ="/groups/loadall">그룹목록보기</a>
 <a href ="/upload">이미지업로드 테스트</a>
 <a href ="  ">모임 만들기</a>
 <a href ="  ">모임 홈</a>
@@ -39,7 +39,6 @@
 <a href ="/gboard/create">게시판 작성</a>
 
 <a href ="  ">게시판</a>
-
 
 
 

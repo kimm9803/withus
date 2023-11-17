@@ -4,10 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,13 +36,14 @@ public class GroupsController {
 	
 	
       //그룹 만들기 페이지	
+	  @Secured("ROLE_USER")
 	  @GetMapping("/create")
 	  public String createform() {
 		  return "groups/create";
 	  }
-	  //그룹 만들기	  
+	  //그룹 만들기
+	  @Secured("ROLE_USER")
 	  @PostMapping("/create")
-	  @Transactional
 	  public ModelAndView create(GroupsVo vo, Authentication authentication) {
 		  
 		  String memberId = memberService.authMember(authentication);
@@ -91,6 +95,7 @@ public class GroupsController {
 		  return mv;
 	  }	  
 	  //그룹 가입신청 목록
+	  @Secured("ROLE_USER")
 	  @GetMapping("/joinlist/{gno}")
 	  public ModelAndView joinlist(@PathVariable int gno) {
 		  ModelAndView mv = new ModelAndView();
@@ -100,6 +105,7 @@ public class GroupsController {
 		  return mv;
 	  }
 	  //그룹원 목록
+	  @Secured("ROLE_USER")
 	  @GetMapping("/memberlist/{gno}")
 	  public ModelAndView memberlist(@PathVariable int gno){
 		  ModelAndView mv = new ModelAndView();
@@ -111,6 +117,7 @@ public class GroupsController {
 		  
 	  }
 	  //그룹 신고창 열기
+	  @Secured("ROLE_USER")
 	  @GetMapping("/reportform/{gno}")
 	  public ModelAndView reportform(@PathVariable("gno") int gno, Authentication authentication) {
 		  String memberid = memberService.authMember(authentication);
@@ -124,10 +131,35 @@ public class GroupsController {
 		  return mv;
 	  }
 	  //그룹 신고
+	  @Secured("ROLE_USER")
 	  @PostMapping("/report/{gno}")
 	  public String reportGroup(GroupReportVo vo) {
 		  groupsMapper.reportGroup(vo);
 		  return "close";
 	  }
+	  
+	  //카테고리별 리스트
+	  @GetMapping("/loadcate/{cateid}")
+	  public String loadCateGroup(@PathVariable("cateid") int cateid, Model model) {
+		  List<GroupsVo> cateGroupList = groupsMapper.loadCateGroup(cateid);
+		  int totalGroup = groupsMapper.totalCateGroupCount(cateid);
+		  model.addAttribute("cateGroupList", cateGroupList);
+		  model.addAttribute("totalGroup", totalGroup);
+		  
+		  return "groups/listcate";
+		  
+	  }
+	  //전체 그룹
+	  @GetMapping("/loadall")
+	  public String loadGroup(Model model) {
+		  List<GroupsVo> cateGroupList = groupsMapper.loadGroup();
+		  int totalGroup = groupsMapper.totalGroupCount();
+		  model.addAttribute("cateGroupList", cateGroupList);
+		  model.addAttribute("totalGroup", totalGroup);
+		  
+		  return "groups/listall";
+		  
+	  }
+	  
 	  
 }
