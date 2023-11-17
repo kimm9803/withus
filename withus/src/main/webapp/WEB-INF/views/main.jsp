@@ -92,12 +92,6 @@
             padding: 50px;
         }
 
-        #search {
-            width: 60%;
-            margin: 20px auto;
-            /* 상하단 마진 20px */
-        }
-
         .custom-image-style {
             /* 직사각형 이미지에 대한 사용자 정의 스타일 추가 */
             border-radius: 10px;
@@ -127,11 +121,19 @@
 		    height: 700px;
 		    object-fit: cover;
 		}
+		#mainbody{
+		margin-bottom: 50px;
+		margin-top: 100px;
+		}
+		#cardheader{
+		margin-top: 20px; 	
+		}
 
     </style>
 </head>
 
 <body>
+<header><%@ include file="header.jsp" %></header>
 <div id="mainbody">
 <div id="mainimg">
 <img src="/img/main.jpg">
@@ -189,24 +191,10 @@
 		            <span>차/오토바이</span>
 		        </a>
 		    </div>
-		</div>
-    <!-- 검색 부분 -->
-	<div class="mb-3" id="search">
-	    <form id="searchForm" action="/groups/loadall" method="GET">
-	        <div class="input-group" style="display: flex; justify-content: center;">
-	            <select class="form-select" id="searchType" name="searchType" style="flex: 3;">
-	                <option value="gname">제목</option>
-	                <option value="gintro">내용</option>
-	                <option value="region">지역</option>
-	                <option value="memberid">그룹장</option>
-	            </select>
-	            <input type="text" class="form-control" id="keyword" name="keyword" autocomplete="off" style="flex: 7;"/>
-	            <button type="submit" class="btn btn-dark" id="searchBtn" >검색</button>
-	        </div>
-	    </form>
-	</div>
+		</div>    
 		
 	<!--  그룹 부분 -->
+	<div id="cardheader"><h5>전체 그룹</h5></div>
 	<div class="card-container" id="groupContainer">
        <c:forEach var="group" items="${cateGroupList}"> 
             <div class='card border-dark'>
@@ -245,13 +233,70 @@
             </div>
         </c:forEach>
     </div>
+    <!-- 전제 그룹 목록 끝 -->
 
     <!-- "더보기" 버튼 -->
     <div class="loadMore">
         <button type="button" class="btn btn-dark" id="loadMoreBtn">더보기</button>
     </div>
+    
+            <!-- 선호 카테고리 그룹 부분 -->
+            <c:if test="${not empty memberid}">
+            <div id="cardheader">
+                <h5>선호 카테고리 그룹</h5>
+                <div class="card-container" id="favorGroupContainer">
+                    <c:forEach var="favorgroup" items="${favorGroupList}"> 
+                        <div class='card border-dark'>
+                            <!-- 그룹 표시 코드 -->
+                            <div class='card-header bg-light'>
+                                <div style='display: flex; align-items: center; width: 100%'>
+                                    <!-- 이미지 표시 코드 -->
+                                    <c:if test="${favorgroup.newImageName eq null}">
+                                        <img src='/img/basic.jpg' class='custom-image-style' style='height: 120px; width: 120px; border: 1px solid black; margin-right: 10px;'>
+                                    </c:if>
+                                    <c:if test="${favorgroup.newImageName ne null}">
+                                        <img src='/${favorgroup.newImageName}' class='custom-image-style' style='height: 120px; width: 120px; border: 1px solid black; margin-right: 10px;'>
+                                    </c:if>
+                                    <div style='flex-grow: 1;'>
+                                        <h5>
+                                            <a href='/groups/view/${favorgroup.gno}' class='text-dark'>${favorgroup.gname}</a>
+                                        </h5>
+                                        <div class='card-body d-flex flex-column justify-content-between'style='width: 70%; margin-left: 70px;'>
+                                            <!-- 그룹 정보 표시 코드 -->
+                                            <div class='d-flex justify-content-between mb-2'>
+                                                <div class='card-text mr-2'>정원: ${favorgroup.memberCnt} / ${favorgroup.gperson}</div>
+                                                <div class='card-text'>추천: ${favorgroup.glike}</div>
+                                            </div>
+                                            <div class='d-flex justify-content-between'>
+                                                <div class='card-text'>생성일: ${favorgroup.gdate}</div>
+                                                <div class='card-text'>그룹장: ${favorgroup.name}</div>
+                                            </div>
+                                            <div class='d-flex justify-content-between'>
+                                                <div class='card-text mr-2'>분류: ${favorgroup.catename}</div>
+                                                <div class='card-text'>지역: ${favorgroup.rname}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
 
+                <!-- "더보기" 버튼 -->
+                <div class="loadMore">
+                    <button type="button" class="btn btn-dark" id="loadMoreFavorGroupBtn">더보기</button>
+                </div>
+            </div>
+			</c:if>
+			<!-- 선호카테고리 끝 -->
+        </div>
+    </div>
+
+<footer><%@ include file="footer.jsp" %></footer>
+</body>
     <script>
+    // 전체그룹 더보기 버튼
     var increment = 4;
     var visibleGroups = 4;
     var totalGroups = ${totalGroup}; // totalGroup 값 할당
@@ -271,8 +316,25 @@
     }
 
     document.getElementById('loadMoreBtn').addEventListener('click', loadMoreGroups);
+    
+    var visibleFavorGroups = 4;
+    var totalFavorGroups = ${totalFavorGroups}; // totalFavorGroups 값 할당
+    if (visibleFavorGroups >= totalFavorGroups) {
+        document.getElementById('loadMoreFavorGroupBtn').style.display = 'none';
+    }
+
+    //선호 카테고리그룹 더보기 버튼
+    function loadMoreFavorGroups() {
+        visibleFavorGroups += increment;
+
+        // 보여질 선호 카테고리 그룹 수까지만 숨겨진 그룹을 나타냄
+        $('#favorGroupContainer .card:hidden:lt(' + increment + ')').show();
+
+        if (visibleFavorGroups >= totalFavorGroups) {
+            document.getElementById('loadMoreFavorGroupBtn').style.display = 'none';
+        }
+    }
+
+    document.getElementById('loadMoreFavorGroupBtn').addEventListener('click', loadMoreFavorGroups);
     </script>
-</div>
-</div>
-</body>
 </html>

@@ -104,6 +104,16 @@ public interface GroupsMapper {
 	//그룹 테이블 추천 컬럼 - 1
 	void likeMinus(Map<String, Object> params);
 
+	//접속 회원 선호카테고리
+	List<Integer> favorCate(String memberid);
+
+	//선호카테고리 그룹 리스트
+	List<GroupsVo> favorGroup(int favorCateid);
+
+	//선호카테고리 그룹 수
+	int totalFavorGroups(int favorCateid);
+	
+
 
 
 }

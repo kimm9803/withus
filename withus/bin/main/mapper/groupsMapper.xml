@@ -44,65 +44,6 @@
 		where gno = #{gno}
 	</select>		
 		
-	<!-- 그룹 더보기 목록 + 검색 -->
-<!--  	<select id="getMoreGroups"
-		resultType="com.withus.domain.GroupsVo" parameterType="map">
-	SELECT
-	gno,
-	gintro,
-	gname,
-	gdate,
-	gperson,
-	glike,
-	new_image_name AS newImageName,
-	catename,
-	rname,
-	memberid,
-	name,
-	memberCnt
-	FROM (SELECT
-	g.gno,
-	g.gintro,
-	g.gname,
-	TO_CHAR(g.gdate, 'YYYY-MM-DD') AS GDATE,
-	g.gperson,
-	g.glike,
-	i.new_image_name,
-	c.catename,
-	r.rname,
-	g.memberid,
-	m.name,
-	(SELECT COUNT(gm.gno) + 1 FROM gmember gm WHERE gm.gno = g.gno) AS memberCnt,
-	ROW_NUMBER() OVER (ORDER BY g.gdate DESC) AS rnum
-	FROM
-	category c
-	RIGHT JOIN groups g ON c.cateid = g.cateid
-	LEFT JOIN gimage i ON g.gno = i.gno
-	LEFT JOIN region r ON g.rno = r.rno
-	LEFT JOIN member m ON g.memberid = m.memberid
-	<if test='searchType != null and keyword != null and keyword != ""'>
-		WHERE
-		<choose>
-			<when test='searchType.equals("gname")'>
-				g.gname LIKE '%' || #{keyword} || '%'
-			</when>
-			<when test='searchType.equals("gintro")'>
-				g.gintro LIKE '%' || #{keyword} || '%'
-			</when>
-			<when test='searchType.equals("gname_gintro")'>
-				g.gname LIKE '%' || #{keyword} || '%' OR g.gintro LIKE '%' || #{keyword} ||
-				'%'
-			</when>
-			<when test='searchType.equals("memberid")'>
-				m.name LIKE '%' || #{keyword} || '%'
-			</when>
-		</choose>
-	</if>
-
-		)		
-	    WHERE rnum BETWEEN #{startRow} AND #{endRow}			
-	</select> -->
-	
 	<!-- 카테고리 그룹 목록 + 검색 -->
 	<select id="loadCateGroup"
 		resultType="com.withus.domain.GroupsVo">
@@ -143,6 +84,7 @@
 			</choose>
 		</if>
 	</select>
+	
 	<!-- 전체 그룹목록 + 검색 -->
 	<select id="loadGroup" resultType="com.withus.domain.GroupsVo">
 	    SELECT
@@ -358,6 +300,44 @@
     set glike = glike - 1
     where gno = #{gno}
     </update>
+    
+    <!-- 접속 회원 선호카테고리 ID -->
+    <select id="favorCate" resultType="int">
+    select cateid
+    from favorcate
+    where memberid = #{memberid}
+    </select>
+    
+    <!-- 선호 카테고리 그룹 리스트 -->
+    <select id="favorGroup"
+		resultType="com.withus.domain.GroupsVo">
+		SELECT
+		g.gno,
+		g.gintro,
+		g.gname,
+		TO_CHAR(g.gdate, 'YYYY-MM-DD') AS GDATE,
+		g.gperson,
+		g.glike,
+		i.new_image_name AS newImageName,
+		c.catename,
+		r.rname,
+		g.memberid,
+		m.name,
+		(SELECT COUNT(gm.gno) + 1 FROM gmember gm WHERE gm.gno = g.gno) AS memberCnt
+		FROM
+		category c
+		RIGHT JOIN groups g ON c.cateid = g.cateid
+		LEFT JOIN gimage i ON g.gno = i.gno
+		LEFT JOIN region r ON g.rno = r.rno
+		LEFT JOIN member m ON g.memberid = m.memberid
+		WHERE g.cateid = #{favorCateid}
+	</select>
+	
+	<select id="totalFavorGroups" resultType="int">
+	SELECT COUNT(GNO)
+	FROM GROUPS
+	WHERE cateid = #{favorCateid}
+	</select>
 
 
 
