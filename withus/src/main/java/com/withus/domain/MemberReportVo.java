@@ -12,4 +12,5 @@ public class MemberReportVo {
 	private String rpcontent;
 	private String rpcate;
 	private String reportDate;
+	private int rpstatus;
 }

@@ -63,9 +63,9 @@
 	
 	<!-- 회원 신고 내역 -->
 	<select id="mReportList" resultType="com.withus.domain.MemberReportVo">
-		select mreportId, reporterId, reportedId, rpcontent, rpcate, reportDate
+		select mreportId, reporterId, reportedId, rpcontent, rpcate, reportDate, rpstatus
 	       from (
-	           select mreportId, reporterId, reportedId, rpcontent, rpcate, reportDate,
+	           select mreportId, reporterId, reportedId, rpcontent, rpcate, reportDate, rpstatus,
 	               row_number() over(order by mreportId desc) as rNum
 	           from mreport
 	     ) mb
@@ -81,9 +81,29 @@
 	
 	<!-- 회원신고 내용 -->
 	<select id="mReportView" resultType="com.withus.domain.MemberReportVo">
-		SELECT mreportId, reporterId, reportedId, rpcontent, rpcate, reportDate
+		SELECT mreportId, reporterId, reportedId, rpcontent, rpcate, reportDate, rpstatus
 		FROM mreport
 		WHERE mreportId = #{mreportId}
 	</select>
 
+	<!-- 그룹신고 인정 -->
+	<update id="mReportAdmit">
+		UPDATE mreport
+		SET rpstatus = 1
+		WHERE mreportId = #{mreportId}
+	</update>
+	
+	<!-- 그룹신고 거부 -->
+	<update id="mReportReject">
+		UPDATE mreport
+		SET rpstatus = 2
+		WHERE mreportId = #{mreportId}
+	</update>
+	
+	<!-- 피신고자 신고 횟수 +1 -->
+	<update id="reportIncrease">
+		UPDATE member
+		SET report = report + 1
+		WHERE memberId = #{reportedId}
+	</update>
 </mapper>
