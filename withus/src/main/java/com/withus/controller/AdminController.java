@@ -34,6 +34,8 @@ public class AdminController {
 	
 	@Autowired
 	private GroupsMapper groupsMapper;
+	
+	
 
 	// 관리자 페이지
 	@GetMapping("/page")
