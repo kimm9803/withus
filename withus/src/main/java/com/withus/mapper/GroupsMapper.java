@@ -78,16 +78,31 @@ public interface GroupsMapper {
 	List<GroupsVo> getGroupList(Map<String, Object> map);
 
 	//전체 그룹 수
-	int totalGroupCount();
+	int totalGroupCount(Map<String, Object> params);
 
 	//카테고리 별 그룹 리스트
-	List<GroupsVo> loadCateGroup(int cateid);
+	List<GroupsVo> loadCateGroup(Map<String, Object> params);
 
 	//전체 그룹 리스트
-	List<GroupsVo> loadGroup();
+	List<GroupsVo> loadGroup(Map<String, Object> params);
 
 	//전체 카테고리별 그룹 수
-	int totalCateGroupCount(int cateid);
+	int totalCateGroupCount(Map<String, Object> params);
+
+	//그룹 추천 여부
+	int likeStatus(Map<String, Object> params);
+	
+	//그룹추천 테이블 추가
+	void likeinsert(Map<String, Object> params);
+	
+    //그룹 테이블 추천 컬럼 + 1
+	void likePlus(Map<String, Object> params);
+	
+	//그룹추천 테이블 삭제
+	void likedelete(Map<String, Object> params);
+
+	//그룹 테이블 추천 컬럼 - 1
+	void likeMinus(Map<String, Object> params);
 
 
 

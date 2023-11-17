@@ -35,6 +35,13 @@ public class AdminController {
 	@Autowired
 	private GroupsMapper groupsMapper;
 
+	
+	//관리자 페이지 이동
+	@GetMapping("/adminpage")
+	public String adminpage() {
+		return "admin/adminpage";
+	}
+
 	// 회원 전체 리스트
 	@GetMapping("/user/list")
 	public String getUserList(Criteria cri, Model model) {
@@ -65,7 +72,7 @@ public class AdminController {
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(groupsMapper.totalGroupCount());
+		pageMaker.setTotalCount(groupsMapper.totalGroupCount(null));
 		model.addAttribute("pageMaker", pageMaker);
 		return "admin/groupList";
 	}
