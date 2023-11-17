@@ -80,6 +80,15 @@ public interface GroupsMapper {
 	//전체 그룹 수
 	int totalGroupCount();
 
+	//카테고리 별 그룹 리스트
+	List<GroupsVo> loadCateGroup(int cateid);
+
+	//전체 그룹 리스트
+	List<GroupsVo> loadGroup();
+
+	//전체 카테고리별 그룹 수
+	int totalCateGroupCount(int cateid);
+
 
 
 }
