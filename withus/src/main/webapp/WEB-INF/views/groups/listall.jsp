@@ -77,10 +77,6 @@
             padding: 10px;
         }
 
-        .loadMore {
-            margin-bottom: 50px;
-        }
-
         #collapseBtn {
             display: none;
         }
@@ -127,24 +123,8 @@
 <div id="main">
     <h2>그룹 목록</h2>
     <a href="/groups/create" class="btn btn-dark" id="create">그룹 생성</a>
-    <a href="/" class="btn btn-dark" id="create">홈으로</a>
+    <a href="/" class="btn btn-dark" id="create">홈으로</a>    
     
-    <!-- 검색 부분 -->
-    <div class="mb-3" id="search">
-        <div class="mb-3" id="search">
-            <div class="input-group" style="display: flex; justify-content: center;">
-                <select class="form-select" id="searchType" name="searchType" style="flex: 3;">
-                    <option value="gname">제목</option>
-                    <option value="gintro">내용</option>
-                    <option value="gname_gintro">제목+내용</option>
-                    <option value="memberid">그룹장</option>
-                </select>
-                <input type="text" class="form-control" id="keyword" name="keyword" autocomplete="off"
-                       style="flex: 7;"/>
-                <button type="button" class="btn btn-dark" id="searchBtn">검색</button>
-            </div>
-        </div>
-    </div>
     <!-- 카테고리 부분 -->
 		<div class="category-container">
 			<div class="category-item">
@@ -199,6 +179,21 @@
 		    </div>
 		</div>
 		
+		<!-- 검색 부분 -->
+		<div class="mb-3" id="search">
+		    <form id="searchForm" action="/groups/loadall" method="GET">
+		        <div class="input-group" style="display: flex; justify-content: center;">
+		            <select class="form-select" id="searchType" name="searchType" style="flex: 3;">
+		                <option value="gname">제목</option>
+		                <option value="gintro">내용</option>
+		                <option value="region">지역</option>
+		                <option value="memberid">그룹장</option>
+		            </select>
+		            <input type="text" class="form-control" id="keyword" name="keyword" autocomplete="off" style="flex: 7;"/>
+		            <button type="submit" class="btn btn-dark" id="searchBtn" >검색</button>
+		        </div>
+		    </form>
+		</div>
 	<!--  그룹 부분 -->
 	<div class="card-container" id="groupContainer">
        <c:forEach var="group" items="${cateGroupList}"> 
@@ -227,10 +222,10 @@
                                     <div class='card-text'>생성일: ${group.gdate}</div>
                                     <div class='card-text'>그룹장: ${group.name}</div>
                                 </div>
-                                <div class='d-flex justify-content-between'>
-                                    <div class='card-text mr-2'>분류: ${group.catename}</div>
-                                    <div class='card-text'>지역: ${group.rname}</div>
-                                </div>
+                                <div class='d-flex justify-content-between'>                                    
+								    <div class='card-text mr-2'>분류: ${group.catename != null ? group.catename : '기타'}</div>
+								    <div class='card-text'>지역: ${group.rname != null ? group.rname : '기타'}</div>
+								</div>
                             </div>
                         </div>
                     </div>
@@ -248,6 +243,9 @@
     var increment = 4;
     var visibleGroups = 4;
     var totalGroups = ${totalGroup}; // totalGroup 값 할당
+    if (visibleGroups >= totalGroups) {
+        document.getElementById('loadMoreBtn').style.display = 'none';
+    }
 
     function loadMoreGroups() {
         visibleGroups += increment;

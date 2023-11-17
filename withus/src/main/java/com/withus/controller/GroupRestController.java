@@ -105,6 +105,34 @@ public class GroupRestController {
 	    List<GroupsVo> additionalGroups = groupsMapper.getMoreGroups(params); // 추가 데이터를 가져오는 메서드 호출
 	    return additionalGroups;
 	}
+	
+	//그룹 추천
+	@Secured("ROLE_USER")
+	@GetMapping("/like/{gno}")
+	public String groupLike(@PathVariable("gno") int gno, @RequestParam("memberid") String memberid) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("gno", gno);
+		params.put("memberid", memberid);
+		// 그룹 좋아요 중복 확인
+		int likeStatus = groupsMapper.likeStatus(params);
+		System.out.println(likeStatus);
+		// 좋아요 기록없을경우
+		if(likeStatus == 0) {
+			//glike 테이블에 좋아요 입력
+			groupsMapper.likeinsert(params);
+			//groups 테이블 glike 컬럼 + 1
+			groupsMapper.likePlus(params);
+			
+			return "like";
+		}else {
+			//glike 테이블에 데이터 삭제
+			groupsMapper.likedelete(params);
+			//groups 테이블 glike 컬럼 - 1
+			groupsMapper.likeMinus(params);
+			
+			return "unlike";
+		}
+	}
 
 
 	

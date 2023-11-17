@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.withus.domain.GroupJoinVo;
@@ -140,20 +141,42 @@ public class GroupsController {
 	  
 	  //카테고리별 리스트
 	  @GetMapping("/loadcate/{cateid}")
-	  public String loadCateGroup(@PathVariable("cateid") int cateid, Model model) {
-		  List<GroupsVo> cateGroupList = groupsMapper.loadCateGroup(cateid);
-		  int totalGroup = groupsMapper.totalCateGroupCount(cateid);
+	  public String loadCateGroup(@PathVariable("cateid") int cateid, Model model,
+			  					  @RequestParam(value = "searchType", required = false) String searchType,
+			  					  @RequestParam(value = "keyword", required = false) String keyword) {
+		  
+		  Map<String, Object> params = new HashMap<>();
+		  params.put("cateid", cateid);
+		  
+		  // 검색 조건이 있다면 매퍼 메서드에 전달
+		    if (searchType != null && keyword != null) {
+		        params.put("searchType", searchType);
+		        params.put("keyword", keyword);
+		  }
+		  
+		  List<GroupsVo> cateGroupList = groupsMapper.loadCateGroup(params);
+		  int totalGroup = groupsMapper.totalCateGroupCount(params);
 		  model.addAttribute("cateGroupList", cateGroupList);
 		  model.addAttribute("totalGroup", totalGroup);
+		  model.addAttribute("cateid", cateid);
 		  
 		  return "groups/listcate";
 		  
 	  }
 	  //전체 그룹
 	  @GetMapping("/loadall")
-	  public String loadGroup(Model model) {
-		  List<GroupsVo> cateGroupList = groupsMapper.loadGroup();
-		  int totalGroup = groupsMapper.totalGroupCount();
+	  public String loadGroup(Model model,
+			  				  @RequestParam(value = "searchType", required = false) String searchType,
+			  				  @RequestParam(value = "keyword", required = false) String keyword) {
+		  
+		  Map<String, Object> params = new HashMap<>();		  
+		  // 검색 조건이 있다면 매퍼 메서드에 전달
+		    if (searchType != null && keyword != null) {
+		        params.put("searchType", searchType);
+		        params.put("keyword", keyword);
+		  }
+		  List<GroupsVo> cateGroupList = groupsMapper.loadGroup(params);
+		  int totalGroup = groupsMapper.totalGroupCount(params);
 		  model.addAttribute("cateGroupList", cateGroupList);
 		  model.addAttribute("totalGroup", totalGroup);
 		  
