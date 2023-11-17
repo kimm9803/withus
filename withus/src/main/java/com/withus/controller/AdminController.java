@@ -35,6 +35,11 @@ public class AdminController {
 	@Autowired
 	private GroupsMapper groupsMapper;
 
+	// 관리자 페이지
+	@GetMapping("/page")
+	public String getAdminPage() {
+		return "admin/adminPage";
+	}
 	// 회원 전체 리스트
 	@GetMapping("/user/list")
 	public String getUserList(Criteria cri, Model model) {
