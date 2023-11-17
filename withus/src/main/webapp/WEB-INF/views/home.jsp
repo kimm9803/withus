@@ -10,14 +10,20 @@
 </head>
 <body>
 <%@ include file="header.jsp" %>
+
+<div>
 <sec:authorize access="hasRole('ROLE_ADMIN')">
+<h5>관리자</h5>    
+    <a href="/admin/adminpage">관리자 페이지</a>
     <a href="/admin/user/list">회원 전체 목록</a>
     <a href="/admin/group/reportlist">그룹 신고 내역</a>
     <a href="/admin/group/list">그룹 전체 목록</a>
-    <a href="/admin/user/report-list">회원 신고 내역</a>
+    <a href="/admin/user/report-list">회원 신고 내역</a>  
 </sec:authorize>
+</div>
 
 
+<h5>회원</h5>  
 <sec:authorize access="isAuthenticated()">
 	<a href="/logout">로그아웃</a>
 	<a href="/user/mypage">마이페이지</a>
@@ -37,8 +43,8 @@
 <a href ="  ">모임 홈</a>
 <br>
 <a href ="/gboard/create">게시판 작성</a>
-
 <a href ="  ">게시판</a>
+<a href ="/main">메인화면</a>
 
 
 

@@ -45,7 +45,7 @@
 	</select>		
 		
 	<!-- 그룹 더보기 목록 + 검색 -->
-	<select id="getMoreGroups"
+<!--  	<select id="getMoreGroups"
 		resultType="com.withus.domain.GroupsVo" parameterType="map">
 	SELECT
 	gno,
@@ -101,8 +101,8 @@
 
 		)		
 	    WHERE rnum BETWEEN #{startRow} AND #{endRow}			
-	</select>
-
+	</select> -->
+	
 	<!-- 카테고리 그룹 목록 + 검색 -->
 	<select id="loadCateGroup"
 		resultType="com.withus.domain.GroupsVo">
@@ -126,8 +126,7 @@
 		LEFT JOIN region r ON g.rno = r.rno
 		LEFT JOIN member m ON g.memberid = m.memberid
 		WHERE g.cateid = #{cateid}
-		<if test='searchType != null and keyword != null and keyword != ""'>
-			
+		<if test='searchType != null and keyword != null and keyword != ""'>			
 			<choose>
 				<when test='searchType.equals("gname")'>
 					AND g.gname LIKE '%' || #{keyword} || '%'
@@ -135,9 +134,8 @@
 				<when test='searchType.equals("gintro")'>
 					AND g.gintro LIKE '%' || #{keyword} || '%'
 				</when>
-				<when test='searchType.equals("gname_gintro")'>
-					AND g.gname LIKE '%' || #{keyword} || '%' OR g.gintro LIKE '%' || #{keyword}
-					|| '%'
+				<when test='searchType.equals("region")'>
+					AND r.rname LIKE '%' || #{keyword} || '%'					
 				</when>
 				<when test='searchType.equals("memberid")'>
 					AND m.name LIKE '%' || #{keyword} || '%'
@@ -145,28 +143,51 @@
 			</choose>
 		</if>
 	</select>
-	
-	<select id="loadGroup"
-		resultType="com.withus.domain.GroupsVo">
-		SELECT
-		g.gno,
-		g.gintro,
-		g.gname,
-		TO_CHAR(g.gdate, 'YYYY-MM-DD') AS GDATE,
-		g.gperson,
-		g.glike,
-		i.new_image_name AS newImageName,
-		c.catename,
-		r.rname,
-		g.memberid,
-		m.name,
-		(SELECT COUNT(gm.gno) + 1 FROM gmember gm WHERE gm.gno = g.gno) AS memberCnt
-		FROM
-		category c
-		RIGHT JOIN groups g ON c.cateid = g.cateid
-		LEFT JOIN gimage i ON g.gno = i.gno
-		LEFT JOIN region r ON g.rno = r.rno
-		LEFT JOIN member m ON g.memberid = m.memberid		
+	<!-- 전체 그룹목록 + 검색 -->
+	<select id="loadGroup" resultType="com.withus.domain.GroupsVo">
+	    SELECT
+	    g.gno,
+	    g.gintro,
+	    g.gname,
+	    TO_CHAR(g.gdate, 'YYYY-MM-DD') AS GDATE,
+	    g.gperson,
+	    g.glike,
+	    i.new_image_name AS newImageName,
+	    c.catename,
+	    r.rname,
+	    g.memberid,
+	    m.name,
+	    (SELECT COUNT(gm.gno) + 1 FROM gmember gm WHERE gm.gno = g.gno) AS memberCnt
+	    FROM
+	    category c
+	    RIGHT JOIN groups g ON c.cateid = g.cateid
+	    LEFT JOIN gimage i ON g.gno = i.gno
+	    LEFT JOIN region r ON g.rno = r.rno
+	    LEFT JOIN member m ON g.memberid = m.memberid
+	    <if test='searchType != null and keyword != null and keyword != ""'>
+	        WHERE 
+	        <choose>
+	            <when test='searchType.equals("gname")'>
+	                g.gname LIKE '%' || #{keyword} || '%'
+	            </when>
+	            <when test='searchType.equals("gintro")'>
+	                g.gintro LIKE '%' || #{keyword} || '%'
+	            </when>
+	            <when test='searchType.equals("region")'>
+	                r.rname LIKE '%' || #{keyword} || '%'                   
+	            </when>
+	            <when test='searchType.equals("memberid")'>
+	                m.name LIKE '%' || #{keyword} || '%'
+	            </when>
+	        </choose>
+	    </if>
+	</select>
+
+	<!-- 전체 그룹 수 -->
+	<select id="totalGroupCount" resultType="int">
+		SELECT COUNT(gno)
+		FROM groups g LEFT JOIN member m ON g.memberid = m.memberid
+		LEFT JOIN region r ON g.rno = r.rno		
 		<if test='searchType != null and keyword != null and keyword != ""'>
 			
 			<choose>
@@ -176,9 +197,8 @@
 				<when test='searchType.equals("gintro")'>
 					WHERE g.gintro LIKE '%' || #{keyword} || '%'
 				</when>
-				<when test='searchType.equals("gname_gintro")'>
-					WHERE g.gname LIKE '%' || #{keyword} || '%' OR g.gintro LIKE '%' || #{keyword}
-					|| '%'
+				<when test='searchType.equals("region")'>
+					WHERE r.rname LIKE '%' || #{keyword} || '%'
 				</when>
 				<when test='searchType.equals("memberid")'>
 					WHERE m.name LIKE '%' || #{keyword} || '%'
@@ -187,6 +207,30 @@
 		</if>
 	</select>
 	
+	<!-- 카테고리 별 그룹 수 -->
+	<select id="totalCateGroupCount" resultType="int">
+		SELECT COUNT(gno)
+		FROM groups g LEFT JOIN member m ON g.memberid = m.memberid		
+	    LEFT JOIN region r ON g.rno = r.rno
+	    WHERE g.CATEID = #{cateid}
+	    <if test='searchType != null and keyword != null and keyword != ""'>			
+			<choose>
+				<when test='searchType.equals("gname")'>
+					AND g.gname LIKE '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType.equals("gintro")'>
+					AND g.gintro LIKE '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType.equals("region")'>
+					AND r.rname LIKE '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType.equals("memberid")'>
+					AND m.name LIKE '%' || #{keyword} || '%'
+				</when>
+			</choose>
+		</if>
+	</select>
+		
 	<!-- 그룹 삭제 -->
 	<delete id="deleteGroup">
 		delete from groups
@@ -282,17 +326,38 @@
 		WHERE  rNum between #{rowStart} and #{rowEnd}			
 	</select>
 	
-	<!-- 전체 그룹 수 -->
-	<select id="totalGroupCount" resultType="int">
-		SELECT COUNT(gno)
-		FROM groups		
+	<!-- 그룹 추천 여부 -->
+	<select id="likeStatus" resultType="int">
+	SELECT COUNT(gno)
+	FROM Glike
+	WHERE GNO = #{gno} AND MEMBERID = #{memberid}
 	</select>
-	<!-- 카테고리 별 그룹 수 -->
-	<select id="totalCateGroupCount" resultType="int">
-		SELECT COUNT(gno)
-		FROM groups		
-	    WHERE CATEID = #{cateid}
-	</select>
+	
+	<!-- 그룹추천테이블 추가 -->
+	<insert id="likeinsert">
+	insert into glike (likeno,gno,memberid)
+	values((SELECT NVL(MAX(LIKENO), 0) + 1 FROM GLIKE),#{gno},#{memberid})
+	</insert>
+
+    <!-- 그룹 테이블 추천 컬럼 + 1 -->
+    <update id="likePlus">
+    update groups
+    set glike = glike + 1
+    where gno = #{gno}
+    </update>
+    
+    <!-- 그룹 추천 테이블 삭제 -->
+    <delete id="likedelete">
+    delete from glike
+    where gno = #{gno} and memberid = #{memberid}
+    </delete>
+    
+    <!-- 그룹 테이블 추천 컬럼 - 1 -->
+    <update id="likeMinus">
+    update groups
+    set glike = glike - 1
+    where gno = #{gno}
+    </update>
 
 
 

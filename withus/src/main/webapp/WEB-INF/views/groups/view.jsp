@@ -61,20 +61,20 @@
             color: #000;
         }
 
-.dropdown-item:hover {
-	background-color: #f8f9fa;
-	color: #000;
-}
-
-.group-info {
-	margin-bottom: 20px; /* 그룹장 정보와 그룹 정보 사이 간격 조절 */
-}
-
-.group-details, .group-intro {
-	margin-top: 20px; /* 그룹 정보와 그룹 소개 사이 간격 조절 */
-	border: 1px solid #ccc; /* 테두리 추가 */
-	padding: 15px; /* 안쪽 여백 추가 */
-}
+		.dropdown-item:hover {
+			background-color: #f8f9fa;
+			color: #000;
+		}
+		
+		.group-info {
+			margin-bottom: 20px; /* 그룹장 정보와 그룹 정보 사이 간격 조절 */
+		}
+		
+		.group-details, .group-intro {
+			margin-top: 20px; /* 그룹 정보와 그룹 소개 사이 간격 조절 */
+			border: 1px solid #ccc; /* 테두리 추가 */
+			padding: 15px; /* 안쪽 여백 추가 */
+		}
 
 </style>
 </head>
@@ -108,11 +108,17 @@
    			 <div class="card-body">
 		        <!-- 그룹 이름 -->
 		        <h2 class="card-title">${group.gname}</h2>
+		        
 		        <!-- 그룹 신고 -->
 		           <div id="report">
 					    <a href="#" id="reportLink">
-					        <img id="groupreport" src="/img/report.png" style="width: 30px; height: 30px; float: right;">
+					        <img id="groupreport" src="/img/report.png" style="width: 30px; height: 30px; float: right;">					        
 					    </a>
+					    
+					</div>	
+				<!-- 그룹 추천 -->				
+		            <div id="like">			               			    
+					    <img id="grouplike" src="/img/like.png" style="width: 25px; height: 25px; float: right; margin-right: 20px;" >					    				    
 					</div>		
 		        <!-- 그룹장 정보 -->
 		        <div class="group-info">
@@ -143,7 +149,7 @@
 		    </div>
 		</div>
             <div class="btn-group">
-                <button type="button" class="btn btn-warning" onclick="location.href='/groups/list'">목록으로</button>
+                <button type="button" class="btn btn-warning" onclick="location.href='/groups/loadall'">목록으로</button>
             </div>
             <div class="btn-group">
                 <button type="button" class="btn btn-warning" onclick="location.href='/'">홈으로</button>
@@ -184,7 +190,7 @@
 <!-- 부트스트랩 5 JS 및 Popper.js 추가 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-hZf+5sIo/1GTbMkEl9QAeRU3sJQl1LbSH+6l5f+4F1gPK6ES4kDl9Nvl7TZyH2Sm" crossorigin="anonymous"></script>
 <script>
-    document.getElementById('groupImage').addEventListener('click', function() {
+        document.getElementById('groupImage').addEventListener('click', function() {
         document.getElementById('fileInput').click();
     });
 
@@ -320,7 +326,46 @@
             } else {
                 alert('팝업 창이 차단되었습니다. 팝업 창을 허용해주세요.');
             }
+        });    
+
+    });
+    $(document).ready(function() {
+        // 그룹 추천 이미지 클릭 이벤트
+       var memberid = "${memberid}"; // 변수를 문자열로 초기화
+        $('#grouplike').click(function() {
+            // memberid가 null이 아닌 경우에만 likeAction 함수 호출
+            if (memberid.trim() !== "") { // 빈 문자열이 아닌 경우에만 likeAction 함수 호출
+                likeAction();
+            } else {
+                alert('로그인이 필요합니다.'); // 로그인이 필요한 경우 알림 표시
+            }
         });
+
+        // 그룹 추천 액션을 처리하는 함수
+        function likeAction() {
+            // 확인 다이얼로그를 띄우고 사용자가 확인하면 추천 요청 전송
+            if (confirm('정말로 추천하시겠습니까?')) {
+            	var groupGno = parseInt("${group.gno}", 10);
+                $.ajax({
+                    type: 'GET',
+                    url: '/groups/like/' + groupGno, // 서버에서 올바른 값으로 대체되는지 확인
+                    data : {
+                    	memberid : memberid
+                    },
+                    success: function(response) {                    	
+                        if (response === 'like') {
+                            alert('추천이 완료되었습니다.');
+                        } else if (response === 'unlike') {
+                            alert('추천이 취소되었습니다');
+                        }
+                    },
+                    error: function(error) {
+                        // 오류를 처리하거나 오류 메시지를 표시합니다
+                        console.error('추천 실패', error);
+                    }
+                });
+            }
+        }
     });
 </script>
 </body>
