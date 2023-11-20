@@ -26,6 +26,8 @@
 		<div><a href ="/gboard/create">게시판 작성</a></div>
 		<div><a href ="  ">게시판</a></div>
 		<div><a href ="/main">메인화면</a></div>
+		<div><a href ="/admin/notice/write">공지사항 등록</a></div>
+		<div><a href ="/notice/list">공지사항 목록</a></div>
 	</main>
 
 	<footer><%@ include file="footer.jsp" %></footer>

@@ -174,6 +174,6 @@ public class AdminController {
 	public String deleteUser(@RequestParam("memberId") String memberId) {
 		adminMapper.deleteUser(memberId);
 		return "redirect:/admin/user/list";
-	}	
+	}
 
 }
