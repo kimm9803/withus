@@ -65,5 +65,8 @@ public interface MemberMapper {
 
 	// 회원 신고
 	void reportMember(MemberReportVo vo);
+
+	// 관심 지역
+	void setFavorRegion(@Param("memberId") String memberId, @Param("rno") int rno);
 	
 }
