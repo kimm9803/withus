@@ -16,11 +16,8 @@
 <style>
 
 </style>
-
-
 </head>
 <body>
-
 	<header class="header">
 		<a href="/" class="logo">With Us</a>
 		
@@ -45,6 +42,5 @@
 			</sec:authorize>
 		</nav>
 	</header>
-
 </body>
 </html>

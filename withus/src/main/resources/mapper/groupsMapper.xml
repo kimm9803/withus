@@ -144,7 +144,6 @@
 			</choose>
 		</if>
 	</select>
-	
 	<!-- 카테고리 별 그룹 수 -->
 	<select id="totalCateGroupCount" resultType="int">
 		SELECT COUNT(gno)
@@ -168,7 +167,6 @@
 			</choose>
 		</if>
 	</select>
-		
 	<!-- 그룹 삭제 -->
 	<delete id="deleteGroup">
 		delete from groups
@@ -250,7 +248,7 @@
 	insert into GREPORT(greportid,gno,memberid,rpcontent,rpcate)
 	values((SELECT NVL(MAX(GREPORTID), 0) + 1 FROM GREPORT),#{gno},#{memberid},#{rpcontent},#{rpcate})
 	</insert>
-	
+
 	<!-- 그룹 리스트 -->
 	<select id="getGroupList" resultType="com.withus.domain.GroupsVo">
 		SELECT gname,gdate,gperson,catename,glike,greport,memberid,memberCnt,rname
@@ -334,8 +332,6 @@
 	FROM GROUPS
 	WHERE cateid = #{favorCateid}
 	</select>
-
-
 
 </mapper>
 
