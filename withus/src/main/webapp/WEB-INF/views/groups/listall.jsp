@@ -117,9 +117,14 @@
             padding: 10px;
             text-align: center;
         }
+        main{        	 
+        	margin-bottom: 100px;    	
+        }
     </style>
 </head>
 <body>
+<header><%@ include file="../header.jsp" %></header>
+<main>
 <div id="main">
     <h2>그룹 목록</h2>
     <a href="/groups/create" class="btn btn-dark" id="create">그룹 생성</a>
@@ -261,5 +266,7 @@
     document.getElementById('loadMoreBtn').addEventListener('click', loadMoreGroups);
     </script>
 </div>
+</main>
+<footer><%@ include file="../footer.jsp" %></footer>
 </body>
 </html>

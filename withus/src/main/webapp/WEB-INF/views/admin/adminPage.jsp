@@ -208,7 +208,7 @@
 			    <a href="/admin/notice/write" class="item">		      
 			      <div class="text">공지사항 등록</div>		      
 			    </a>
-			    <a href="/notice/list" class="item">		      
+			    <a href="/admin/notice/list" class="item">		      
 			      <div class="text">공지사항 목록</div>		      
 			    </a>
 			  </div>

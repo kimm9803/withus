@@ -50,8 +50,8 @@
         }
 
         main {
-            margin-top: 100px;
-            margin-bottom: 50px;
+            margin-top: 150px;
+            margin-bottom: 100px;
         }
 
         .btn-group {
@@ -94,6 +94,7 @@
         </div>
     </div>
 </main>
+<footer><%@ include file="../footer.jsp" %></footer>
 <!-- 부트스트랩 5 스크립트 및 팝퍼스 스크립트 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>

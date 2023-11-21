@@ -16,7 +16,7 @@
         #main {
             text-align: center;
             width: 60%;
-            margin: 50px auto 0;
+            margin: 50px auto 0;            
         }
 
         .card-container .card:nth-child(n+5) {
@@ -121,9 +121,14 @@
             padding: 10px;
             text-align: center;
         }
+        main{
+        	margin-bottom: 50px;
+        }
     </style>
 </head>
 <body>
+<header><%@ include file="../header.jsp" %></header>
+<main>
 <div id="main">
     <h2>그룹 목록</h2>
     <a href="/groups/create" class="btn btn-dark" id="create">그룹 생성</a>
@@ -243,7 +248,6 @@
     <div class="loadMore">
         <button type="button" class="btn btn-dark" id="loadMoreBtn">더보기</button>
     </div>
-
     <script>
     var increment = 4;
     var visibleGroups = 4;
@@ -266,5 +270,7 @@
     document.getElementById('loadMoreBtn').addEventListener('click', loadMoreGroups);
     </script>
 </div>
+</main>
+<footer><%@ include file="../footer.jsp" %></footer>
 </body>
 </html>

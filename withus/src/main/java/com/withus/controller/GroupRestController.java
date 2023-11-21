@@ -114,8 +114,7 @@ public class GroupRestController {
 		params.put("gno", gno);
 		params.put("memberid", memberid);
 		// 그룹 좋아요 중복 확인
-		int likeStatus = groupsMapper.likeStatus(params);
-		System.out.println(likeStatus);
+		int likeStatus = groupsMapper.likeStatus(params);		
 		// 좋아요 기록없을경우
 		if(likeStatus == 0) {
 			//glike 테이블에 좋아요 입력
