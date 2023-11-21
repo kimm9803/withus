@@ -337,15 +337,50 @@
 		LEFT JOIN member m ON g.memberid = m.memberid
 		WHERE g.cateid = #{favorCateid}
 	</select>
-	
+	<!-- 선호 카테고리 그룹수  -->
 	<select id="totalFavorGroups" resultType="int">
 	SELECT COUNT(GNO)
 	FROM GROUPS
 	WHERE cateid = #{favorCateid}
 	</select>
+    
+    <!-- 접속 회원 선호지역 ID -->
+    <select id="favorRegion" resultType="int">
+    select rno
+    from favorregion
+    where memberid = #{memberid}
+    </select>
 
-
-
+    <!-- 선호 지역 그룹 리스트 -->
+    <select id="favorRgroup"
+		resultType="com.withus.domain.GroupsVo">
+		SELECT
+		g.gno,
+		g.gintro,
+		g.gname,
+		TO_CHAR(g.gdate, 'YYYY-MM-DD') AS GDATE,
+		g.gperson,
+		g.glike,
+		i.new_image_name AS newImageName,
+		c.catename,
+		r.rname,
+		g.memberid,
+		m.name,
+		(SELECT COUNT(gm.gno) + 1 FROM gmember gm WHERE gm.gno = g.gno) AS memberCnt
+		FROM
+		category c
+		RIGHT JOIN groups g ON c.cateid = g.cateid
+		LEFT JOIN gimage i ON g.gno = i.gno
+		LEFT JOIN region r ON g.rno = r.rno
+		LEFT JOIN member m ON g.memberid = m.memberid
+		WHERE g.rno = #{favorRno}
+	</select>
+	
+	<select id="favorReigonGroups" resultType="int">
+	SELECT COUNT(GNO)
+	FROM GROUPS
+	WHERE cateid = #{favorRno}
+	</select>
 </mapper>
 
 

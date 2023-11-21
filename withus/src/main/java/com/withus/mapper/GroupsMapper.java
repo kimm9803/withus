@@ -116,6 +116,15 @@ public interface GroupsMapper {
 	//선호카테고리 그룹 수
 	int totalFavorGroups(int favorCateid);
 
+	//선호지역 그룹 수
+	List<Integer> favorRegion(String memberid);
+
+	//선호지역 그룹 리스트
+	List<GroupsVo> favorRgroup(int favorRno);
+
+	//선호지역 그룹 수
+	int favorReigonGroups(int favorRno);
+
 	
 
 	

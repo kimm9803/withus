@@ -192,7 +192,7 @@
 		        </a>
 		    </div>
 		</div>    
-		
+<hr style="margin-bottom: 50px;">		
 	<!--  그룹 부분 -->
 	<div id="cardheader"><h5>전체 그룹</h5></div>
 	<div class="card-container" id="groupContainer">
@@ -233,16 +233,16 @@
             </div>
         </c:forEach>
     </div>
-    <!-- 전제 그룹 목록 끝 -->
-
     <!-- "더보기" 버튼 -->
     <div class="loadMore">
         <button type="button" class="btn btn-dark" id="loadMoreBtn">더보기</button>
     </div>
+    <!-- 전제 그룹 목록 끝 -->
+<hr style="margin-bottom: 50px;">
     
             <!-- 선호 카테고리 그룹 부분 -->
             <c:if test="${not empty memberid && not empty favorGroupList}">
-            <div id="cardheader">
+            <div id="cardheader" class="favorcate">
                 <h5>선호 카테고리 그룹</h5>
                 <div class="card-container" id="favorGroupContainer">
                     <c:forEach var="favorgroup" items="${favorGroupList}"> 
@@ -272,8 +272,8 @@
                                                 <div class='card-text'>그룹장: ${favorgroup.name}</div>
                                             </div>
                                             <div class='d-flex justify-content-between'>
-                                                <div class='card-text mr-2'>분류: ${group.catename != null ? group.catename : '기타'}</div>
-								    			<div class='card-text'>지역: ${group.rname != null ? group.rname : '기타'}</div>
+                                                <div class='card-text mr-2'>분류: ${favorgroup.catename != null ? favorgroup.catename : '기타'}</div>
+								    			<div class='card-text'>지역: ${favorgroup.rname != null ? favorgroup.rname : '기타'}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -290,6 +290,58 @@
             </div>
 			</c:if>
 			<!-- 선호카테고리 끝 -->
+<hr style="margin-bottom: 50px;">			
+            <!-- 선호 지역 그룹 부분 -->
+			<c:if test="${not empty memberid && not empty favorRegionGroupList}">
+			    <div id="cardheader" class="favorregion">
+			        <h5>선호 지역 그룹</h5>
+			        <div class="card-container" id="favorRegionGroupContainer">
+                    <c:forEach var="favorregion" items="${favorRegionGroupList}"> 
+                        <div class='card border-dark'>
+                            <!-- 그룹 표시 코드 -->
+                            <div class='card-header bg-light'>
+                                <div style='display: flex; align-items: center; width: 100%'>
+                                    <!-- 이미지 표시 코드 -->
+                                    <c:if test="${favorregion.newImageName eq null}">
+                                        <img src='/img/basic.jpg' class='custom-image-style' style='height: 120px; width: 120px; border: 1px solid black; margin-right: 10px;'>
+                                    </c:if>
+                                    <c:if test="${favorregion.newImageName ne null}">
+                                        <img src='/${favorregion.newImageName}' class='custom-image-style' style='height: 120px; width: 120px; border: 1px solid black; margin-right: 10px;'>
+                                    </c:if>
+                                    <div style='flex-grow: 1;'>
+                                        <h5>
+                                            <a href='/groups/view/${favorregion.gno}' class='text-dark'>${favorregion.gname}</a>
+                                        </h5>
+                                        <div class='card-body d-flex flex-column justify-content-between'style='width: 70%; margin-left: 70px;'>
+                                            <!-- 그룹 정보 표시 코드 -->
+                                            <div class='d-flex justify-content-between mb-2'>
+                                                <div class='card-text mr-2'>정원: ${favorregion.memberCnt} / ${favorregion.gperson}</div>
+                                                <div class='card-text'>추천: ${favorregion.glike}</div>
+                                            </div>
+                                            <div class='d-flex justify-content-between'>
+                                                <div class='card-text'>생성일: ${favorregion.gdate}</div>
+                                                <div class='card-text'>그룹장: ${favorregion.name}</div>
+                                            </div>
+                                            <div class='d-flex justify-content-between'>
+                                                <div class='card-text mr-2'>분류: ${favorregion.catename != null ? favorregion.catename : '기타'}</div>
+								    			<div class='card-text'>지역: ${favorregion.rname != null ? favorregion.rname : '기타'}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
+
+                <!-- "더보기" 버튼 -->
+                <div class="loadMore">
+                    <button type="button" class="btn btn-dark" id="loadMoreFavorRegionBtn">더보기</button>
+                </div>
+            </div>
+			</c:if>
+			<!-- 선호 지역 끝 -->
+<hr style="margin-bottom: 50px;">			
         </div>
     </div>
 
@@ -317,10 +369,10 @@
 
     document.getElementById('loadMoreBtn').addEventListener('click', loadMoreGroups);
     
-    var visibleFavorGroups = 4;
-    var totalFavorGroups = ${not empty totalFavorGroups ? totalFavorGroups : 0};
 
     //선호 카테고리그룹 더보기 버튼
+    var visibleFavorGroups = 4;
+    var totalFavorGroups = ${not empty totalFavorGroups ? totalFavorGroups : 0};
     function loadMoreFavorGroups() {
         visibleFavorGroups += increment;
 
@@ -337,5 +389,26 @@
 	 if (memberid.trim() !== '') {
 	     document.getElementById('loadMoreFavorGroupBtn').addEventListener('click', loadMoreFavorGroups);
 	 }
+    
+    
+	 // 선호 지역 그룹 더보기 버튼 관련 스크립트 추가
+	    var visibleFavorRegionGroups = 4;
+	    var totalFavorRegionGroups = ${not empty totalFavorRegionGroups ? totalFavorRegionGroups : 0};
+
+	    function loadMoreFavorRegionGroups() {
+	        visibleFavorRegionGroups += increment;
+
+	        // 보여질 선호 지역 그룹 수까지만 숨겨진 그룹을 나타냄
+	        $('#favorRegionGroupContainer .card:hidden:lt(' + increment + ')').show();
+
+	        if (visibleFavorRegionGroups >= totalFavorRegionGroups) {
+	            document.getElementById('loadMoreFavorRegionBtn').style.display = 'none';
+	        }
+	    }
+
+	    // memberid가 공백이 아닌 경우에만 이벤트 리스너 등록
+	    if (memberid.trim() !== '') {
+	        document.getElementById('loadMoreFavorRegionBtn').addEventListener('click', loadMoreFavorRegionGroups);
+	    }
     </script>
 </html>

@@ -6,8 +6,16 @@
     <title>그룹 수정</title>
     <!-- 부트스트랩 CDN 링크 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <style>
+    main{
+	    margin-top: 150px;
+	    margin-bottom: 70px;
+    }
+    </style>
 </head>
 <body>
+<header><%@ include file="../header.jsp" %></header>
+<main>
     <div class="container mt-5">
         <h2>그룹 수정</h2>
         <!-- 그룹 생성 폼 -->
@@ -33,6 +41,8 @@
             <button type="button" class="btn btn-dark" onclick="goBack()">취소</button>
         </form>
     </div>
+</main>
+<footer><%@ include file="../footer.jsp" %></footer>  
     <!-- 부트스트랩 JS 및 Popper.js, jQuery CDN 링크 -->
     <script type="text/javascript">
 	    function goBack() {
