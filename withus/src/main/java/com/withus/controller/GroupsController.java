@@ -87,6 +87,7 @@ public class GroupsController {
 		  params.put("memberId", memberId);
 		  int findById = groupsMapper.findById(params);
 		  
+		  
 		  ModelAndView mv = new ModelAndView();
 		  mv.addObject("memberCnt", memberCnt);
 		  mv.addObject("group", groupview);		  

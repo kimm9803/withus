@@ -33,7 +33,7 @@ public class ImageController {
         return "upload";
     }
 	
-    //upload 페이지에서 전송버튼을 누르면 해당 메서드 실행
+    //이미지 등록
 	@Secured("ROLE_USER")
     @PostMapping("/upload/{gno}")
     public String uploadImage(@RequestParam MultipartFile image, @PathVariable("gno") int gno) throws IllegalStateException, IOException{

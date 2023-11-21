@@ -294,7 +294,7 @@
                 });
             }
         });
-        //신고 버튼
+         //신고 버튼
         $('#reportLink').click(function(e) {
             e.preventDefault(); // 기본 동작 방지
             var reportUrl = '/groups/reportform/'+${group.gno}; // 여기에 신고 URL을 지정하십시오.
@@ -308,7 +308,7 @@
             } else {
                 alert('팝업 창이 차단되었습니다. 팝업 창을 허용해주세요.');
             }
-        });
+        }); 
         
         //회원 신고 버튼
         $('#userReport').click(function(e) {
