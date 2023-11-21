@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>회원 목록</title>
+<title>공지사항 목록</title>
 <script src="https://kit.fontawesome.com/51db22a717.js"
 	crossorigin="anonymous"></script>
 <link rel="stylesheet"
@@ -185,11 +185,15 @@
 	.p-a:hover {
 	    background-color: #f0f0f0;
 	}
+
+	#write{
+		margin-bottom: 20px;
+		float: right;
+	}
 	
 	footer {
 		margin-top: 100px;
 	}
-
 </style>
 </head>
 <body>
@@ -243,7 +247,7 @@
 			    <a href="/admin/notice/write" class="item">		      
 			      <div class="text">공지사항 등록</div>		      
 			    </a>
-			    <a href="/admin/notice/list" class="item">		      
+			    <a href="/admin/notice/list" class="item">	      
 			      <div class="text">공지사항 목록</div>		      
 			    </a>
 			  </div>
@@ -259,57 +263,44 @@
 	               </div>               
 	            </div>
 	         </div>
-	         <div style="margin-top: 40px; text-align: center;"><h2 style="font-weight: bold;">회원 목록</h2></div>
+	         <div style="margin-top: 40px; text-align: center;"><h2 style="font-weight: bold;">공지사항</h2></div>
 	         <div style="margin-top: 40px;">
-	         	<table class="table table-hover">
-				<thead>
-					<tr style="text-align: center;">
-						<th scope="col">#</th>
-						<th scope="col">아이디</th>
-						<th scope="col">이름</th>
-						<th scope="col">가입날짜</th>
-						<th scope="col">선택</th>
-					</tr>
-				</thead>
-				<tbody>
-				<c:forEach items="${memberList}" var="member" varStatus="loop">
-					<tr class="clickable-row" style="text-align: center;">
-						<td>${loop.index + 1}</td>
-						<td>${member.memberId}</td>
-						<td>${member.name}</td>
-						<td>${member.regDate}</td>
-						<td>
-							<div class="dropdown">
-					            <button class="btn btn-secondary btn-sm dropdown-toggle drop" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-					              선택
-					            </button>
-					            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-					              <li><a class="dropdown-item" href="#">회원정보</a></li>
-					              <li><a class="dropdown-item" href="/user/message?memberId=${member.memberId}">쪽지 보내기</a></li>
-					              <li><a class="dropdown-item deleteMember" href="#">강제탈퇴</a></li>
-					            </ul>
-					    	</div>
-						</td>
-					</tr>
-				</c:forEach>
-				</tbody>
-			</table>
-			
+	         	<div id="write"><a href="/admin/notice/write" class="btn btn-dark">공지사항 등록</a></div>
+				<table class="table table-hover" id="noticelist">
+					<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">제목</th>
+							<th scope="col">작성자</th>
+							<th scope="col">등록일</th>
+						</tr>
+					</thead>
+					<tbody>
+					<c:forEach items="${noticeList}" var="notice" varStatus="loop">
+						<tr class="clickable-row" data-href="/notice/view/${notice.noticeid}">
+							<td>${loop.index + 1}</td>
+							<td>${notice.nttitle}</td>
+							<td>${notice.name}</td>
+							<td>${notice.ntregdate}</td>
+						</tr>
+					</c:forEach>
+					</tbody>
+				</table>
 			<div style="text-align: center; margin-top: 40px;">
 				<ul class="p-ul">
 					<c:if test="${pageMaker.prev}">
 						<li class="p-li"><a class="p-a"
-							href="/admin/user/list${pageMaker.makeQuery(pageMaker.startPage - 1)}">이전</a></li>
+							href="/notice/list${pageMaker.makeQuery(pageMaker.startPage - 1)}">이전</a></li>
 					</c:if>
 		
 					<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
 						var="idx">
-						<li class="p-li"><a class="p-a" href="/admin/user/list${pageMaker.makeQuery(idx)}">${idx}</a></li>
+						<li class="p-li"><a class="p-a" href="/notice/list${pageMaker.makeQuery(idx)}">${idx}</a></li>
 					</c:forEach>
 		
 					<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
 						<li class="p-li"><a class="p-a"
-							href="/admin/user/list${pageMaker.makeQuery(pageMaker.endPage + 1)}">다음</a></li>
+							href="/notice/list${pageMaker.makeQuery(pageMaker.endPage + 1)}">다음</a></li>
 					</c:if>
 				</ul>
 			</div>
@@ -320,21 +311,10 @@
 	
 	<script>
 		$(document).ready(function() {
-			$('.drop').on('click', function() {
-				var memberId = $(this).closest('tr').find('td:eq(1)').text();
-				console.log(memberId);
-			});
-			
-			$('.dropdown-menu .deleteMember').on('click', function(e) {
-			    var confirmation = confirm('정말로 이 회원을 강제 탈퇴시키겠습니까?');
-			        
-			    if (confirmation) {
-			        var memberId = $(this).closest('tr').find('td:eq(1)').text();
-			        location.href = '/admin/user/delete?memberId=' + memberId;
-			    } else {
-			     	e.preventDefault();
-			    }
-			});
+		    $('.clickable-row').on('click', function() {
+		        var href = $(this).data('href');
+		        window.location.href = href; // 클릭한 링크로 이동
+		    });
 		});
 	</script>
 </body>

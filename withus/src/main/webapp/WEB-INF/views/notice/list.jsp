@@ -198,71 +198,9 @@
 </head>
 <body>
 	<header><%@ include file="../header.jsp" %></header>
-	<main style="display: flex; width: 75%; margin: 0 auto; margin-top: 100px;">
-		
-		
-	      <div class="wrap" style="flex: 1;">
-	         <div class="grayContainer" style="display: flex; justify-content: center; align-items: center;">
-	             <div>
-	                 <div class="name" style="text-align: center;">관리자 페이지</div>
-	             </div>
-	         </div>     
-	         
-	         <div class="listContainer">
-			  <div class="listGroup">
-			    <div class="listGroupTitle">회원</div>
-			    <a href="/admin/user/list" class="item">		      
-			      <div class="text">회원 전체 목록</div>		      
-			    </a>
-			    <!-- 
-			    <a href="#" class="item">		      
-			      <div class="text">상품후기</div>		      
-			    </a>
-			     -->
-			    <a href="/admin/user/report-list" class="item">		      
-			      <div class="text">회원 신고 내역</div>		      
-			    </a>
-			    
-			  </div>		  
-			  <div class="listGroup">
-			    <div class="listGroupTitle">그룹</div>
-			    <a href="/admin/group/list" class="item">		      
-			      <div class="text">그룹 전체 목록</div>		      
-			    </a>
-			    <a href="/admin/group/reportlist" class="item">		      
-			      <div class="text">그룹 신고 내역</div>		      
-			    </a>
-			  </div>
-			  
-			  <!-- Q & A 조회 추가 일단 num 안받고 리스트만 받기-->
-					<div class="listGroup">
-						<div class="listGroupTitle">Q&A</div>
-						<a href="/question/adminListPageSearch?num=1" class="item">
-							<div class="text">Q&A 조회</div>
-						</a>
-					</div>
-			  		  
-			  <div class="listGroup">
-			    <div class="listGroupTitle">공지사항</div>
-			    <a href="/admin/notice/write" class="item">		      
-			      <div class="text">공지사항 등록</div>		      
-			    </a>
-			    <a href="/notice/list" class="item">		      
-			      <div class="text">공지사항 목록</div>		      
-			    </a>
-			  </div>
-			</div>         
-	      </div>
-	
+	<main style="display: flex; width: 75%; margin: 0 auto; margin-top: 100px; height: 700px;">	      
 	      <!-- 오른쪽 콘텐츠 영역 -->
-	      <div class="rightArea" style="flex: 4;">
-	         <div class="grayContainer">
-	            <div class="name" style="display: flex; justify-content: space-between;">
-	               <div class="left" style="display: flex; align-items: center;">                  
-	                  <div style="font-weight: normal; margin-left: 0 auto; text-align: center; font-size: 25px;">어서오세요!! With Us 관리자님</div>
-	               </div>               
-	            </div>
-	         </div>
+	      <div class="rightArea" style="flex: 4;">	         
 	         <div style="margin-top: 40px; text-align: center;"><h2 style="font-weight: bold;">공지사항</h2></div>
 	         <div style="margin-top: 40px;">
 	         	<div id="write"><a href="/admin/notice/write" class="btn btn-dark">공지사항 등록</a></div>

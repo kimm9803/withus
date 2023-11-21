@@ -25,7 +25,7 @@
 
         /* 이미지 스타일 */
         #groupImage {
-            height: 200px;
+            height: 400px;
             width: 100%;
             border: 1px solid black;
         }
@@ -75,23 +75,34 @@
 			border: 1px solid #ccc; /* 테두리 추가 */
 			padding: 15px; /* 안쪽 여백 추가 */
 		}
+		main{
+			margin-top: 150px;
+			margin-bottom: 100px;
+		}
+		.group-intro{
+			white-space: pre-line;
+		}
 
 </style>
 </head>
 <body>
+<header><%@ include file="../header.jsp" %></header>
+<main>
     <div class="container mt-5">
         <div class="content">
-            <h1>${group.gname }</h1>
+            <h1>${group.gname }</h1>           
             <div id="image">
                 <c:if test="${empty group.newImageName}">
                     <!-- image.newImageName이 null이나 비어 있을 때 -->
                     <img id="groupImage" src="/img/basic.jpg" class="img-fluid rounded" alt="Group Image">
+                    <c:if test="${group.memberid eq memberid}">
                     <form method="post" action="/upload/${group.gno}" enctype="multipart/form-data">
                         <input type="hidden" name="gno" value="${group.gno}">
                         <!-- 투명한 파일 입력 필드와 가짜 버튼 -->
 						<input type="file" id="fileInput" name="image"style="opacity: 0; position: absolute; width: 1px; height: 1px;">				
 						<input type="submit" class="btn btn-primary mt-2" value="이미지 등록" />
                     </form>
+                    </c:if>
                 </c:if>
                 <c:if test="${not empty group.newImageName}">
                     <!-- image.newImageName이 값이 있을 때 -->
@@ -99,16 +110,26 @@
                     <form method="post" action="/modify/${group.gno}" enctype="multipart/form-data">
                         <input type="file" id="fileInput" name="image"style="opacity: 0; position: absolute; width: 1px; height: 1px;">
                         <input type="hidden" name="gno" value="${group.gno}">
+                        <c:if test="${group.memberid eq memberid}">
                         <input type="submit" class="btn btn-primary mt-2" value="이미지 수정" />
                         <button type="button" class="btn btn-danger mt-2" id="imagedelete">이미지 삭제</button>
+                        </c:if>
                     </form>
                 </c:if>
             </div>
            <div class="card mt-3" >
    			 <div class="card-body">
-		        <!-- 그룹 이름 -->
-		        <h2 class="card-title">${group.gname}</h2>
-		        
+					<div class="d-flex justify-content-between align-items-center" style="margin-bottom: 20px;">
+					    <!-- 그룹 이름 -->
+					    <h2 class="card-title">${group.gname}</h2>
+					
+					    <!-- 정원이 남아있고 그룹원이 아니면 -->
+					    <c:if test="${memberCnt lt group.gperson && findById eq 0 && not empty memberid && group.memberid ne memberid}">
+					        <div class="btn-group">
+					            <button type="button" class="btn btn-dark" id="joinButton">그룹 가입</button>
+					        </div>
+					    </c:if>
+					</div>
 		        <!-- 그룹 신고 -->
 		           <div id="report">
 					    <a href="#" id="reportLink">
@@ -154,13 +175,7 @@
             <div class="btn-group">
                 <button type="button" class="btn btn-warning" onclick="location.href='/'">홈으로</button>
             </div>
-            <!-- 정원이 남아있고 그룹원이 아니면 -->
-            <c:if test="${memberCnt lt group.gperson && findById eq 0 && not empty memberid}">
 
-            <div class="btn-group">
-                <button type="button" class="btn btn-dark" id="joinButton">그룹 가입</button>
-            </div>
-        </c:if>
         <c:if test="${findById eq 1}">
             <div class="btn-group">
                 <button type="button" class="btn btn-dark" id="leaveButton">그룹 탈퇴</button>
@@ -184,15 +199,22 @@
         <a href="/gboard/create/${group.gno}">gboard작성</a>
     </div>
 </div>
-
+</main>
+<footer><%@ include file="../footer.jsp" %></footer>
 
 
 <!-- 부트스트랩 5 JS 및 Popper.js 추가 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-hZf+5sIo/1GTbMkEl9QAeRU3sJQl1LbSH+6l5f+4F1gPK6ES4kDl9Nvl7TZyH2Sm" crossorigin="anonymous"></script>
 <script>
-        document.getElementById('groupImage').addEventListener('click', function() {
-        document.getElementById('fileInput').click();
-    });
+		//JavaScript에서 JSP 표현식 사용
+		var isMember = ${group.memberid eq memberid}
+		
+		// 조건 확인
+		if (isMember) {
+		    document.getElementById('groupImage').addEventListener('click', function() {
+		        document.getElementById('fileInput').click();
+		    });
+		}
 
     // 파일이 변경되었을 때 실행되는 함수
     $('#fileInput').change(function() {
@@ -368,5 +390,6 @@
         }
     });
 </script>
+
 </body>
 </html>

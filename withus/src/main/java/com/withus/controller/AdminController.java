@@ -21,6 +21,7 @@ import com.withus.domain.PageMaker;
 import com.withus.mapper.AdminMapper;
 import com.withus.mapper.GroupsMapper;
 import com.withus.mapper.MemberMapper;
+import com.withus.mapper.NoticeMapper;
 
 @Controller
 @RequestMapping("/admin")
@@ -34,6 +35,9 @@ public class AdminController {
 	
 	@Autowired
 	private GroupsMapper groupsMapper;
+	
+	@Autowired
+	private NoticeMapper noticeMapper;
 	
 	
 
@@ -174,6 +178,23 @@ public class AdminController {
 	public String deleteUser(@RequestParam("memberId") String memberId) {
 		adminMapper.deleteUser(memberId);
 		return "redirect:/admin/user/list";
+	}
+	
+	//공지사항 목록
+	@GetMapping("/notice/list")
+	public String noticelist(Criteria cri, Model model) {
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("rowStart", cri.getRowStart());
+		map.put("rowEnd", cri.getRowEnd());		
+		List<MemberVo> noticeList = noticeMapper.noticeList(map);
+		model.addAttribute("noticeList", noticeList);
+
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(noticeMapper.totalNoticeCount());
+		model.addAttribute("pageMaker", pageMaker);
+		return "admin/noticeList";
 	}
 
 }
