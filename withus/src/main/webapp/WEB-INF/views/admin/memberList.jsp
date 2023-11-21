@@ -185,6 +185,10 @@
 	.p-a:hover {
 	    background-color: #f0f0f0;
 	}
+	
+	footer {
+		margin-top: 100px;
+	}
 
 </style>
 </head>
@@ -236,7 +240,7 @@
 			  		  
 			  <div class="listGroup">
 			    <div class="listGroupTitle">공지사항</div>
-			    <a href="/notice/writeform" class="item">		      
+			    <a href="/admin/notice/write" class="item">		      
 			      <div class="text">공지사항 등록</div>		      
 			    </a>
 			    <a href="/notice/list" class="item">		      
