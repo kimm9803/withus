@@ -190,7 +190,7 @@ body, html {
 						selectedImages: selectedImages
 					},
 					success: function() {
-						location.href = "/";
+						location.href = "/user/region";
 					},
 					error: function() {
 						alert('에러 발생');
