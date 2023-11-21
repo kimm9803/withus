@@ -3,6 +3,7 @@ package com.withus.controller;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,18 +27,21 @@ public class ImageController {
 	private ImageMapper imageMapper;
 
 	//upload 페이지
+	@Secured("ROLE_USER")
     @GetMapping("/upload")
     public String upload() {
         return "upload";
     }
 	
-    //upload 페이지에서 전송버튼을 누르면 해당 메서드 실행
+    //이미지 등록
+	@Secured("ROLE_USER")
     @PostMapping("/upload/{gno}")
     public String uploadImage(@RequestParam MultipartFile image, @PathVariable("gno") int gno) throws IllegalStateException, IOException{
         imageService.insertImage(image,gno);       
         return "redirect:/groups/view/" + gno;
     }
     //이미지 수정
+	@Secured("ROLE_USER")
     @PostMapping("/modify/{gno}")
     public String modifyImage(@RequestParam MultipartFile image, @RequestParam int gno) throws IllegalStateException, IOException{
     	
@@ -45,6 +49,7 @@ public class ImageController {
         return "redirect:/groups/view/" + gno;
     }
     //이미지 출력
+	@Secured("ROLE_USER")
     @GetMapping("/image/{imageId}")
     public String displayImage(@PathVariable("imageId") int imageId, Model model) {    	
         ImageVo image = imageMapper.getImageById(imageId);        
@@ -52,6 +57,7 @@ public class ImageController {
         return "imagedisplay"; // 이미지를 표시할 뷰 페이지 이름
     }
     //이미지 삭제
+	@Secured("ROLE_USER")
     @GetMapping("/delete/{imageId}")
     public String deleteImage(@PathVariable("imageId") int imageId) {
     	imageMapper.delete(imageId);

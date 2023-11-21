@@ -4,16 +4,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import com.withus.domain.GroupBoardVo;
 import com.withus.mapper.GroupBoardMapper;
+import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.withus.domain.GroupJoinVo;
@@ -38,14 +42,15 @@ public class GroupsController {
 	
 	
       //그룹 만들기 페이지	
+	  @Secured("ROLE_USER")
 	  @GetMapping("/create")
 	  public String createform() {
 		  return "groups/create";
 	  }
 
-	  //그룹 만들기	  
+	  //그룹 만들기
+	  @Secured("ROLE_USER")
 	  @PostMapping("/create")
-	  @Transactional
 	  public ModelAndView create(GroupsVo vo, Authentication authentication) {
 		  
 		  String memberId = memberService.authMember(authentication);
@@ -93,6 +98,7 @@ public class GroupsController {
 		  params.put("memberId", memberId);
 		  int findById = groupsMapper.findById(params);
 		  
+		  
 		  ModelAndView mv = new ModelAndView();
 		  /*
 		   * 추가 groupBoardList
@@ -108,6 +114,7 @@ public class GroupsController {
 
 
 	  //그룹 가입신청 목록
+	  @Secured("ROLE_USER")
 	  @GetMapping("/joinlist/{gno}")
 	  public ModelAndView joinlist(@PathVariable int gno) {
 		  ModelAndView mv = new ModelAndView();
@@ -117,6 +124,7 @@ public class GroupsController {
 		  return mv;
 	  }
 	  //그룹원 목록
+	  @Secured("ROLE_USER")
 	  @GetMapping("/memberlist/{gno}")
 	  public ModelAndView memberlist(@PathVariable int gno){
 		  ModelAndView mv = new ModelAndView();
@@ -128,6 +136,7 @@ public class GroupsController {
 		  
 	  }
 	  //그룹 신고창 열기
+	  @Secured("ROLE_USER")
 	  @GetMapping("/reportform/{gno}")
 	  public ModelAndView reportform(@PathVariable("gno") int gno, Authentication authentication) {
 		  String memberid = memberService.authMember(authentication);
@@ -141,10 +150,55 @@ public class GroupsController {
 		  return mv;
 	  }
 	  //그룹 신고
+	  @Secured("ROLE_USER")
 	  @PostMapping("/report/{gno}")
 	  public String reportGroup(GroupReportVo vo) {
 		  groupsMapper.reportGroup(vo);
 		  return "close";
 	  }
 	  
+	  //카테고리별 리스트
+	  @GetMapping("/loadcate/{cateid}")
+	  public String loadCateGroup(@PathVariable("cateid") int cateid, Model model,
+			  					  @RequestParam(value = "searchType", required = false) String searchType,
+			  					  @RequestParam(value = "keyword", required = false) String keyword) {
+		  
+		  Map<String, Object> params = new HashMap<>();
+		  params.put("cateid", cateid);
+		  
+		  // 검색 조건이 있다면 매퍼 메서드에 전달
+		    if (searchType != null && keyword != null) {
+		        params.put("searchType", searchType);
+		        params.put("keyword", keyword);
+		  }
+		  
+		  List<GroupsVo> cateGroupList = groupsMapper.loadCateGroup(params);
+		  int totalGroup = groupsMapper.totalCateGroupCount(params);
+		  model.addAttribute("cateGroupList", cateGroupList);
+		  model.addAttribute("totalGroup", totalGroup);
+		  model.addAttribute("cateid", cateid);
+		  
+		  return "groups/listcate";
+		  
+	  }
+	  //전체 그룹
+	  @GetMapping("/loadall")
+	  public String loadGroup(Model model,
+			  				  @RequestParam(value = "searchType", required = false) String searchType,
+			  				  @RequestParam(value = "keyword", required = false) String keyword) {
+		  
+		  Map<String, Object> params = new HashMap<>();		  
+		  // 검색 조건이 있다면 매퍼 메서드에 전달
+		    if (searchType != null && keyword != null) {
+		        params.put("searchType", searchType);
+		        params.put("keyword", keyword);
+		  }
+		  List<GroupsVo> cateGroupList = groupsMapper.loadGroup(params);
+		  int totalGroup = groupsMapper.totalGroupCount(params);
+		  model.addAttribute("cateGroupList", cateGroupList);
+		  model.addAttribute("totalGroup", totalGroup);
+		  
+		  return "groups/listall";
+		  
+	  }
 }

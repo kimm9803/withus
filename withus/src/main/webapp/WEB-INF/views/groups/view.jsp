@@ -25,7 +25,7 @@
 
         /* 이미지 스타일 */
         #groupImage {
-            height: 200px;
+            height: 400px;
             width: 100%;
             border: 1px solid black;
         }
@@ -61,41 +61,47 @@
             color: #000;
         }
 
-.dropdown-item:hover {
-	background-color: #f8f9fa;
-	color: #000;
-}
-
-.group-info {
-	margin-bottom: 20px; /* 그룹장 정보와 그룹 정보 사이 간격 조절 */
-}
-
-.group-details, .group-intro {
-	margin-top: 20px; /* 그룹 정보와 그룹 소개 사이 간격 조절 */
-	border: 1px solid #ccc; /* 테두리 추가 */
-	padding: 15px; /* 안쪽 여백 추가 */
-}
-
-
-
-
-
+		.dropdown-item:hover {
+			background-color: #f8f9fa;
+			color: #000;
+		}
+		
+		.group-info {
+			margin-bottom: 20px; /* 그룹장 정보와 그룹 정보 사이 간격 조절 */
+		}
+		
+		.group-details, .group-intro {
+			margin-top: 20px; /* 그룹 정보와 그룹 소개 사이 간격 조절 */
+			border: 1px solid #ccc; /* 테두리 추가 */
+			padding: 15px; /* 안쪽 여백 추가 */
+		}
+		main{
+			margin-top: 150px;
+			margin-bottom: 100px;
+		}
+		.group-intro{
+			white-space: pre-line;
+		}
 </style>
 </head>
 <body>
+<header><%@ include file="../header.jsp" %></header>
+<main>
     <div class="container mt-5">
         <div class="content">
-            <h1>${group.gname }</h1>
+            <h1>${group.gname }</h1>           
             <div id="image">
                 <c:if test="${empty group.newImageName}">
                     <!-- image.newImageName이 null이나 비어 있을 때 -->
                     <img id="groupImage" src="/img/basic.jpg" class="img-fluid rounded" alt="Group Image">
+                    <c:if test="${group.memberid eq memberid}">
                     <form method="post" action="/upload/${group.gno}" enctype="multipart/form-data">
                         <input type="hidden" name="gno" value="${group.gno}">
                         <!-- 투명한 파일 입력 필드와 가짜 버튼 -->
 						<input type="file" id="fileInput" name="image"style="opacity: 0; position: absolute; width: 1px; height: 1px;">
 						<input type="submit" class="btn btn-primary mt-2" value="이미지 등록" />
                     </form>
+                    </c:if>
                 </c:if>
                 <c:if test="${not empty group.newImageName}">
                     <!-- image.newImageName이 값이 있을 때 -->
@@ -103,21 +109,37 @@
                     <form method="post" action="/modify/${group.gno}" enctype="multipart/form-data">
                         <input type="file" id="fileInput" name="image"style="opacity: 0; position: absolute; width: 1px; height: 1px;">
                         <input type="hidden" name="gno" value="${group.gno}">
+                        <c:if test="${group.memberid eq memberid}">
                         <input type="submit" class="btn btn-primary mt-2" value="이미지 수정" />
                         <button type="button" class="btn btn-danger mt-2" id="imagedelete">이미지 삭제</button>
+                        </c:if>
                     </form>
                 </c:if>
             </div>
            <div class="card mt-3" >
    			 <div class="card-body">
-		        <!-- 그룹 이름 -->
-		        <h2 class="card-title">${group.gname}</h2>
+					<div class="d-flex justify-content-between align-items-center" style="margin-bottom: 20px;">
+					    <!-- 그룹 이름 -->
+					    <h2 class="card-title">${group.gname}</h2>
+					
+					    <!-- 정원이 남아있고 그룹원이 아니면 -->
+					    <c:if test="${memberCnt lt group.gperson && findById eq 0 && not empty memberid && group.memberid ne memberid}">
+					        <div class="btn-group">
+					            <button type="button" class="btn btn-dark" id="joinButton">그룹 가입</button>
+					        </div>
+					    </c:if>
+					</div>
 		        <!-- 그룹 신고 -->
 		           <div id="report">
 					    <a href="#" id="reportLink">
-					        <img id="groupreport" src="/img/report.png" style="width: 30px; height: 30px; float: right;">
+					        <img id="groupreport" src="/img/report.png" style="width: 30px; height: 30px; float: right;">					        
 					    </a>
-					</div>
+					</div>	
+				<!-- 그룹 추천 -->				
+		            <div id="like">			               			    
+					    <img id="grouplike" src="/img/like.png" style="width: 25px; height: 25px; float: right; margin-right: 20px;" >					    				    
+					</div>		
+
 		        <!-- 그룹장 정보 -->
 		        <div class="group-info">
 				    <div class="card-text">그룹장:
@@ -128,7 +150,7 @@
 				            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 				                <li><a class="dropdown-item" href="#">회원정보</a></li>
 				                <li><a class="dropdown-item" href="/user/message?memberId=${group.memberid}">쪽지 보내기</a></li>
-				                <li><a class="dropdown-item" href="#">신고하기</a></li>
+				                <li><a class="dropdown-item" href="#" id="userReport">신고하기</a></li>
 				            </ul>
 				        </div>
 				    </div>
@@ -165,18 +187,12 @@
 		    </div>
 		</div>
             <div class="btn-group">
-                <button type="button" class="btn btn-warning" onclick="location.href='/groups/list'">목록으로</button>
+                <button type="button" class="btn btn-warning" onclick="location.href='/groups/loadall'">목록으로</button>
             </div>
             <div class="btn-group">
                 <button type="button" class="btn btn-warning" onclick="location.href='/'">홈으로</button>
             </div>
-            <!-- 정원이 남아있고 그룹원이 아니면 -->
-            <c:if test="${memberCnt lt group.gperson && findById eq 0 && not empty memberid}">
 
-            <div class="btn-group">
-                <button type="button" class="btn btn-dark" id="joinButton">그룹 가입</button>
-            </div>
-        </c:if>
         <c:if test="${findById eq 1}">
             <div class="btn-group">
                 <button type="button" class="btn btn-dark" id="leaveButton">그룹 탈퇴</button>
@@ -199,15 +215,22 @@
         <a href="/gboard/create/${group.gno}">gboard작성</a>
     </div>
 </div>
-
+</main>
+<footer><%@ include file="../footer.jsp" %></footer>
 
 
 <!-- 부트스트랩 5 JS 및 Popper.js 추가 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-hZf+5sIo/1GTbMkEl9QAeRU3sJQl1LbSH+6l5f+4F1gPK6ES4kDl9Nvl7TZyH2Sm" crossorigin="anonymous"></script>
 <script>
-    document.getElementById('groupImage').addEventListener('click', function() {
-        document.getElementById('fileInput').click();
-    });
+		//JavaScript에서 JSP 표현식 사용
+		var isMember = ${group.memberid eq memberid}
+		
+		// 조건 확인
+		if (isMember) {
+		    document.getElementById('groupImage').addEventListener('click', function() {
+		        document.getElementById('fileInput').click();
+		    });
+		}
 
     // 파일이 변경되었을 때 실행되는 함수
     $('#fileInput').change(function() {
@@ -309,7 +332,7 @@
                 });
             }
         });
-        //신고 버튼
+         //신고 버튼
         $('#reportLink').click(function(e) {
             e.preventDefault(); // 기본 동작 방지
             var reportUrl = '/groups/reportform/'+${group.gno}; // 여기에 신고 URL을 지정하십시오.
@@ -323,10 +346,68 @@
             } else {
                 alert('팝업 창이 차단되었습니다. 팝업 창을 허용해주세요.');
             }
+        }); 
+        
+        //회원 신고 버튼
+        $('#userReport').click(function(e) {
+        	var memberid = '${group.memberid}';
+        	console.log(memberid);
+            e.preventDefault(); // 기본 동작 방지
+            var reportUrl = '/user/reportform?memberid='+memberid; // 여기에 신고 URL을 지정하십시오.
+
+            // 새 창 열기
+            var reportWindow = window.open(reportUrl, '_blank', 'width=500, height=700, resizable=yes, scrollbars=yes');
+
+            // 새 창에서 신고 URL 열도록 설정
+            if (reportWindow) {
+                reportWindow.location.href = reportUrl;
+            } else {
+                alert('팝업 창이 차단되었습니다. 팝업 창을 허용해주세요.');
+            }
+        });    
+
+    });
+    $(document).ready(function() {
+        // 그룹 추천 이미지 클릭 이벤트
+       var memberid = "${memberid}"; // 변수를 문자열로 초기화
+        $('#grouplike').click(function() {
+            // memberid가 null이 아닌 경우에만 likeAction 함수 호출
+            if (memberid.trim() !== "") { // 빈 문자열이 아닌 경우에만 likeAction 함수 호출
+                likeAction();
+            } else {
+                alert('로그인이 필요합니다.'); // 로그인이 필요한 경우 알림 표시
+            }
         });
+
+        // 그룹 추천 액션을 처리하는 함수
+        function likeAction() {
+            // 확인 다이얼로그를 띄우고 사용자가 확인하면 추천 요청 전송
+            if (confirm('정말로 추천하시겠습니까?')) {
+            	var groupGno = parseInt("${group.gno}", 10);
+                $.ajax({
+                    type: 'GET',
+                    url: '/groups/like/' + groupGno, // 서버에서 올바른 값으로 대체되는지 확인
+                    data : {
+                    	memberid : memberid
+                    },
+                    success: function(response) {                    	
+                        if (response === 'like') {
+                            alert('추천이 완료되었습니다.');
+                        } else if (response === 'unlike') {
+                            alert('추천이 취소되었습니다');
+                        }
+                    },
+                    error: function(error) {
+                        // 오류를 처리하거나 오류 메시지를 표시합니다
+                        console.error('추천 실패', error);
+                    }
+                });
+            }
+        }
     });
 
 
 </script>
+
 </body>
 </html>

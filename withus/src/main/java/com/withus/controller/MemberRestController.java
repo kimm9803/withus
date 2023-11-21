@@ -43,4 +43,16 @@ public class MemberRestController {
 		}
 		return "success";
 	}
+	
+	// 관심 지역 설정
+	@PostMapping("/user/region/set")
+	public String setRegions(@RequestParam(value="selectedRegions[]") List<String> selectedRegions, Authentication authentication) {
+		
+		String memberId = memberService.authMember(authentication);
+		for (int i = 0; i < selectedRegions.size(); i++) {
+			int rno = Integer.parseInt(selectedRegions.get(i));
+			memberMapper.setFavorRegion(memberId, rno);
+		}
+		return "success";
+	}
 }

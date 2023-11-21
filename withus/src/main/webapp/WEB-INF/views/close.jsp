@@ -9,7 +9,7 @@
         window.onload = function() {
             setTimeout(function() {
                 window.close();
-            }, 2000); // 2000 밀리초 = 2초
+            }, 100); // 2000 밀리초 = 2초
         };
     </script>
 </head>

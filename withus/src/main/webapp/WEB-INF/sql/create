@@ -53,7 +53,6 @@ FOREIGN KEY (CateID)
 REFERENCES Category(CateID);
 
 == 이미지 ==
-=======
 CREATE TABLE category (
     cateId      NUMBER          PRIMARY KEY,
     cateName    VARCHAR2(255)   NOT NULL
@@ -170,11 +169,14 @@ REPORTDATE DATE DEFAULT SYSDATE,
 CONSTRAINT FK_GREPORT_MEMBER FOREIGN KEY (MEMBERID) REFERENCES MEMBER(MEMBERID),
 CONSTRAINT FK_GREPORT_GNO FOREIGN KEY (GNO) REFERENCES GROUPS(GNO)
 )
+-- 그룹 신고테이블 상태 추가(0 = 확인중, 1= 확인, 2= 거절)---
+ALTER TABLE GREPORT ADD rpstatus NUMBER(1) DEFAULT 0;
 
 -- 회원테이블 신고수 추가--
 ALTER TABLE member
 ADD Report DEFAULT 0;
 
+<<<<<<< HEAD
 <!-- 시퀀스 추가 --> 
 CREATE SEQUENCE GBREPLY_SEQ
     START WITH 1
@@ -201,3 +203,72 @@ CREATE SEQUENCE GBREPLY_SEQ
     INCREMENT BY 1
     NOMAXVALUE
     NOCYCLE;
+=======
+
+
+-- 회원 신고 시퀀스
+CREATE SEQUENCE mreport_sequence
+START WITH   1
+INCREMENT BY 1
+NOCACHE;
+
+-- 회원 신고 테이블
+CREATE TABLE mreport (
+    mreportId   NUMBER          PRIMARY KEY,
+    reporterId  VARCHAR2(255)   NOT NULL,
+    reportedId  VARCHAR2(255)   NOT NULL,
+    rpcontent   VARCHAR2(4000)  NOT NULL,
+    rpcate      VARCHAR2(255),
+    reportDate  DATE    DEFAULT SYSDATE
+);
+
+-- reporterId 열에 대한 외래 키 생성 (CASCADE 옵션)
+ALTER TABLE mreport
+ADD CONSTRAINT fk_reporterId
+FOREIGN KEY (reporterId)
+REFERENCES member(memberId)
+ON DELETE CASCADE;
+
+-- reportedId 열에 대한 외래 키 생성 (CASCADE 옵션)
+ALTER TABLE mreport
+ADD CONSTRAINT fk_reportedId
+FOREIGN KEY (reportedId)
+REFERENCES member(memberId)
+ON DELETE CASCADE;
+
+
+-- 그룹 추천 테이블 --
+CREATE TABLE GLIKE(
+    LIKENO       NUMBER primary key,
+    GNO          NUMBER,
+    LIKECHECK    NUMBER,
+    MEMBERID     VARCHAR2(255 BYTE),
+    FOREIGN KEY (GNO) REFERENCES GROUPS(GNO) ON DELETE CASCADE,
+    FOREIGN KEY (MEMBERID) REFERENCES MEMBER(MEMBERID) ON DELETE CASCADE
+);
+
+
+-- 회원 신고테이블 상태 추가(0 = 확인중, 1= 확인, 2= 거절)---
+ALTER TABLE MREPORT ADD rpstatus NUMBER(1) DEFAULT 0;
+
+
+-- 공지사항 테이블 생성 --
+CREATE TABLE NOTICE (
+    NOTICEID NUMBER PRIMARY KEY,
+    MEMBERID VARCHAR2(255),
+    NTCONT VARCHAR2(4000),
+    NTTITLE VARCHAR2(255),
+    NTREGDATE DATE DEFAULT SYSDATE,
+    FOREIGN KEY (MEMBERID) REFERENCES MEMBER(MEMBERID) ON DELETE CASCADE
+);
+-- 공지사항 번호 자동증가 시퀀스 --
+CREATE SEQUENCE NOTICE_SEQ
+    START WITH 1
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
+    
+-- 이미 생성된 테이블을 수정하여 NOTICEID에 디폴트값 추가
+ALTER TABLE NOTICE
+MODIFY (NOTICEID DEFAULT NOTICE_SEQ.NEXTVAL);   
+>>>>>>> main

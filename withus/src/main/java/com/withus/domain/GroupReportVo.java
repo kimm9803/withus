@@ -18,4 +18,5 @@ public class GroupReportVo {
 	private String rpcate;
 	private String reportdate;
 	private String gname;
+	private int rpstatus;
 }
