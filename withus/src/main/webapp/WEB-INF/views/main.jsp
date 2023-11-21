@@ -223,8 +223,8 @@
                                     <div class='card-text'>그룹장: ${group.name}</div>
                                 </div>
                                 <div class='d-flex justify-content-between'>
-                                    <div class='card-text mr-2'>분류: ${group.catename}</div>
-                                    <div class='card-text'>지역: ${group.rname}</div>
+                                    <div class='card-text mr-2'>분류: ${group.catename != null ? group.catename : '기타'}</div>
+								    <div class='card-text'>지역: ${group.rname != null ? group.rname : '기타'}</div>
                                 </div>
                             </div>
                         </div>
@@ -241,7 +241,7 @@
     </div>
     
             <!-- 선호 카테고리 그룹 부분 -->
-            <c:if test="${not empty memberid}">
+            <c:if test="${not empty memberid && not empty favorGroupList}">
             <div id="cardheader">
                 <h5>선호 카테고리 그룹</h5>
                 <div class="card-container" id="favorGroupContainer">
@@ -272,8 +272,8 @@
                                                 <div class='card-text'>그룹장: ${favorgroup.name}</div>
                                             </div>
                                             <div class='d-flex justify-content-between'>
-                                                <div class='card-text mr-2'>분류: ${favorgroup.catename}</div>
-                                                <div class='card-text'>지역: ${favorgroup.rname}</div>
+                                                <div class='card-text mr-2'>분류: ${group.catename != null ? group.catename : '기타'}</div>
+								    			<div class='card-text'>지역: ${group.rname != null ? group.rname : '기타'}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -318,10 +318,7 @@
     document.getElementById('loadMoreBtn').addEventListener('click', loadMoreGroups);
     
     var visibleFavorGroups = 4;
-    var totalFavorGroups = ${totalFavorGroups}; // totalFavorGroups 값 할당
-    if (visibleFavorGroups >= totalFavorGroups) {
-        document.getElementById('loadMoreFavorGroupBtn').style.display = 'none';
-    }
+    var totalFavorGroups = ${not empty totalFavorGroups ? totalFavorGroups : 0};
 
     //선호 카테고리그룹 더보기 버튼
     function loadMoreFavorGroups() {
@@ -334,7 +331,11 @@
             document.getElementById('loadMoreFavorGroupBtn').style.display = 'none';
         }
     }
+    var memberid = "${memberid}"; // ${memberid} 값을 가져와서 변수에 할당
 
-    document.getElementById('loadMoreFavorGroupBtn').addEventListener('click', loadMoreFavorGroups);
+	 // memberid가 공백이 아닌 경우에만 이벤트 리스너 등록
+	 if (memberid.trim() !== '') {
+	     document.getElementById('loadMoreFavorGroupBtn').addEventListener('click', loadMoreFavorGroups);
+	 }
     </script>
 </html>
