@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.withus.domain.GroupBoardVo;
+import com.withus.mapper.GroupBoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,9 @@ import com.withus.service.MemberService;
 @Controller
 @RequestMapping("/groups")
 public class GroupsController {
+	//groupBoardMapper 추가
+	@Autowired
+	private GroupBoardMapper groupBoardMapper;
 
 	@Autowired
 	private GroupsMapper groupsMapper;	
@@ -37,6 +42,7 @@ public class GroupsController {
 	  public String createform() {
 		  return "groups/create";
 	  }
+
 	  //그룹 만들기	  
 	  @PostMapping("/create")
 	  @Transactional
@@ -51,20 +57,25 @@ public class GroupsController {
 		  mv.setViewName("home");
 		  return mv;
 	  }
-	  
+
 	  //그룹 목록 조회
 	  @GetMapping("/list")
-	  public ModelAndView list(GroupsVo vo) {		  
-		  List<GroupsVo> groupList = groupsMapper.groupList();			  
+	  public ModelAndView list(GroupsVo vo) {
+		  List<GroupsVo> groupList = groupsMapper.groupList();
 		  ModelAndView mv = new ModelAndView();
 		  mv.addObject("groupList", groupList);
 		  mv.setViewName("groups/list");
 		  return mv;
 	  }
-	  
+
 	  //그룹 내용 보기
 	  @GetMapping("/view/{gno}")
 	  public ModelAndView view(@PathVariable int gno, Authentication authentication) {
+		  /*
+		   * groupBoardList 추가
+		   */
+		  List<GroupBoardVo> groupBoardList = groupBoardMapper.gBoardViewList(gno);
+
 		  //그룹원 수
 		  int memberCnt = (groupsMapper.memberCnt(gno)) + 1 ;
 		  //상세보기화면
@@ -83,13 +94,19 @@ public class GroupsController {
 		  int findById = groupsMapper.findById(params);
 		  
 		  ModelAndView mv = new ModelAndView();
+		  /*
+		   * 추가 groupBoardList
+		   */
+		  mv.addObject("groupBoardList", groupBoardList);
 		  mv.addObject("memberCnt", memberCnt);
 		  mv.addObject("group", groupview);		  
 		  mv.addObject("memberid", memberId);
 		  mv.addObject("findById", findById);
 		  mv.setViewName("groups/view");
 		  return mv;
-	  }	  
+	  }
+
+
 	  //그룹 가입신청 목록
 	  @GetMapping("/joinlist/{gno}")
 	  public ModelAndView joinlist(@PathVariable int gno) {

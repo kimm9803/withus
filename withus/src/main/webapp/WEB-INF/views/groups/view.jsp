@@ -76,6 +76,10 @@
 	padding: 15px; /* 안쪽 여백 추가 */
 }
 
+
+
+
+
 </style>
 </head>
 <body>
@@ -89,7 +93,7 @@
                     <form method="post" action="/upload/${group.gno}" enctype="multipart/form-data">
                         <input type="hidden" name="gno" value="${group.gno}">
                         <!-- 투명한 파일 입력 필드와 가짜 버튼 -->
-						<input type="file" id="fileInput" name="image"style="opacity: 0; position: absolute; width: 1px; height: 1px;">				
+						<input type="file" id="fileInput" name="image"style="opacity: 0; position: absolute; width: 1px; height: 1px;">
 						<input type="submit" class="btn btn-primary mt-2" value="이미지 등록" />
                     </form>
                 </c:if>
@@ -113,7 +117,7 @@
 					    <a href="#" id="reportLink">
 					        <img id="groupreport" src="/img/report.png" style="width: 30px; height: 30px; float: right;">
 					    </a>
-					</div>		
+					</div>
 		        <!-- 그룹장 정보 -->
 		        <div class="group-info">
 				    <div class="card-text">그룹장:
@@ -128,18 +132,36 @@
 				            </ul>
 				        </div>
 				    </div>
-				</div>		
+				</div>
 		        <!-- 그룹 정보 (추천, 생성일, 정원) -->
 		        <div class="group-details">
 		            <p class="card-text">추천: ${group.glike}</p>
 		            <p class="card-text">생성일: ${group.gdate}</p>
 		            <p class="card-text">정원: ${memberCnt}/${group.gperson}</p>
 		        </div>
-		
+
 		        <!-- 그룹 소개 -->
 		        <div class="group-intro">
 		            <p class="card-text">그룹소개: ${group.gintro}</p>
 		        </div>
+                 <!-- 추가 그룹 게시판  -->
+                 <div class="group-board">
+                     <hr>
+                     <h4>게시판</h4>
+                     <hr>
+                     <c:forEach var="board" items="${groupBoardList}"  varStatus="loopStatus">
+                         <c:if test="${loopStatus.index < 2}">
+                             <p>${board.gbcatename}</p>
+                             <p>${board.name}</p>
+                             <p>${board.gbregdate}</p>
+                             <p><a href="/gboard/view?gbno=${board.gbno}"><b>${board.title}</b></a></p>
+                             <p>${board.content}</p>
+                            <hr>
+                         </c:if>
+                     </c:forEach>
+                     <button class="group-board-button"><a href="/gboard/list/${gno}">더보기</a></button>
+                     <hr>
+                 </div>
 		    </div>
 		</div>
             <div class="btn-group">
@@ -159,9 +181,9 @@
             <div class="btn-group">
                 <button type="button" class="btn btn-dark" id="leaveButton">그룹 탈퇴</button>
 
-            </div>        
+            </div>
 			</c:if>
-            
+
 			<c:if test="${memberid eq group.memberid}">
             <div class="btn-group">
                 <button type="button" class="btn btn-danger" id="deleteBtn">그룹 삭제</button>
@@ -174,7 +196,6 @@
                 <button type="button" class="btn btn-light" onclick="location.href='/groups/memberlist/${group.gno}'">그룹원 목록</button>
             </div>
         </c:if>
-
         <a href="/gboard/create/${group.gno}">gboard작성</a>
     </div>
 </div>
@@ -268,7 +289,7 @@
                 });
             }
         });
-		        
+
         //그룹원 탈퇴
         $("#leaveButton").click(function () {
             if (confirm('정말로 탈퇴하시겠습니까?')) {
@@ -304,6 +325,8 @@
             }
         });
     });
+
+
 </script>
 </body>
 </html>

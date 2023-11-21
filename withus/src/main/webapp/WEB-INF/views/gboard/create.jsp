@@ -22,7 +22,7 @@
         <label for="gbcateid">카테고리 선택:</label>
             <select id="gbcateid" name="gbcateid">
                 <option value="1">자유글</option>
-                <option value="2">모임 후기2</option>
+                <option value="2">모임 후기</option>
                 <option value="3">가입 인사 </option>
             </select>
 

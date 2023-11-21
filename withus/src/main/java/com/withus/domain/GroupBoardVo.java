@@ -12,5 +12,7 @@ public class GroupBoardVo {
     private String content;
     private String gbregdate;
     private String memberid;
+    private String name;
+    private String gbcatename;
 
 }

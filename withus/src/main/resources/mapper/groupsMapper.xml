@@ -116,8 +116,6 @@
 	    WHERE rnum BETWEEN #{startRow} AND #{endRow}			
 	</select>
 
-
-
 	<!-- 그룹 삭제 -->
 	<delete id="deleteGroup">
 		delete from groups
@@ -199,9 +197,6 @@
 	insert into GREPORT(greportid,gno,memberid,rpcontent,rpcate)
 	values((SELECT NVL(MAX(GREPORTID), 0) + 1 FROM GREPORT),#{gno},#{memberid},#{rpcontent},#{rpcate})
 	</insert>
-
-
-
 </mapper>
 
 
