@@ -14,10 +14,13 @@ import com.withus.domain.GroupsVo;
 public interface GroupsMapper {
 
 	//그룹 만들기
-	void groupcreate(Map<String, Object> params);
+	void groupcreate(Map<String, Object> params);    
 	
-    //그룹 만들기 후 자동가입
-	void createMember(Map<String, Object> params);
+	//그룹 수정 페이지
+	GroupsVo getModify(int gno);
+	
+	//그룹 수정
+    void groupModify(GroupsVo groupsVo);
 	
 	//그룹목록
 	List<GroupsVo> groupList();	
@@ -112,6 +115,9 @@ public interface GroupsMapper {
 
 	//선호카테고리 그룹 수
 	int totalFavorGroups(int favorCateid);
+
+	
+
 	
 
 
