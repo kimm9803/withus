@@ -43,6 +43,12 @@ public class MemberController {
 		return "auth/favor";
 	}
 	
+	// 관심지역 선택(최초 로그인 시 자동 이동)
+	@GetMapping("/user/region")
+	public String setRegionPage() {
+		return "auth/region";
+	}
+	
 	// 마이페이지
 	@GetMapping("/user/mypage")
 	public String myPage(Authentication authentication, Model model) {
