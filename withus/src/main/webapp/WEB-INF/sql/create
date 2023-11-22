@@ -243,3 +243,11 @@ CREATE SEQUENCE NOTICE_SEQ
 -- 이미 생성된 테이블을 수정하여 NOTICEID에 디폴트값 추가
 ALTER TABLE NOTICE
 MODIFY (NOTICEID DEFAULT NOTICE_SEQ.NEXTVAL);   
+
+-- 관심 지역 생성--
+CREATE TABLE favorRegion (
+    memberId     VARCHAR2(255),
+    rno          NUMBER,
+    FOREIGN KEY (memberId) REFERENCES member(memberId) ON DELETE CASCADE,
+    FOREIGN KEY (rno) REFERENCES region(rno) ON DELETE CASCADE
+);
