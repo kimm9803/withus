@@ -99,9 +99,8 @@ public class GroupsController {
 	  //그룹 내용 보기
 	  @GetMapping("/view/{gno}")
 	  public ModelAndView view(@PathVariable int gno, Authentication authentication) {
-		  /*
-		   * groupBoardList 추가
-		   */
+		  
+		  //그룹 게시판 목록
 		  List<GroupBoardVo> groupBoardList = groupBoardMapper.gBoardViewList(gno);
 
 		  //그룹원 수
@@ -121,16 +120,17 @@ public class GroupsController {
 		  params.put("memberId", memberId);
 		  int findById = groupsMapper.findById(params);
 		  
+		  //그룹 가입신청 존재 여부
+		  int fingByJoin = groupsMapper.fingByJoin(params);
+		  
 		  
 		  ModelAndView mv = new ModelAndView();
-		  /*
-		   * 추가 groupBoardList
-		   */
 		  mv.addObject("groupBoardList", groupBoardList);
 		  mv.addObject("memberCnt", memberCnt);
 		  mv.addObject("group", groupview);		  
 		  mv.addObject("memberid", memberId);
 		  mv.addObject("findById", findById);
+		  mv.addObject("fingByJoin", fingByJoin);
 		  mv.setViewName("groups/view");
 		  return mv;
 	  }
