@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.websocket.server.PathParam;
 
+import com.withus.domain.GroupBoardVo;
+import com.withus.mapper.GroupBoardMapper;
+import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -28,6 +30,9 @@ import com.withus.service.MemberService;
 @Controller
 @RequestMapping("/groups")
 public class GroupsController {
+	//groupBoardMapper 추가
+	@Autowired
+	private GroupBoardMapper groupBoardMapper;
 
 	@Autowired
 	private GroupsMapper groupsMapper;	
@@ -42,6 +47,7 @@ public class GroupsController {
 	  public String createform() {
 		  return "groups/create";
 	  }
+
 	  //그룹 만들기
 	  @Secured("ROLE_USER")
 	  @PostMapping("/create")
@@ -57,19 +63,47 @@ public class GroupsController {
 		  return mv;
 	  }
 	  
+	  //그룹 수정 페이지
+	  @Secured("ROLE_USER")
+	  @GetMapping("/modify/{gno}")
+	  public String modifyform(@PathVariable("gno") int gno, Model model) {		  
+		  
+		  //그룹 내용 들고오기
+		  GroupsVo group = groupsMapper.getModify(gno);		  
+		  model.addAttribute("group", group);
+		  
+		  return "groups/modify";
+	  }
+	  
+	  @Secured("ROLE_USER")
+	  @PostMapping("/modify/{gno}")
+	  public String modify(@PathVariable("gno") int gno, GroupsVo groupsVo) {		  
+		  
+		  //그룹 내용 수정
+		  groupsMapper.groupModify(groupsVo);
+		  
+		  return "redirect:/groups/view/" + gno;
+	  }
+	  
+
 	  //그룹 목록 조회
 	  @GetMapping("/list")
-	  public ModelAndView list(GroupsVo vo) {		  
-		  List<GroupsVo> groupList = groupsMapper.groupList();			  
+	  public ModelAndView list(GroupsVo vo) {
+		  List<GroupsVo> groupList = groupsMapper.groupList();
 		  ModelAndView mv = new ModelAndView();
 		  mv.addObject("groupList", groupList);
 		  mv.setViewName("groups/list");
 		  return mv;
 	  }
-	  
+
 	  //그룹 내용 보기
 	  @GetMapping("/view/{gno}")
 	  public ModelAndView view(@PathVariable int gno, Authentication authentication) {
+		  /*
+		   * groupBoardList 추가
+		   */
+		  List<GroupBoardVo> groupBoardList = groupBoardMapper.gBoardViewList(gno);
+
 		  //그룹원 수
 		  int memberCnt = (groupsMapper.memberCnt(gno)) + 1 ;
 		  //상세보기화면
@@ -89,13 +123,19 @@ public class GroupsController {
 		  
 		  
 		  ModelAndView mv = new ModelAndView();
+		  /*
+		   * 추가 groupBoardList
+		   */
+		  mv.addObject("groupBoardList", groupBoardList);
 		  mv.addObject("memberCnt", memberCnt);
 		  mv.addObject("group", groupview);		  
 		  mv.addObject("memberid", memberId);
 		  mv.addObject("findById", findById);
 		  mv.setViewName("groups/view");
 		  return mv;
-	  }	  
+	  }
+
+
 	  //그룹 가입신청 목록
 	  @Secured("ROLE_USER")
 	  @GetMapping("/joinlist/{gno}")
@@ -184,6 +224,4 @@ public class GroupsController {
 		  return "groups/listall";
 		  
 	  }
-	  
-	  
 }

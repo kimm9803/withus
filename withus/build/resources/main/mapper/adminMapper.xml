@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.withus.mapper.AdminMapper">
+
+	<!-- 회원 강제 탈퇴 -->
+	<delete id="deleteUser">
+		DELETE FROM member
+		WHERE memberId = #{memberId}
+	</delete>
+	
+	<!-- 그룹 신고 내역 -->
+	<select id="gReportList"
+		resultType="com.withus.domain.GroupReportVo">
+		SELECT memberid,gname,rpcate,reportdate,greportid
+		FROM ( SELECT r.memberid,g.gname,r.rpcate,r.reportdate,r.greportid,
+		row_number() over(order by r.gno desc) as rNum
+		FROM GREPORT r INNER JOIN GROUPS g ON r.gno = g.gno
+		) pr
+		WHERE rNum between #{rowStart} and #{rowEnd}		
+	</select>
+
+	<!-- 전체 그룹신고 수 -->
+	<select id="totalReportCount" resultType="int">
+		SELECT COUNT(greportid)
+		FROM greport		
+	</select>
+	
+	<!-- 그룹신고 내용 -->
+	<select id="gReportView"
+		resultType="com.withus.domain.GroupReportVo">
+		SELECT r.memberid,g.gname,r.rpcate,r.reportdate,r.greportid,r.rpcontent
+		FROM GREPORT r INNER JOIN GROUPS g ON r.gno = g.gno
+		WHERE r.greportid = #{greportid}
+	</select>
+	
+</mapper>
