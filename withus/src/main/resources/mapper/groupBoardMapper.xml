@@ -7,24 +7,85 @@
 		VALUES (GBOARD_SEQ.NEXTVAL, #{gno}, #{memberid}, #{title}, #{content}, #{gbcateid})
 	</insert>
 
-	<!-- 그룹 게시판 조회 -->
-	<select id = "gBoardList">
-		select MR.name, GC.GBCATENAME, TO_CHAR(GB.GBREGDATE, 'YYYY-MM-DD HH24:MI AM') AS GBREGDATE, GB.TITLE, GB.CONTENT
+	<!-- 그룹 게시판 List -->
+	<select id = "gBoardList"  resultType="com.withus.domain.GroupBoardVo">
+		select GB.GNO, GB.GBNO, MR.NAME, GC.GBCATENAME, TO_CHAR(GB.GBREGDATE, 'YYYY-MM-DD HH24:MI AM') AS GBREGDATE, GB.TITLE, GB.CONTENT
 		from GBOARD GB
 				 join GBCATE GC on GB.GBCATEID = GC.GBCATEID
-				 join MEMBER MR on MR.MEMBERID = GB.MEMBERID;
+				 join MEMBER MR on MR.MEMBERID = GB.MEMBERID
+			WHERE GB.GNO = #{gno}
 	</select>
 
+	<!-- 그룹 게시판 View List -->
+	<select id = "gBoardViewList" resultType="com.withus.domain.GroupBoardVo">
+		select GB.GBNO, MR.NAME, GC.GBCATENAME, TO_CHAR(GB.GBREGDATE, 'YYYY-MM-DD HH24:MI AM') AS GBREGDATE, GB.TITLE, GB.CONTENT
+		from GBOARD GB
+				 join GBCATE GC on GB.GBCATEID = GC.GBCATEID
+				 join MEMBER MR on MR.MEMBERID = GB.MEMBERID
+		where GB.GNO = #{gno}
+	</select>
+
+	<!-- 상세 정보(View) 조회 -->
+	<select id="gBoardView" resultType="com.withus.domain.GroupBoardVo">
+		select MR.MEMBERID, GB.GNO, GB.GBNO, MR.NAME, GC.GBCATENAME, TO_CHAR(GB.GBREGDATE, 'YYYY-MM-DD HH24:MI AM') AS GBREGDATE, GB.TITLE, GB.CONTENT
+		from GBOARD GB
+				 join GBCATE GC on GB.GBCATEID = GC.GBCATEID
+				 join MEMBER MR on MR.MEMBERID = GB.MEMBERID
+		where GB.GBNO = #{gbno}
+	</select>
+
+	<!--상세 정보(View) 수정 페이지 -->
+	<select id="gBoardModifyPage" resultType="com.withus.domain.GroupBoardVo" >
+		select MR.NAME, GC.GBCATENAME, TO_CHAR(GB.GBREGDATE, 'YYYY-MM-DD HH24:MI AM') AS GBREGDATE, GB.TITLE, GB.CONTENT
+		from GBOARD GB
+			    join GBCATE GC on GB.GBCATEID = GC.GBCATEID
+				join MEMBER MR on MR.MEMBERID = GB.MEMBERID
+		where GB.MEMBERID = #{memberid}
+		        And GB.GNO = #{gno}
+		        AND GB.GBNO = #{gbno}
+	</select>
+
+	<!--상세 정보(View) 수정 -->
+	<update id="gBoardModify" parameterType="HashMap">
+		update GBOARD
+		SET title =#{vo.title}, CONTENT = #{vo.content}, GBCATEID = #{vo.gbcateid}
+		where memberid = #{memberid}
+			And gno = #{gno}
+			AND gbno = #{gbno}
+	</update>
+
+	<!-- 상세 정보 삭제 -->
+	<delete id="gBoardDelete">
+		DELETE FROM GBOARD
+		WHERE memberid = #{memberid}
+			And gno = #{gno}
+			And gbno = #{gbno}
+	</delete>
+
+	<!-- 그룹 게시판 댓글 입력 -->
+	<insert id="GBReplyCreate">
+		INSERT INTO gbreply(replyid, MEMBERID, GNO, GBNO, CONTENT)
+		VALUES ( GBREPLY_SEQ.NEXTVAL, #{memberid}, #{gno}, #{gbno}, #{content})
+	</insert>
+
+	<!-- 그룹 게시판 댓글 조회	-->
+	<select id = "getComments"  resultType="com.withus.domain.GroupBoardReplyVo">
+	SELECT MR.MEMBERID, GR.REPLYID, MR.NAME, GR.CONTENT, GR.GBREPLYDATE
+	FROM GBREPLY GR
+	join MEMBER MR on GR.memberid = MR.memberid
+	WHERE GR.GBNO = #{gbno} AND GR.GNO = #{gno} AND GR.MEMBERID = #{memberid}
+	</select>
+
+	<!-- 그룹 게시판 댓글 수정-->
+	<update id = "commentModify" parameterType="com.withus.domain.GroupBoardReplyVo">
+		update GBREPLY
+		SET	content = #{content}
+		where REPLYID = #{replyid}
+	</update>
+
+	<!-- 그룹 게시판 삭제 -->
+	<delete id = "commentDelete">
+		DELETE FROM GBREPLY
+		WHERE REPLYID = #{replyid} AND MEMBERID = #{memberid}
+	</delete>
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
