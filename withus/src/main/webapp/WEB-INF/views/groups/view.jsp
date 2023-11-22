@@ -82,6 +82,18 @@
 		.group-intro{
 			white-space: pre-line;
 		}
+		
+		#modifyBtn {
+        background-color: olive;       
+        border: none;
+        
+	    }
+	
+	    #modifyBtn:hover {
+	        background-color: darkgreen;
+	        color: white;
+	    }
+
 </style>
 </head>
 <body>
@@ -202,8 +214,12 @@
 
 			<c:if test="${memberid eq group.memberid}">
             <div class="btn-group">
-                <button type="button" class="btn btn-danger" id="deleteBtn">그룹 삭제</button>
+                <button type="button" class="btn btn-dark"id="modifyBtn" onclick="location.href='/groups/modify/${group.gno}'">그룹 수정</button>
             </div>
+            
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger" id="deleteBtn">그룹 삭제</button>
+            </div>           
 
             <div class="btn-group">
                 <button type="button" class="btn btn-light" onclick="location.href='/groups/joinlist/${group.gno}'">가입신청 목록</button>

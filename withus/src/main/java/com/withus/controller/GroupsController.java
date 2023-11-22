@@ -62,6 +62,29 @@ public class GroupsController {
 		  mv.setViewName("home");
 		  return mv;
 	  }
+	  
+	  //그룹 수정 페이지
+	  @Secured("ROLE_USER")
+	  @GetMapping("/modify/{gno}")
+	  public String modifyform(@PathVariable("gno") int gno, Model model) {		  
+		  
+		  //그룹 내용 들고오기
+		  GroupsVo group = groupsMapper.getModify(gno);		  
+		  model.addAttribute("group", group);
+		  
+		  return "groups/modify";
+	  }
+	  
+	  @Secured("ROLE_USER")
+	  @PostMapping("/modify/{gno}")
+	  public String modify(@PathVariable("gno") int gno, GroupsVo groupsVo) {		  
+		  
+		  //그룹 내용 수정
+		  groupsMapper.groupModify(groupsVo);
+		  
+		  return "redirect:/groups/view/" + gno;
+	  }
+	  
 
 	  //그룹 목록 조회
 	  @GetMapping("/list")
