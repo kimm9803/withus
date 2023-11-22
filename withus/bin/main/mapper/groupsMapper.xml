@@ -188,6 +188,11 @@
 		VALUES((SELECT NVL(MAX(GJOINID), 0) + 1 FROM
 		GROUPJOIN),#{gno},#{memberid})
 	</insert>
+	<!-- 그룹 가입신청 취소 -->
+	<delete id="joinGroupCancel">
+		delete from groupjoin
+		where gno = #{gno} and memberid = #{memberid}
+	</delete>
 
 	<!-- 가입신청 내역 -->
 	<select id="joinlist" resultType="com.withus.domain.GroupJoinVo">
@@ -236,6 +241,13 @@
 	<select id="findById" resultType="int">
 	SELECT COUNT(gno)
 	FROM GMEMBER
+	WHERE gno = #{gno} AND memberid = #{memberId}
+	</select>
+
+	<!-- 그룹원 존재 여부판단 -->
+	<select id="fingByJoin" resultType="int">
+	SELECT COUNT(gno)
+	FROM GROUPJOIN
 	WHERE gno = #{gno} AND memberid = #{memberId}
 	</select>
 	
@@ -373,12 +385,39 @@
 		LEFT JOIN member m ON g.memberid = m.memberid
 		WHERE g.rno = #{favorRno}
 	</select>
+	
 	<!-- 선호지역 총그룹 수 -->
 	<select id="favorReigonGroups" resultType="int">
 	SELECT COUNT(GNO)
 	FROM GROUPS
 	WHERE cateid = #{favorRno}
 	</select>
+	
+	<!-- 내가 만든 그룹 -->
+	<select id="myMakeList" resultType="com.withus.domain.GroupsVo">
+	SELECT g.gname, g.gperson, c.catename, g.glike, g.greport, g.memberid,g.gno,
+	(SELECT COUNT(gm.gno) + 1 FROM gmember gm WHERE gm.gno = g.gno) AS memberCnt,r.rname,
+	TO_CHAR(g.gdate, 'YYYY-MM-DD') AS gdate
+	FROM groups g
+	LEFT JOIN category c ON g.cateid = c.cateid
+	LEFT JOIN region r ON g.rno = r.rno
+	LEFT JOIN gimage i ON g.gno = i.gno
+	WHERE g.memberid = #{memberId}
+	</select>
+	
+	<!-- 내가 가입한 그룹 -->
+	<select id="myJoinList" resultType="com.withus.domain.GroupsVo">
+	SELECT g.gname, g.gperson, c.catename, g.glike, g.greport, g.memberid,g.gno,
+	(SELECT COUNT(gm.gno) + 1 FROM gmember gm WHERE gm.gno = g.gno) AS memberCnt,r.rname,
+	TO_CHAR(g.gdate, 'YYYY-MM-DD') AS gdate
+	FROM groups g
+	LEFT JOIN category c ON g.cateid = c.cateid
+	LEFT JOIN region r ON g.rno = r.rno
+	LEFT JOIN gimage i ON g.gno = i.gno
+	LEFT JOIN gmember gm ON gm.gno = g.gno	
+	WHERE gm.memberid = #{memberId}
+	</select>
+		
 </mapper>
 
 

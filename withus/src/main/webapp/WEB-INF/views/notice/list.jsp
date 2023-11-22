@@ -191,14 +191,15 @@
 		float: right;
 	}
 	
-	footer {
-		margin-top: 100px;
+
+	main{
+		display: flex; width: 60%; margin: 0 auto; margin-top: 150px; height: 80vh;
 	}
 </style>
 </head>
 <body>
 	<header><%@ include file="../header.jsp" %></header>
-	<main style="display: flex; width: 75%; margin: 0 auto; margin-top: 100px; height: 700px;">	      
+	<main>	      
 	      <!-- 오른쪽 콘텐츠 영역 -->
 	      <div class="rightArea" style="flex: 4;">	         
 	         <div style="margin-top: 40px; text-align: center;"><h2 style="font-weight: bold;">공지사항</h2></div>
@@ -219,7 +220,7 @@
 							<td>${loop.index + 1}</td>
 							<td>${notice.nttitle}</td>
 							<td>${notice.name}</td>
-							<td>${notice.ntregdate}</td>
+							<td style="width:200px;">${notice.ntregdate}</td>
 						</tr>
 					</c:forEach>
 					</tbody>

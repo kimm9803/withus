@@ -37,6 +37,9 @@ public interface GroupsMapper {
     //그룹가입신청
 	void joinGroup(Map<String, Object> params);
 	
+	//그룹 가입신청 취소
+	void joinGroupCancel(Map<String, Object> params);
+	
     //그룹가입신청내역
 	List<GroupJoinVo> joinlist(int gno);
 	
@@ -52,6 +55,8 @@ public interface GroupsMapper {
     //그룹원 추방
 	void memberBan(Map<String, Object> params);
 	
+	//가입신청 여부
+	int fingByJoin(Map<String, Object> params);	
 	
     //그룹원 수
 	int memberCnt(int gno);
@@ -124,6 +129,16 @@ public interface GroupsMapper {
 
 	//선호지역 그룹 수
 	int favorReigonGroups(int favorRno);
+
+	//내가 만든 그룹
+	List<GroupsVo> myMakeList(String memberId);
+
+	//내가 가입한 그룹
+	List<GroupsVo> myJoinList(String memberId);
+
+	
+
+
 
 	
 

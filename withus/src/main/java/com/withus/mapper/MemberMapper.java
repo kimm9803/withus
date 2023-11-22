@@ -68,5 +68,8 @@ public interface MemberMapper {
 
 	// 관심 지역
 	void setFavorRegion(@Param("memberId") String memberId, @Param("rno") int rno);
+
+	//관심 지역 찾기
+	List<FavorCateVo> favorRegionList(String memberId);
 	
 }

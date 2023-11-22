@@ -100,8 +100,7 @@
 <header><%@ include file="../header.jsp" %></header>
 <main>
     <div class="container mt-5">
-        <div class="content">
-            <h1>${group.gname }</h1>           
+        <div class="content">                      
             <div id="image">
                 <c:if test="${empty group.newImageName}">
                     <!-- image.newImageName이 null이나 비어 있을 때 -->
@@ -135,9 +134,14 @@
 					    <h2 class="card-title">${group.gname}</h2>
 					
 					    <!-- 정원이 남아있고 그룹원이 아니면 -->
-					    <c:if test="${memberCnt lt group.gperson && findById eq 0 && not empty memberid && group.memberid ne memberid}">
+					    <c:if test="${memberCnt lt group.gperson && findById eq 0 && not empty memberid && group.memberid ne memberid && fingByJoin eq 0}">
 					        <div class="btn-group">
 					            <button type="button" class="btn btn-dark" id="joinButton">그룹 가입</button>
+					        </div>
+					    </c:if>
+					    <c:if test="${findById eq 0 && fingByJoin eq 1}">
+					        <div class="btn-group">
+					            <button type="button" class="btn btn-dark" id="joinCancel">가입 신청취소</button>
 					        </div>
 					    </c:if>
 					</div>
@@ -328,7 +332,7 @@
                 });
             }
         });
-
+              
         //그룹원 탈퇴
         $("#leaveButton").click(function () {
             if (confirm('정말로 탈퇴하시겠습니까?')) {
@@ -421,7 +425,28 @@
             }
         }
     });
-
+   
+ // 가입신청취소
+    $("#joinCancel").click(function () {
+        // memberid가 비어있지 않은 경우에만 실행       
+       
+            if (confirm('정말로 취소하시겠습니까?')) {
+                $.ajax({
+                    type: "GET",
+                    url: "/groups/joincancel",
+                    data: {
+                        gno: '${group.gno}', // 백틱이 아닌 따옴표 사용                       
+                    },
+                    success: function (response) {
+                        alert("신청 취소가 완료되었습니다.");
+                    },
+                    error: function (error) {
+                        alert("신청 취소 중 오류가 발생했습니다.");
+                    }
+                });
+            }
+        
+    });
 
 </script>
 
