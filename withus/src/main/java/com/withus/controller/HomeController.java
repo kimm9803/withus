@@ -27,13 +27,8 @@ public class HomeController {
 	private MemberService memberService;
 	
 	
-	@GetMapping("/")
-	public String home() {
-		return "home";
-	}
-	
 	//메인 화면
-	@GetMapping("/main")
+	@GetMapping("/")
 	public String main(Model model,			
 			Authentication authentication) {
 			
@@ -91,7 +86,7 @@ public class HomeController {
 			}
 			
 			
-			return "main";
+			return "home";
 		}
 	}
 	

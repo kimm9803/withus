@@ -36,12 +36,11 @@
 					</ul>
 				</div>
 				<div class="footer-col">
-					<h4>online shop</h4>
+					<h4>고객 센터</h4>
 					<ul>
-						<li><a href="#">watch</a></li>
-						<li><a href="#">bag</a></li>
-						<li><a href="#">shoes</a></li>
-						<li><a href="#">dress</a></li>
+						<li><a href="#">FAQ</a></li>
+						<li><a href="#">공지사항</a></li>
+						<li><a href="#">1:1 문의</a></li>						
 					</ul>
 				</div>
 				<div class="footer-col">
