@@ -25,4 +25,7 @@ public interface QuestionMapper {
 	// 질문 삭제
 	void questionDelete(@Param("qno")int qno, @Param("writer")String writer);
 
+	// 답변 완료 시 상태 변경
+	void setStatus(int qno);
+
 }

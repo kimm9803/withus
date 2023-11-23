@@ -36,4 +36,11 @@
 		DELETE FROM question
 		WHERE qno = #{qno} AND writer = #{writer}
 	</delete>
+	
+	<!-- 답변 완료 시 상태 변경 -->
+	<update id="setStatus">
+		UPDATE question
+		SET status = 1
+		WHERE qno = #{qno}
+	</update>
 </mapper>

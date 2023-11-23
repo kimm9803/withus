@@ -65,6 +65,8 @@
 		display: flex;
 		justify-content: flex-end;
 		margin-top: 30px;
+		border-bottom: 1px solid #ccc;
+		padding-bottom: 30px;
 	}
 	
 	.a-seq {
@@ -78,6 +80,28 @@
 	.btn {
 		margin-left: 10px;
 	}
+	
+	.answer-group {
+		margin-top: 30px;
+	}
+	
+	.answer-write {
+		margin-top: 25px;
+		display: flex;
+		justify-content: flex-end;
+	}
+	
+	.answer-field {
+		padding-top: 30px;
+		border-bottom: 1px solid #ccc;
+		padding-bottom: 30px;
+	}
+	.answer-head {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 15px;
+	}
+	
 </style>
 </head>
 <body>
@@ -92,7 +116,7 @@
 				<h1>${question.title}</h1>
 			</div>
 			<div class="ss-h">
-				<span style="margin-right: 10px">🖊 ${question.name}(${question.writer})</span>|<span style="margin-left: 10px">📃 ${question.regDate}</span>
+				<span style="margin-right: 10px; font-weight: bold;">🖊 ${question.name}(${question.writer})</span>|<span style="margin-left: 10px">📃 ${question.regDate}</span>
 			</div>
 			<div class="content">
 				${question.content}
@@ -156,6 +180,39 @@
 					</c:when>
 				</c:choose>
 			</div>
+			<c:forEach items="${answer}" var="answer">
+				<div class="answer-field" data-ano="${answer.ano}">
+					<div class="answer-head">
+						<div>
+							<span style="font-weight: bold;">🖊 관리자</span> &nbsp;| &nbsp;📃 ${answer.regDate}
+						</div>
+						<c:if test="${role == 'ROLE_ADMIN'}">
+							<div class="replace-modify">
+								<a class="modify-link" href="#" data-ano="${answer.ano}">수정</a> &nbsp;|&nbsp; <a href="/admin/answer/delete/${answer.ano}/${question.qno}">삭제</a>
+							</div>
+						</c:if>
+					</div>
+					<div class="answer-content">${answer.content}</div>
+				</div>
+			</c:forEach>
+			<c:choose>
+				<c:when test="${role == 'ROLE_ADMIN'}">
+					<div class="answer-group">
+						<textarea class="text" cols="129" rows="10"></textarea>	
+					</div>
+					<div class="answer-write">
+						<button type="button" class="btn btn-dark answer-btn">작성</button>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<div class="answer-group">
+						<textarea cols="129" rows="10" placeholder="   관리자만 작성할 수 있습니다." disabled></textarea>	
+					</div>
+					<div class="answer-write">
+						<button type="button" class="btn btn-dark">작성</button>
+					</div>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</main>
 	
@@ -194,7 +251,70 @@
 						}
 					});
 				}
-			})
+			});
+			
+			$('.answer-btn').on('click', function() {
+				var content = $('.text').val();
+				var qno = ${question.qno};
+				
+				$.ajax({
+					url: '/admin/answer/write',
+					type: 'POST',
+					data: {
+						content: content,
+						qno: qno
+					},
+					success: function(success) {
+						location.href = '/question/view/' + qno;
+					},
+					error: function() {
+						alert('에러 발생');
+					}
+				})
+			});
+			
+			$(document).on('click', '.modify-link', function() {
+			    var currentContent = $(this).closest('.answer-field').find('.answer-content').text();
+			    var textareaElement = '<textarea class="text" cols="129" rows="10">' + currentContent + '</textarea>';
+			    var saveButton = '<div class="replace-modify"><a class="modify-btn" href="#">확인</a> &nbsp;|&nbsp; <a class="cancel" href="#">취소</a></div>';
+
+			    // answer.ano 값을 가져오기 위해 변수에 저장
+			    var ano = $(this).closest('.answer-field').find('.modify-link').data('ano');
+
+			    // 현재 내용을 textarea로 교체
+			    $(this).closest('.answer-field').find('.answer-content').replaceWith(textareaElement);
+			    $(this).closest('.answer-field').find('.replace-modify').replaceWith(saveButton);
+
+			    // 수정 버튼을 클릭한 해당 answer.ano 값을 변수에 저장하여 사용
+			    $(this).closest('.answer-field').data('ano', ano);
+			});
+
+		    // 수정 버튼 클릭 시 AJAX 요청
+		    $(document).on('click', '.modify-btn', function() {
+		        var content = $(this).closest('.answer-field').find('.text').val();
+		        var ano = $(this).closest('.answer-field').data('ano');
+
+
+		        $.ajax({
+		            url: '/admin/answer/modify',
+		            type: 'POST',
+		            data: {
+		                content: content,
+		                ano: ano
+		            },
+		            success: function(success) {
+		                location.href = '/question/view/' + ${question.qno};
+		            },
+		            error: function() {
+		                alert('에러 발생');
+		            }
+		        });
+		    });
+		    
+		    // 취소 버튼
+		    $('.cancel').on('click', function() {
+	            location.href = '/question/view/' + ${question.qno};
+		    });
 		})
 	</script>
 </body>
