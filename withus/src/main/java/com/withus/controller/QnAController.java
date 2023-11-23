@@ -10,18 +10,27 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.withus.domain.AnswerVo;
 import com.withus.domain.QuestionVo;
+import com.withus.mapper.AnswerMapper;
+import com.withus.mapper.MemberMapper;
 import com.withus.mapper.QuestionMapper;
 import com.withus.service.MemberService;
 
 @Controller
-public class QuestionController {
+public class QnAController {
 
 	@Autowired
 	private MemberService memberService;
 	
 	@Autowired
+	private MemberMapper memberMapper;
+	
+	@Autowired
 	private QuestionMapper questionMapper;
+	
+	@Autowired
+	private AnswerMapper answerMapper;
 	
 	// 질문 작성 페이지
 	@GetMapping("/user/question")
@@ -52,6 +61,7 @@ public class QuestionController {
 		QuestionVo questionVo = questionMapper.getQuestionView(qno);
 		QuestionVo prevQuestionVo = questionMapper.getQuestionView(qno-1);
 		QuestionVo nextQuestionVo = questionMapper.getQuestionView(qno+1);
+		List<AnswerVo> answerVo = answerMapper.getAnswerList(qno);
 		
 		// 작성자와 로그인된 사용자가 같은지 여부
 		boolean tr = false;
@@ -61,8 +71,15 @@ public class QuestionController {
 				tr = true;
 				model.addAttribute("isWriter", tr);
 			}
+			
+			if (memberMapper.findById(memberId).getRole().equals("ROLE_ADMIN")) {
+				model.addAttribute("role", "ROLE_ADMIN");
+			} else {
+				model.addAttribute("role", "ROLE_USER");
+			}
 		} else {
 			model.addAttribute("isWriter", tr);
+			model.addAttribute("role", "ROLE_GUEST");
 		}
 		
 		
@@ -81,6 +98,8 @@ public class QuestionController {
 			model.addAttribute("nextQuestion", nextQuestionVo);
 		}
 		model.addAttribute("question", questionVo);
+		model.addAttribute("answer", answerVo);
+		
 		return "question/view";
 	}
 	
@@ -106,5 +125,12 @@ public class QuestionController {
 	public String questionModify(QuestionVo questionVo) {
 		questionMapper.questionModify(questionVo);
 		return "redirect:/question/view/" + questionVo.getQno();
+	}
+	
+	// 답변 삭제
+	@GetMapping("/admin/answer/delete/{ano}/{qno}")
+	public String answerDelete(@PathVariable("ano") int ano, @PathVariable("qno") int qno) {
+		answerMapper.answerDelete(ano);
+		return "redirect:/question/view/{qno}";
 	}
 }
