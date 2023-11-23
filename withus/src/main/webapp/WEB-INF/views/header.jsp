@@ -24,7 +24,7 @@
 		<nav class="navbar">
 			<a href="/">Home</a>
 			<a href="#">About</a>
-			<a href="#">Gallery</a>
+			<a href="/groups/create">모임만들기</a>
 			<a href="/question/list">Q&A</a>
 			<a href="/notice/list">공지사항</a>
 			<sec:authorize access="hasRole('ROLE_ADMIN')">
