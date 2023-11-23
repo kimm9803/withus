@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.withus.mapper.QuestionMapper">
+
+	<!-- 질문 작성 -->
+	<insert id="writeQuestion">
+		INSERT INTO question (title, content, writer)
+		VALUES (#{title}, #{content}, #{writer})
+	</insert>
+	
+	<!-- 질문 리스트 -->
+	<select id="getQuestionList" resultType="com.withus.domain.QuestionVo">
+		SELECT q.qno, q.title, q.content, q.writer, q.regDate, q.status, m.name
+		FROM question q
+		INNER JOIN member m ON m.memberId = q.writer
+		ORDER BY q.qno DESC
+	</select>
+	
+	<!-- 질문 상세 -->
+	<select id="getQuestionView" resultType="com.withus.domain.QuestionVo">
+		SELECT q.qno, q.title, q.content, q.writer, q.regDate, q.status, m.name
+		FROM question q
+		INNER JOIN member m ON m.memberId = q.writer
+		WHERE q.qno = #{qno}
+	</select>
+	
+	<!-- 질문 수정 -->
+	<update id="questionModify">
+		UPDATE question
+		SET title = #{title}, content = #{content}
+		WHERE qno = #{qno}
+	</update>
+	
+	<!-- 질문 삭제 -->
+	<delete id="questionDelete">
+		DELETE FROM question
+		WHERE qno = #{qno} AND writer = #{writer}
+	</delete>
+</mapper>
