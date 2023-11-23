@@ -13,7 +13,7 @@
 		resultType="com.withus.domain.GroupReportVo">
 		SELECT memberid,gname,rpcate,reportdate,greportid,rpstatus
 		FROM ( SELECT r.memberid,g.gname,r.rpcate,r.reportdate,r.greportid,r.rpstatus,
-		row_number() over(order by r.gno desc) as rNum
+		row_number() over(order by r.reportdate desc) as rNum
 		FROM GREPORT r INNER JOIN GROUPS g ON r.gno = g.gno
 		) pr
 		WHERE rNum between #{rowStart} and #{rowEnd}		

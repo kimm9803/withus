@@ -74,6 +74,8 @@
 			margin-top: 20px; /* 그룹 정보와 그룹 소개 사이 간격 조절 */
 			border: 1px solid #ccc; /* 테두리 추가 */
 			padding: 15px; /* 안쪽 여백 추가 */
+			border-radius: 10px;
+			background-color: white;
 		}
 		main{
 			margin-top: 150px;
@@ -128,7 +130,7 @@
                 </c:if>
             </div>
            <div class="card mt-3" >
-   			 <div class="card-body">
+   			 <div class="card-body" style="background: #F4F4F4;">
 					<div class="d-flex justify-content-between align-items-center" style="margin-bottom: 20px;">
 					    <!-- 그룹 이름 -->
 					    <h2 class="card-title">${group.gname}</h2>
@@ -158,7 +160,7 @@
 
 		        <!-- 그룹장 정보 -->
 		        <div class="group-info">
-				    <div class="card-text">그룹장:
+				    <div class="card-text" style="font-size: 20px; font-weight: bold;">👑그룹장:
 				        <div class="dropdown d-inline">
 				            <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
 				                ${group.name}
@@ -180,7 +182,8 @@
 
 		        <!-- 그룹 소개 -->
 		        <div class="group-intro">
-		            <p class="card-text">그룹소개: ${group.gintro}</p>
+		        	<h5>그룹 소개</h5>
+		            <p class="card-text">${group.gintro}</p>
 		        </div>
                  <!-- 추가 그룹 게시판  -->
                  <div class="group-board">

@@ -111,19 +111,23 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: space-evenly;
-            gap: 10px;
+            gap: 5px;
             
         }
 
         .category-item {
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 10px;
+            padding: 5px;
             text-align: center;
+        }
+        .category-item:hover{
+        	font-weight: bold;
         }
         main{
         	margin-bottom: 50px;
         }
+        #card{
+		height: 70vh;
+		}
     </style>
 </head>
 <body>
@@ -138,55 +142,56 @@
 		<div class="category-container">
 			<div class="category-item">
 				<a href="/groups/loadall" class="category-link"> 
-				<span>전체</span>
+				<span style="font-size: 18px;">전체</span>
 				</a>
 			</div>			
 		    <div class="category-item">
 		        <a href="/groups/loadcate/1" class="category-link"> 
-		            <span>아웃도어/여행</span>
+		            <span>🚉아웃도어/여행</span>
 		        </a>
 		    </div>
 		    <div class="category-item">
 		        <a href="/groups/loadcate/2" class="category-link">
-		            <span>운동/스포츠</span>
+		            <span>⚽운동/스포츠</span>
 		        </a>
 		    </div>
 		    <div class="category-item">
 		        <a href="/groups/loadcate/3" class="category-link">
-		            <span>책/글</span>
+		            <span>📚책/글</span>
 		        </a>
 		    </div>
 		    <div class="category-item">
 		        <a href="/groups/loadcate/4" class="category-link">
-		            <span>외국/언어</span>
+		            <span>🌎외국/언어</span>
 		        </a>
 		    </div>
 		    <div class="category-item">
 		        <a href="/groups/loadcate/5" class="category-link">
-		            <span>문화/공연/축제</span>
+		            <span>🎉문화/공연/축제</span>
 		        </a>
 		    </div>
 		    <div class="category-item">
 		        <a href="/groups/loadcate/6" class="category-link">
-		            <span>음악/악기</span>
+		            <span>🎵음악/악기</span>
 		        </a>
 		    </div>
 		    <div class="category-item">
 		        <a href="/groups/loadcate/7" class="category-link">
-		            <span>사진/영상</span>
+		            <span>📷사진/영상</span>
 		        </a>
 		    </div>
 		    <div class="category-item">
 		        <a href="/groups/loadcate/8" class="category-link">
-		            <span>게임/오락</span>
+		            <span>🎮게임/오락</span>
 		        </a>
 		    </div>
 		    <div class="category-item">
 		        <a href="/groups/loadcate/9" class="category-link">
-		            <span>차/오토바이</span>
+		            <span>🚗차/오토바이</span>
 		        </a>
 		    </div>
-		</div>
+		</div>    
+		<hr style="margin-bottom: 50px;">		
 		
 		<!-- 검색 부분 -->
 		<div class="mb-3" id="search">
@@ -205,6 +210,7 @@
 		</div>
 		
 	<!--  그룹 부분 -->
+	<div id="card"> 
 	<div class="card-container" id="groupContainer">
        <c:forEach var="group" items="${cateGroupList}"> 
             <div class='card border-dark'>
@@ -247,6 +253,7 @@
     <!-- "더보기" 버튼 -->
     <div class="loadMore">
         <button type="button" class="btn btn-dark" id="loadMoreBtn">더보기</button>
+    </div>
     </div>
     <script>
     var increment = 4;
