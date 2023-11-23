@@ -5,27 +5,20 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>공지사항 목록</title>
-<script src="https://kit.fontawesome.com/51db22a717.js"
-	crossorigin="anonymous"></script>
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap">
+<title>마이 페이지</title>
+<script src="https://kit.fontawesome.com/51db22a717.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap">
 <link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-	crossorigin="anonymous">
+   href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+   rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-	crossorigin="anonymous"></script>
-
+   src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 <style>
 	* {
 		font-family: 'Sunflower', sans-serif;
 	}
+	
 	main {
 		margin-top: 140px;
 	}
@@ -144,9 +137,8 @@
 	.rightArea {
 	   margin-left: 40px;
 	   margin-top: 60px;
-	   height: 100%;
 	}
-
+	
 	
 	/* listGroupTitle에 스타일 추가 */
 	.listGroupTitle {
@@ -158,12 +150,6 @@
 	  text-align: center;
 	  border-bottom: 1px solid gray;
 	  border-top: 1px solid gray;
-	}
-	
-
-	#write{
-		
-		float: right;
 	}
 	
 	footer {
@@ -179,7 +165,7 @@
 	      <div class="wrap" style="flex: 1;">
 	         <div class="grayContainer" style="display: flex; justify-content: center; align-items: center;">
 	             <div>
-	                 <div class="name" style="text-align: center;">관리자 페이지</div>
+	                 <div class="name" style="text-align: center;">마이 페이지</div>
 	             </div>
 	         </div>     
 	         
@@ -201,11 +187,11 @@
 			  </div>		  
 			  <div class="listGroup">
 			    <div class="listGroupTitle">그룹</div>
-			    <a href="/admin/group/list" class="item">		      
-			      <div class="text">그룹 전체 목록</div>		      
+			    <a href="/user/mygroup" class="item">		      
+			      <div class="text">내가 만든 그룹</div>		      
 			    </a>
-			    <a href="/admin/group/reportlist" class="item">		      
-			      <div class="text">그룹 신고 내역</div>		      
+			    <a href="/user/myjoingroup" class="item">		      
+			      <div class="text">내가 가입한 그룹</div>		      
 			    </a>
 			  </div>
 			  
@@ -219,10 +205,10 @@
 			  		  
 			  <div class="listGroup">
 			    <div class="listGroupTitle">공지사항</div>
-			    <a href="/notice/writeform" class="item">		      
+			    <a href="/admin/notice/write" class="item">		      
 			      <div class="text">공지사항 등록</div>		      
 			    </a>
-			    <a href="/notice/list" class="item">		      
+			    <a href="/admin/notice/list" class="item">		      
 			      <div class="text">공지사항 목록</div>		      
 			    </a>
 			  </div>
@@ -231,38 +217,53 @@
 	
 	      <!-- 오른쪽 콘텐츠 영역 -->
 	      <div class="rightArea" style="flex: 4;">
-	         <div class="grayContainer" >
+	         <div class="grayContainer">
 	            <div class="name" style="display: flex; justify-content: space-between;">
 	               <div class="left" style="display: flex; align-items: center;">                  
-	                  <div style="font-weight: normal; margin-left: 0 auto; text-align: center; font-size: 25px;">어서오세요!! With Us 관리자님</div>
+	                  <div style="font-weight: normal; margin-left: 0 auto; text-align: center; font-size: 25px;">어서오세요!! With Us ${member.name}님</div>
 	               </div>               
 	            </div>
 	         </div>
-	         <div style="margin-top: 40px; text-align: center;"><h2 style="font-weight: bold;">공지사항 작성</h2></div>
-	         <div style="margin-top: 40px;">
-
-		        <form method="POST" action="/admin/notice/write">
-		            <div class="mb-3">
-		                <label for="title" class="form-label">제목</label>
-		                <input type="text" class="form-control" id="title" name="nttitle"placeholder="제목을 입력하세요" required>
-		            </div>
-		
-		            <div class="mb-3">
-		                <label for="author" class="form-label">작성자</label>
-		                <input type="text" class="form-control" id="memberid" name="memberid"value="${memberid}"  readonly>
-		            </div>
-		            
-		            <div class="mb-5">
-		                <label for="content" class="form-label">내용</label>
-		                <textarea class="form-control" id="content" name="ntcont"rows="9" placeholder="내용을 입력하세요"></textarea>
-		            </div>
-		
-		            <button type="submit" class="btn btn-dark" id="write">작성하기</button>
-		        </form>
-	         </div>
-	      </div>
+	         <div style="margin-top: 40px; text-align: center;"><h2 style="font-weight: bold;">마이 페이지</h2></div>
+	         <!-- 회원 정보 카드 -->
+			<div style="margin-top: 40px;">
+			    <div class="card" style="width: 60%; margin: 0 auto;">
+			        <div class="card-body" style="text-align: left";>
+			            <h3 class="card-title" style="font-weight: bold;">회원 정보</h3>
+			            <hr>
+			            <p class="card-text">이름: ${member.name}</p>
+			            <hr>
+			            <p class="card-text">아이디: ${member.memberId}</p>
+			            <hr>
+			            <p class="card-text">성별: 
+						    <c:choose>
+						        <c:when test="${member.gender eq 'male'}">남자</c:when>
+						        <c:when test="${member.gender eq 'female'}">여자</c:when>						        
+						    </c:choose>
+						</p>
+			            <hr>
+			            <p class="card-text">가입일: ${member.regDate}</p>
+			            <hr>			
+			            <p class="card-text">선호 카테고리: 
+			            <c:forEach items="${favorCateList}" var="favorCate">
+			            <span style="background-color: #f5f5f5; padding: 5px; margin-right: 5px; border-radius: 5px;">
+                            ${favorCate.cateName}
+                        </span>
+			            </c:forEach>
+			            </p>
+			            <hr>			
+			            <p class="card-text">선호 지역: 
+			            <c:forEach items="${favorRegionList}" var="favorRegion">
+			            <span style="background-color: #f5f5f5; padding: 5px; margin-right: 5px; border-radius: 5px;">
+                            ${favorRegion.rname}
+                        </span>
+			            </c:forEach>
+			            </p>
+			            <hr>
+			        </div>
+			    </div>
+			</div>
 	</main>
 	<footer><%@ include file="../footer.jsp" %></footer>
-	
 </body>
 </html>

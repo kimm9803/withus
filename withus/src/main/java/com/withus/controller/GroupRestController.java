@@ -36,14 +36,25 @@ public class GroupRestController {
 		groupsMapper.deleteGroup(gno);
 	}
 	
-	// 그룹 가입신청
+	// 그룹 가입신청 취소
 	@Secured("ROLE_USER")
-	@GetMapping("/join")
-	public void join(Authentication authentication, @RequestParam("gno") int gno) {
+	@GetMapping("/joincancel")
+	public void joincancel(Authentication authentication, @RequestParam("gno") int gno) {
 		  String memberid = memberService.authMember(authentication);
 		  Map<String,Object> params = new HashMap<>();
 		  params.put("memberid", memberid);
 		  params.put("gno", gno);
+		groupsMapper.joinGroupCancel(params);
+	}
+	
+	// 그룹 가입신청
+	@Secured("ROLE_USER")
+	@GetMapping("/join")
+	public void join(Authentication authentication, @RequestParam("gno") int gno) {
+		String memberid = memberService.authMember(authentication);
+		Map<String,Object> params = new HashMap<>();
+		params.put("memberid", memberid);
+		params.put("gno", gno);
 		groupsMapper.joinGroup(params);
 	}
 	
