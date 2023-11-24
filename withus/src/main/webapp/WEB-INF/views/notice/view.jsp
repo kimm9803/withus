@@ -25,9 +25,10 @@
         }
 
         .card-header {
-            background-color: #3D8B55;
+            background-color: #808080;
             color: white;
             border-radius: 10px 10px 0 0;
+            padding: 25px;
         }
 
         .card-body {
@@ -44,14 +45,16 @@
         }
 
         .notice-content {
-            margin-top: 15px;
+            margin-top: 5px;
             height: 300px;
             white-space: pre-line; /* 개행 문자를 <br> 태그로 변환 */
+            border-bottom: 1px solid #ddd;
         }
 
-        main {
-            margin-top: 150px;
-            margin-bottom: 100px;
+        main {           
+            height: 70vh;
+            width:60%;
+            margin: 150px auto;
         }
 
         .btn-group {
@@ -80,14 +83,14 @@
                             <p>${notice.ntcont}</p>
                         </div>
                         <!-- 수정, 삭제 버튼 -->
-                        <c:if test="${notice.memberid eq memberid}">
                         <div class="btn-group">
+                        <c:if test="${notice.memberid eq memberid}">
                             <div><a href="/admin/notice/modify/${notice.noticeid}" class="btn btn-warning">수정</a></div>
                             <div><a href="/admin/notice/delete/${notice.noticeid}" class="btn btn-danger" id="deleteBtn">삭제</a></div>
-                            <div><a href="javascript:history.back()" class="btn btn-secondary">이전으로</a></div>
-                            <div><a href="/notice/list" class="btn btn-secondary">목록으로</a></div>
-                        </div>
                         </c:if>
+                            <div><a href="javascript:history.back()" class="btn btn-dark" style="margin-right: 5px;">이전</a></div>
+                            <div><a href="/notice/list" class="btn btn-secondary">목록</a></div>
+                        </div>
                     </div>
                 </div>
             </div>

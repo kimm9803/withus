@@ -144,6 +144,7 @@
 	.rightArea {
 	   margin-left: 40px;
 	   margin-top: 60px;
+	   height: 100%;
 	}
 
 	
@@ -161,7 +162,7 @@
 	
 
 	#write{
-		margin-bottom: 20px;
+		
 		float: right;
 	}
 	
@@ -221,7 +222,7 @@
 			    <a href="/notice/writeform" class="item">		      
 			      <div class="text">공지사항 등록</div>		      
 			    </a>
-			    <a href="/notice/list" class="item">		      
+			    <a href="/admin/notice/list" class="item">		      
 			      <div class="text">공지사항 목록</div>		      
 			    </a>
 			  </div>
@@ -230,7 +231,7 @@
 	
 	      <!-- 오른쪽 콘텐츠 영역 -->
 	      <div class="rightArea" style="flex: 4;">
-	         <div class="grayContainer">
+	         <div class="grayContainer" >
 	            <div class="name" style="display: flex; justify-content: space-between;">
 	               <div class="left" style="display: flex; align-items: center;">                  
 	                  <div style="font-weight: normal; margin-left: 0 auto; text-align: center; font-size: 25px;">어서오세요!! With Us 관리자님</div>
@@ -243,7 +244,7 @@
 		        <form method="POST" action="/admin/notice/write">
 		            <div class="mb-3">
 		                <label for="title" class="form-label">제목</label>
-		                <input type="text" class="form-control" id="title" name="nttitle"placeholder="제목을 입력하세요">
+		                <input type="text" class="form-control" id="title" name="nttitle"placeholder="제목을 입력하세요" required>
 		            </div>
 		
 		            <div class="mb-3">
@@ -253,10 +254,10 @@
 		            
 		            <div class="mb-5">
 		                <label for="content" class="form-label">내용</label>
-		                <textarea class="form-control" id="content" name="ntcont"rows="5" placeholder="내용을 입력하세요"></textarea>
+		                <textarea class="form-control" id="content" name="ntcont"rows="9" placeholder="내용을 입력하세요"></textarea>
 		            </div>
 		
-		            <button type="submit" class="btn btn-dark">작성하기</button>
+		            <button type="submit" class="btn btn-dark" id="write">작성하기</button>
 		        </form>
 	         </div>
 	      </div>

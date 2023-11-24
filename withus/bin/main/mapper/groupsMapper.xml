@@ -8,11 +8,20 @@
 		VALUES ((SELECT NVL(MAX(gno), 0) + 1 FROM groups),#{vo.gname},#{vo.gintro},#{memberId},#{vo.gperson},#{vo.cateid},#{vo.rno})
 	</insert>
 
-	<!-- 그룹만들기 이후 자동 가입 -->
-	<insert id="createMember">
-		INSERT INTO GMEMBER(gmemberid, gno, memberid)
-		VALUES((SELECT NVL(MAX(GMEMBERID), 0) + 1 FROM GMEMBER), #{vo.gno},	#{memberId})
-	</insert>
+	
+	<!-- 그룹 수정페이지 -->
+	<select id="getModify" resultType="com.withus.domain.GroupsVo">
+		SELECT g.gno,g.gname, g.gintro,m.name,g.gperson,(SELECT COUNT(gm.gno) + 1 FROM gmember gm WHERE gm.gno = g.gno) AS memberCnt
+		FROM GROUPS g LEFT JOIN member m ON g.memberid = m.memberid 
+		WHERE g.gno = #{gno}
+	</select>
+	
+	<!-- 그룹 내용 수정 -->
+	<update id="groupModify">
+	   UPDATE groups
+	   SET gname = #{gname}, gperson = #{gperson}, gintro = #{gintro}
+	   WHERE gno = #{gno}
+	</update>
 
 	<!-- 그룹 목록 -->
 	<select id="groupList" resultType="com.withus.domain.GroupsVo">
@@ -144,7 +153,6 @@
 			</choose>
 		</if>
 	</select>
-	
 	<!-- 카테고리 별 그룹 수 -->
 	<select id="totalCateGroupCount" resultType="int">
 		SELECT COUNT(gno)
@@ -168,7 +176,6 @@
 			</choose>
 		</if>
 	</select>
-		
 	<!-- 그룹 삭제 -->
 	<delete id="deleteGroup">
 		delete from groups
@@ -181,6 +188,11 @@
 		VALUES((SELECT NVL(MAX(GJOINID), 0) + 1 FROM
 		GROUPJOIN),#{gno},#{memberid})
 	</insert>
+	<!-- 그룹 가입신청 취소 -->
+	<delete id="joinGroupCancel">
+		delete from groupjoin
+		where gno = #{gno} and memberid = #{memberid}
+	</delete>
 
 	<!-- 가입신청 내역 -->
 	<select id="joinlist" resultType="com.withus.domain.GroupJoinVo">
@@ -231,6 +243,13 @@
 	FROM GMEMBER
 	WHERE gno = #{gno} AND memberid = #{memberId}
 	</select>
+
+	<!-- 그룹원 존재 여부판단 -->
+	<select id="fingByJoin" resultType="int">
+	SELECT COUNT(gno)
+	FROM GROUPJOIN
+	WHERE gno = #{gno} AND memberid = #{memberId}
+	</select>
 	
 	<!-- 그룹원 탈퇴 -->
 	<delete id="memberleave">
@@ -250,7 +269,7 @@
 	insert into GREPORT(greportid,gno,memberid,rpcontent,rpcate)
 	values((SELECT NVL(MAX(GREPORTID), 0) + 1 FROM GREPORT),#{gno},#{memberid},#{rpcontent},#{rpcate})
 	</insert>
-	
+
 	<!-- 그룹 리스트 -->
 	<select id="getGroupList" resultType="com.withus.domain.GroupsVo">
 		SELECT gname,gdate,gperson,catename,glike,greport,memberid,memberCnt,rname
@@ -328,15 +347,77 @@
 		LEFT JOIN member m ON g.memberid = m.memberid
 		WHERE g.cateid = #{favorCateid}
 	</select>
-	
+	<!-- 선호 카테고리 그룹수  -->
 	<select id="totalFavorGroups" resultType="int">
 	SELECT COUNT(GNO)
 	FROM GROUPS
 	WHERE cateid = #{favorCateid}
 	</select>
+    
+    <!-- 접속 회원 선호지역 ID -->
+    <select id="favorRegion" resultType="int">
+    select rno
+    from favorregion
+    where memberid = #{memberid}
+    </select>
 
-
-
+    <!-- 선호 지역 그룹 리스트 -->
+    <select id="favorRgroup"
+		resultType="com.withus.domain.GroupsVo">
+		SELECT
+		g.gno,
+		g.gintro,
+		g.gname,
+		TO_CHAR(g.gdate, 'YYYY-MM-DD') AS GDATE,
+		g.gperson,
+		g.glike,
+		i.new_image_name AS newImageName,
+		c.catename,
+		r.rname,
+		g.memberid,
+		m.name,
+		(SELECT COUNT(gm.gno) + 1 FROM gmember gm WHERE gm.gno = g.gno) AS memberCnt
+		FROM
+		category c
+		RIGHT JOIN groups g ON c.cateid = g.cateid
+		LEFT JOIN gimage i ON g.gno = i.gno
+		LEFT JOIN region r ON g.rno = r.rno
+		LEFT JOIN member m ON g.memberid = m.memberid
+		WHERE g.rno = #{favorRno}
+	</select>
+	
+	<!-- 선호지역 총그룹 수 -->
+	<select id="favorReigonGroups" resultType="int">
+	SELECT COUNT(GNO)
+	FROM GROUPS
+	WHERE cateid = #{favorRno}
+	</select>
+	
+	<!-- 내가 만든 그룹 -->
+	<select id="myMakeList" resultType="com.withus.domain.GroupsVo">
+	SELECT g.gname, g.gperson, c.catename, g.glike, g.greport, g.memberid,g.gno,
+	(SELECT COUNT(gm.gno) + 1 FROM gmember gm WHERE gm.gno = g.gno) AS memberCnt,r.rname,
+	TO_CHAR(g.gdate, 'YYYY-MM-DD') AS gdate
+	FROM groups g
+	LEFT JOIN category c ON g.cateid = c.cateid
+	LEFT JOIN region r ON g.rno = r.rno
+	LEFT JOIN gimage i ON g.gno = i.gno
+	WHERE g.memberid = #{memberId}
+	</select>
+	
+	<!-- 내가 가입한 그룹 -->
+	<select id="myJoinList" resultType="com.withus.domain.GroupsVo">
+	SELECT g.gname, g.gperson, c.catename, g.glike, g.greport, g.memberid,g.gno,
+	(SELECT COUNT(gm.gno) + 1 FROM gmember gm WHERE gm.gno = g.gno) AS memberCnt,r.rname,
+	TO_CHAR(g.gdate, 'YYYY-MM-DD') AS gdate
+	FROM groups g
+	LEFT JOIN category c ON g.cateid = c.cateid
+	LEFT JOIN region r ON g.rno = r.rno
+	LEFT JOIN gimage i ON g.gno = i.gno
+	LEFT JOIN gmember gm ON gm.gno = g.gno	
+	WHERE gm.memberid = #{memberId}
+	</select>
+		
 </mapper>
 
 

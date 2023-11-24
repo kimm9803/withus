@@ -62,6 +62,29 @@ public class GroupsController {
 		  mv.setViewName("home");
 		  return mv;
 	  }
+	  
+	  //그룹 수정 페이지
+	  @Secured("ROLE_USER")
+	  @GetMapping("/modify/{gno}")
+	  public String modifyform(@PathVariable("gno") int gno, Model model) {		  
+		  
+		  //그룹 내용 들고오기
+		  GroupsVo group = groupsMapper.getModify(gno);		  
+		  model.addAttribute("group", group);
+		  
+		  return "groups/modify";
+	  }
+	  
+	  @Secured("ROLE_USER")
+	  @PostMapping("/modify/{gno}")
+	  public String modify(@PathVariable("gno") int gno, GroupsVo groupsVo) {		  
+		  
+		  //그룹 내용 수정
+		  groupsMapper.groupModify(groupsVo);
+		  
+		  return "redirect:/groups/view/" + gno;
+	  }
+	  
 
 	  //그룹 목록 조회
 	  @GetMapping("/list")
@@ -75,14 +98,14 @@ public class GroupsController {
 
 	  //그룹 내용 보기
 	  @GetMapping("/view/{gno}")
-	  public ModelAndView view(@PathVariable int gno,
-							   Authentication authentication) {
+
+	  public ModelAndView view(@PathVariable int gno, Authentication authentication) {
+		  
+		  //그룹 게시판 목록
 		  /*
 		   * groupBoardList 추가
 		   * groupMeetingList 추가
-		   * attendCount 추가
 		   */
-
 		  List<GroupBoardVo> groupBoardList = groupBoardMapper.gBoardViewList(gno);
 		  List<GroupMeetingVo> groupMeetingList = groupMeetingMapper.gMeetingViewList(gno);
 		  //int attendCount = groupMeetingMapper.gMeetingViewListCount(gno);
@@ -104,12 +127,15 @@ public class GroupsController {
 		  params.put("memberId", memberId);
 		  int findById = groupsMapper.findById(params);
 		  
+		  //그룹 가입신청 존재 여부
+		  int fingByJoin = groupsMapper.fingByJoin(params);
+		  
 		  
 		  ModelAndView mv = new ModelAndView();
+
 		  /*
 		   * 추가 groupBoardList
 		   * 추가 groupMeetingList
-		   * 추가 attendCount
 		   */
 		  mv.addObject("groupBoardList", groupBoardList);
 		  mv.addObject("groupMeetingList", groupMeetingList);
@@ -118,6 +144,7 @@ public class GroupsController {
 		  mv.addObject("group", groupview);		  
 		  mv.addObject("memberid", memberId);
 		  mv.addObject("findById", findById);
+		  mv.addObject("fingByJoin", fingByJoin);
 		  mv.setViewName("groups/view");
 		  return mv;
 	  }

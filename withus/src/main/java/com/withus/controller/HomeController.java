@@ -27,13 +27,8 @@ public class HomeController {
 	private MemberService memberService;
 	
 	
-	@GetMapping("/")
-	public String home() {
-		return "home";
-	}
-	
 	//메인 화면
-	@GetMapping("/main")
+	@GetMapping("/")
 	public String main(Model model,			
 			Authentication authentication) {
 			
@@ -66,13 +61,32 @@ public class HomeController {
 					totalFavorGroups += groupsMapper.totalFavorGroups(favorCateid);			    
 					// 얻어온 그룹 정보를 favorGroupList에 추가
 					favorGroupList.addAll(groupsForCategory);
-				}				
-				model.addAttribute("favorGroupList",favorGroupList);			
-				model.addAttribute("totalFavorGroups",totalFavorGroups);			
+				}
+				//선호 지역 그룹 목록
+				List<Integer> favorRegion = groupsMapper.favorRegion(memberid);
+				List<GroupsVo> favorRegionGroupList = new ArrayList<>();
+				int favorRno;
+				int favorReigonGroups = 0;
+				for(int i=0; i<favorRegion.size(); i++) {
+					favorRno = favorRegion.get(i);
+					List<GroupsVo> groupsForRegion = groupsMapper.favorRgroup(favorRno);
+					favorReigonGroups += groupsMapper.favorReigonGroups(favorRno);
+					// 얻어온 그룹 정보를 favorGroupList에 추가
+					favorRegionGroupList.addAll(groupsForRegion);
+				}
+				
+				//선호카테고리 그룹 리스트
+				model.addAttribute("favorGroupList",favorGroupList);
+				//선호카테고리 그룹 리스트
+				model.addAttribute("totalFavorGroups",totalFavorGroups);
+				//선호지역 그룹 리스트
+				model.addAttribute("favorRegionGroupList",favorRegionGroupList);
+				//선호지역 그룹수
+				model.addAttribute("favorReigonGroups",favorReigonGroups);			
 			}
 			
 			
-			return "main";
+			return "home";
 		}
 	}
 	

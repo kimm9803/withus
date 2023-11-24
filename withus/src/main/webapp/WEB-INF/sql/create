@@ -176,7 +176,7 @@ ALTER TABLE GREPORT ADD rpstatus NUMBER(1) DEFAULT 0;
 ALTER TABLE member
 ADD Report DEFAULT 0;
 
-<<<<<<< HEAD
+
 <!-- 시퀀스 추가 --> 
 CREATE SEQUENCE GBREPLY_SEQ
     START WITH 1
@@ -197,14 +197,12 @@ CREATE TABLE gbreply(
     CONSTRAINT FK_GBREPLY_MEMBER FOREIGN KEY (MEMBERID) REFERENCES MEMBER(MEMBERID) ON DELETE CASCADE
 );
 
-    -- 댓글 id 시퀀스 생성 -- 
-    CREATE SEQUENCE GBREPLY_SEQ
-        START WITH 1
-        INCREMENT BY 1
-        NOMAXVALUE
-        NOCYCLE;
-    =======
-
+-- 댓글 id 시퀀스 생성 -- 
+CREATE SEQUENCE GBREPLY_SEQ
+    START WITH 1
+    INCREMENT BY 1
+    NOMAXVALUE
+    NOCYCLE;
 
 -- 회원 신고 시퀀스
 CREATE SEQUENCE mreport_sequence
@@ -271,4 +269,46 @@ CREATE SEQUENCE NOTICE_SEQ
 -- 이미 생성된 테이블을 수정하여 NOTICEID에 디폴트값 추가
 ALTER TABLE NOTICE
 MODIFY (NOTICEID DEFAULT NOTICE_SEQ.NEXTVAL);   
->>>>>>> main
+
+
+-- 관심 지역 생성--
+CREATE TABLE favorRegion (
+    memberId     VARCHAR2(255),
+    rno          NUMBER,
+    FOREIGN KEY (memberId) REFERENCES member(memberId) ON DELETE CASCADE,
+    FOREIGN KEY (rno) REFERENCES region(rno) ON DELETE CASCADE
+);
+
+-- 질문 시퀀스
+CREATE SEQUENCE question_seq
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+
+-- 질문 테이블
+CREATE TABLE question (
+    qno         NUMBER          DEFAULT question_seq.NEXTVAL    PRIMARY KEY,
+    title       VARCHAR2(255)   NOT NULL,
+    content     VARCHAR2(4000),
+    writer      VARCHAR2(255)   NOT NULL,
+    regDate     DATE            DEFAULT     SYSDATE,
+    status      NUMBER          DEFAULT     0,
+    CONSTRAINT fk_writer_memberId FOREIGN KEY (writer) REFERENCES member(memberId) ON DELETE CASCADE
+);
+
+-- 답변 시퀀스
+CREATE SEQUENCE answer_seq
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+
+-- 답변 테이블
+CREATE TABLE answer (
+    ano         NUMBER          DEFAULT answer_seq.NEXTVAL  PRIMARY KEY,
+    qno         NUMBER          NOT NULL,
+    content     VARCHAR2(4000)  NOT NULL,
+    adminId     VARCHAR2(255)   NOT NULL,
+    regDate     DATE            DEFAULT SYSDATE,
+    CONSTRAINT fk_adminId_memberId FOREIGN KEY (adminId) REFERENCES member(memberId) ON DELETE CASCADE,
+    CONSTRAINT fk_qno_qno          FOREIGN KEY (qno)     REFERENCES question(qno)    ON DELETE CASCADE
+);

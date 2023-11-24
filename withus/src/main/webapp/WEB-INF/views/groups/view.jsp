@@ -74,6 +74,8 @@
 			margin-top: 20px; /* 그룹 정보와 그룹 소개 사이 간격 조절 */
 			border: 1px solid #ccc; /* 테두리 추가 */
 			padding: 15px; /* 안쪽 여백 추가 */
+			border-radius: 10px;
+			background-color: white;
 		}
 		main{
 			margin-top: 150px;
@@ -82,15 +84,22 @@
 		.group-intro{
 			white-space: pre-line;
 		}
-
+		#modifyBtn {
+        background-color: olive;       
+        border: none;
+        
+	    }
+	    #modifyBtn:hover {
+	        background-color: darkgreen;
+	        color: white;
+	    }
 </style>
 </head>
 <body>
 <header><%@ include file="../header.jsp" %></header>
 <main>
     <div class="container mt-5">
-        <div class="content">
-            <h1>${group.gname }</h1>           
+        <div class="content">                      
             <div id="image">
                 <c:if test="${empty group.newImageName}">
                     <!-- image.newImageName이 null이나 비어 있을 때 -->
@@ -118,15 +127,20 @@
                 </c:if>
             </div>
            <div class="card mt-3" >
-   			 <div class="card-body">
+   			 <div class="card-body" style="background: #F4F4F4;">
 					<div class="d-flex justify-content-between align-items-center" style="margin-bottom: 20px;">
 					    <!-- 그룹 이름 -->
 					    <h2 class="card-title">${group.gname}</h2>
 					
 					    <!-- 정원이 남아있고 그룹원이 아니면 -->
-					    <c:if test="${memberCnt lt group.gperson && findById eq 0 && not empty memberid && group.memberid ne memberid}">
+					    <c:if test="${memberCnt lt group.gperson && findById eq 0 && not empty memberid && group.memberid ne memberid && fingByJoin eq 0}">
 					        <div class="btn-group">
 					            <button type="button" class="btn btn-dark" id="joinButton">그룹 가입</button>
+					        </div>
+					    </c:if>
+					    <c:if test="${findById eq 0 && fingByJoin eq 1}">
+					        <div class="btn-group">
+					            <button type="button" class="btn btn-dark" id="joinCancel">가입 신청취소</button>
 					        </div>
 					    </c:if>
 					</div>
@@ -143,7 +157,7 @@
 
 		        <!-- 그룹장 정보 -->
 		        <div class="group-info">
-				    <div class="card-text">그룹장:
+				    <div class="card-text" style="font-size: 20px; font-weight: bold;">👑그룹장:
 				        <div class="dropdown d-inline">
 				            <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
 				                ${group.name}
@@ -165,7 +179,8 @@
 
 		        <!-- 그룹 소개 -->
 		        <div class="group-intro">
-		            <p class="card-text">그룹소개: ${group.gintro}</p>
+		        	<h5>그룹 소개</h5>
+		            <p class="card-text">${group.gintro}</p>
 		        </div>
 
                  <!-- 추가 정기 모임-->
@@ -226,8 +241,12 @@
 
 			<c:if test="${memberid eq group.memberid}">
             <div class="btn-group">
-                <button type="button" class="btn btn-danger" id="deleteBtn">그룹 삭제</button>
+                <button type="button" class="btn btn-dark"id="modifyBtn" onclick="location.href='/groups/modify/${group.gno}'">그룹 수정</button>
             </div>
+            
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger" id="deleteBtn">그룹 삭제</button>
+            </div>           
 
             <div class="btn-group">
                 <button type="button" class="btn btn-light" onclick="location.href='/groups/joinlist/${group.gno}'">가입신청 목록</button>
@@ -336,7 +355,7 @@
                 });
             }
         });
-
+              
         //그룹원 탈퇴
         $("#leaveButton").click(function () {
             if (confirm('정말로 탈퇴하시겠습니까?')) {
@@ -429,7 +448,28 @@
             }
         }
     });
-
+   
+ // 가입신청취소
+    $("#joinCancel").click(function () {
+        // memberid가 비어있지 않은 경우에만 실행       
+       
+            if (confirm('정말로 취소하시겠습니까?')) {
+                $.ajax({
+                    type: "GET",
+                    url: "/groups/joincancel",
+                    data: {
+                        gno: '${group.gno}', // 백틱이 아닌 따옴표 사용                       
+                    },
+                    success: function (response) {
+                        alert("신청 취소가 완료되었습니다.");
+                    },
+                    error: function (error) {
+                        alert("신청 취소 중 오류가 발생했습니다.");
+                    }
+                });
+            }
+        
+    });
 
 </script>
 
