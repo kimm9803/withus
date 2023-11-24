@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.withus.mapper.MeetingAttendanceMapper">
+    <!-- 정기모임 중복 체크 -->
+    <select id="checkAttendance" resultType="int">
+        SELECT COUNT(*) FROM attendance WHERE memberid = #{memberid} AND meetingid = #{meetingid}
+    </select>
+
+    <!-- 정기모임 생성 -->
+    <insert id="gMeetingAttend">
+        INSERT INTO attendance (attendance_id, meetingid, memberid)
+        VALUES (attendance_seq.nextval, #{meetingid}, #{memberid})
+    </insert>
+
+    <!-- 정모 참석인원 숫자 -->
+    <select id="attendCount">
+        SELECT COUNT(*) FROM attendance WHERE meetingid = #{meetingid}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.withus.mapper.NoticeMapper">
+	<!-- 공지사항 생성 -->
+	<insert id="noticewrite">
+		INSERT INTO NOTICE (MEMBERID, NTTITLE, NTCONT)
+		VALUES (#{memberid},#{nttitle},#{ntcont})
+	</insert>
+
+	<!-- 공지사항 목록 -->
+	<select id = "noticeList" resultType="com.withus.domain.NoticeVo">
+		SELECT noticeid,memberid,name,nttitle,ntcont,ntregdate
+		FROM ( SELECT n.noticeid,m.memberid,m.name,n.nttitle,n.ntcont,n.ntregdate,
+		row_number() over(order by n.noticeid desc) as rNum
+		FROM NOTICE N INNER JOIN MEMBER m ON n.memberid = m.memberid
+		) nl
+		WHERE rNum between #{rowStart} and #{rowEnd}	
+	</select>
+	
+	<!-- 전체 공지사항 수 -->
+	<select id="totalNoticeCount" resultType="int">
+	select count(noticeid)
+	from notice
+	</select>
+	
+	<!-- 공지사항 상세보기 -->
+	<select id="noticeView">
+	SELECT n.noticeid,n.memberid,m.name,n.nttitle,n.ntcont,TO_CHAR(n.ntregdate, 'YYYY-MM-DD') AS ntregdate
+	FROM NOTICE n INNER JOIN MEMBER m ON n.memberid = m.memberid
+	WHERE noticeid = #{noticeid}
+	</select>
+	
+	<!-- 공지사항 수정 -->
+	<update id="noticeModify">
+	    UPDATE NOTICE
+	    SET ntcont = #{ntcont}, nttitle = #{nttitle}
+	    WHERE noticeid = #{noticeid}
+	</update>
+	
+	<!-- 공지사항 삭제 -->
+	<delete id="noticeDelete">
+	DELETE FROM NOTICE
+	WHERE noticeid = #{noticeid}
+	</delete>
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
