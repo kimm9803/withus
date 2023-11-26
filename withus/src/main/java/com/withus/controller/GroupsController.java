@@ -58,8 +58,9 @@ public class GroupsController {
 		  params.put("memberId", memberId);
 		  params.put("vo", vo);
 		  groupsMapper.groupcreate(params);		
+		  
 		  ModelAndView mv = new ModelAndView();
-		  mv.setViewName("home");
+		  mv.setViewName("redirect:/");
 		  return mv;
 	  }
 	  

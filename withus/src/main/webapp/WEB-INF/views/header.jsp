@@ -21,9 +21,7 @@
 	<header class="header">
 		<a href="/" class="logo">With Us</a>
 		
-		<nav class="navbar">
-			<a href="/">Home</a>
-			<a href="#">About</a>
+		<nav class="navbar">			
 			<a href="/groups/create">모임만들기</a>
 			<a href="/question/list">Q&A</a>
 			<a href="/notice/list">공지사항</a>

@@ -125,9 +125,11 @@
         main{
         	margin-bottom: 50px;
         }
-        #card{
-		height: 70vh;
+		#card {
+		    min-height: 70vh;
+		    height: auto; /* 높이를 자동으로 조절하도록 설정 */
 		}
+
     </style>
 </head>
 <body>
