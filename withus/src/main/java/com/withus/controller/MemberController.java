@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.withus.domain.Criteria;
 import com.withus.domain.FavorCateVo;
+import com.withus.domain.GroupBoardVo;
+import com.withus.domain.GroupMeetingVo;
 import com.withus.domain.GroupsVo;
 import com.withus.domain.MemberReportVo;
 import com.withus.domain.MemberVo;
 import com.withus.domain.MessageVo;
 import com.withus.domain.PageMaker;
 import com.withus.domain.QuestionVo;
+import com.withus.mapper.GroupBoardMapper;
+import com.withus.mapper.GroupMeetingMapper;
 import com.withus.mapper.GroupsMapper;
 import com.withus.mapper.MemberMapper;
 import com.withus.service.MemberService;
@@ -36,6 +40,13 @@ public class MemberController {
 	
 	@Autowired
 	private GroupsMapper groupsMapper;
+
+	@Autowired
+	private GroupMeetingMapper groupMeetingMapper;
+
+	@Autowired
+	private GroupBoardMapper groupBoardMapper;
+
 	
 	// 성별 선택 페이지(최초 로그인 시 자동 이동)
 	@GetMapping("/user/gender")
@@ -54,7 +65,7 @@ public class MemberController {
 	public String setRegionPage() {
 		return "auth/region";
 	}
-	
+
 	// 마이페이지
 	@GetMapping("/user/mypage")
 	public String myPage(Authentication authentication, Model model) {
@@ -112,9 +123,36 @@ public class MemberController {
 		model.addAttribute("questionList", questionList);
 		return "mypage/myQuestion";
 	}
-	
-	
-	
+
+	// 마이페이지 내가만든 정모
+	@GetMapping("/user/mycreatemeeting")
+	public String myCreateMeeting(Authentication authentication, Model model){
+		String memberId = memberService.authMember(authentication);
+
+		//내가만든 정모 리스트
+		List<GroupMeetingVo> myCreateMeetingList = groupMeetingMapper.myCreateMeetingList(memberId);
+		List<Integer> meetingIds = groupMeetingMapper.myMeetingId(memberId);
+
+		//참가인원
+		//int myAttendCnt = groupMeetingMapper.myAttendCnt()
+		model.addAttribute("myCreateMeetingList", myCreateMeetingList);
+		model.addAttribute("meetingIds", meetingIds);
+		return "mypage/myMeetingList";
+	}
+
+	// 마이페이지 내가만든 게시판
+	@GetMapping("/user/mycreateboard")
+	public String mycreateboard(Authentication authentication, Model model){
+		String memberId = memberService.authMember(authentication);
+
+		//내가 만든 게시판 리스트
+		List<GroupBoardVo> myCreateBoardList = groupBoardMapper.myCreateBoardList(memberId);
+
+		model.addAttribute("myCreateBoardList", myCreateBoardList);
+
+		return "mypage/myBoardList";
+	}
+
 	// 메시지 작성 페이지
 	@GetMapping("/user/message")
 	public String getMessagePage(@RequestParam("memberId") String gLeaderId, Model model, Authentication authentication) {

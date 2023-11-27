@@ -40,6 +40,10 @@ public interface GroupBoardMapper {
 	//댓글 목록 수정
 	void commentModify(GroupBoardReplyVo replyVo);
 
+	//댓글 삭제
 	void commentDelete(int replyid, String memberid);
+
+	//마이 페이지 내가 작성한 게시물
+	List<GroupBoardVo> myCreateBoardList(String memberId);
 
 }

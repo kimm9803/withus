@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.withus.mapper.GroupMeetingMapper">
+
+    <!-- 정기모임 생성 -->
+    <insert id="gMeetingCreate">
+        INSERT INTO gmeeting (meetingid, memberid, gno, title, content, meeting_date, location, cost, capacity)
+        VALUES (meeting_seq.nextval, #{memberid}, #{gno}, #{title}, #{content}, #{meeting_date}, #{location}, #{cost}, #{capacity})
+    </insert>
+
+    <!-- 정기모임 View List -->
+    <select id = "gMeetingViewList" resultType="com.withus.domain.GroupMeetingVo">
+        select
+            GM.MEMBERID,
+            GM.GNO,
+            GM.TITLE,
+            GM.MEETING_DATE,
+            GM.LOCATION,
+            GM.COST,
+            GM.CAPACITY,
+            GM.MEETINGID,
+            GM.CONTENT,
+            GM.DEADLINE_DATE,
+            MR.NAME
+        from GMEETING GM
+                 join MEMBER MR on MR.MEMBERID = GM.MEMBERID
+        where GM.GNO = #{gno}
+    </select>
+
+
+
+    <!-- 정기모임 VIEW -->
+    <select id = "gMeetingView" resultType="com.withus.domain.GroupMeetingVo">
+        select
+            GM.MEMBERID,
+            GM.GNO,
+            GM.TITLE,
+            GM.MEETING_DATE,
+            GM.LOCATION,
+            GM.COST,
+            GM.CAPACITY,
+            GM.DEADLINE_DATE,
+            GM.MEETINGID,
+            GM.CONTENT,
+            MR.NAME
+        from GMEETING GM
+                 join MEMBER MR on
+                     MR.MEMBERID = GM.MEMBERID
+                 AND GM.MEETINGID = #{meetingid}
+    </select>
+
+
+    <!-- 정기모임 LIST -->
+    <select id = "gMeetingList" resultType="com.withus.domain.GroupMeetingVo">
+        select
+            GM.MEMBERID,
+            GM.GNO,
+            GM.TITLE,
+            GM.MEETING_DATE,
+            GM.LOCATION,
+            GM.COST,
+            GM.CAPACITY,
+            GM.DEADLINE_DATE,
+            GM.MEETINGID,
+            GM.CONTENT,
+            MR.NAME
+        from GMEETING GM
+                 join MEMBER MR on MR.MEMBERID = GM.MEMBERID
+        where GM.GNO = #{gno}
+    </select>
+
+    <!-- 정기모임 수정 페이지 -->
+    <select id="gMeetingModifyPage" resultType="com.withus.domain.GroupMeetingVo">
+    select
+        TITLE,
+        CONTENT,
+        LOCATION,
+        COST,
+        CAPACITY,
+        MEETING_DATE,
+        GNO,
+        MEMBERID
+    FROM GMEETING
+        WHERE GNO = #{gno}
+        AND   MEETINGID = #{meetingid}
+        AND   MEMBERID = #{memberid}
+    </select>
+
+    <!--정기모임 수정-->
+    <update id="gMeetingModify" parameterType="HashMap">
+        update GMEETING
+        SET title =#{vo.title}, CONTENT = #{vo.content}, LOCATION = #{vo.location},
+            COST = #{vo.cost} , CAPACITY = #{vo.capacity}, MEETING_DATE = #{vo.meeting_date}
+        where memberid = #{memberid}
+        And gno = #{gno}
+        AND meetingid = #{meetingid}
+    </update>
+    <!--정기모임 삭제-->
+    <delete id="gMeetingDelete">
+        DELETE FROM GMEETING
+        WHERE memberid = #{memberid}
+          AND gno = #{gno}
+          AND meetingid = #{meetingid}
+
+    </delete>
+
+    <!--내가만든 정모 리스트 -->
+    <select id ="myCreateMeetingList" resultType="com.withus.domain.GroupMeetingVo">
+        select gm.meetingid,gm.memberid,gm.gno,gm.title,gm.meeting_date,gm.deadline_date,gm.location,gm.cost,gm.capacity,gr.gname
+             ,(SELECT COUNT(at.attendance_id) FROM attendance at WHERE at.meetingid = gm.meetingid) AS attendanceCnt
+               from gmeeting gm
+               join groups gr on gm.gno = gr.gno
+        WHERE gm.memberid = #{memberid}
+        ORDER BY gm.meetingid desc
+    </select>
+    <!--내가만든 정모MeetingId -->
+    <select id = "myMeetingId" resultType="int">
+        select meetingid
+        from attendance
+        where memberid = #{memberid}
+        order by meetingid desc
+    </select>
+
+    <!-- 정모 가입한 사람 이름 -->
+    <select id ="gMeetingAttendName" resultType="com.withus.domain.GroupMeetingVo">
+        select mr.name, mr.regdate
+            from attendance at
+            join member mr on at.memberid = mr.memberid
+            where meetingid = #{meetingid}
+    </select>
+
+</mapper>

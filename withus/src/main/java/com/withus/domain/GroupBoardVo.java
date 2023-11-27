@@ -14,5 +14,5 @@ public class GroupBoardVo {
     private String memberid;
     private String name;
     private String gbcatename;
-
+    private String gname;
 }

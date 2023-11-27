@@ -172,16 +172,16 @@
 	         <div class="listContainer">
 			  <div class="listGroup">
 			    <div class="listGroupTitle">회원</div>
-			    <a href="/admin/user/list" class="item">		      
-			      <div class="text">회원 전체 목록</div>		      
+			    <a href="/user/mycreatemeeting" class="item">
+			      <div class="text">내가 만든 정모</div>
 			    </a>
 			    <!-- 
 			    <a href="#" class="item">		      
 			      <div class="text">상품후기</div>		      
 			    </a>
 			     -->
-			    <a href="/admin/user/report-list" class="item">		      
-			      <div class="text">회원 신고 내역</div>		      
+			    <a href="/user/mycreateboard" class="item">
+			      <div class="text">내가 작성한 게시물</div>
 			    </a>
 			    
 			  </div>		  
