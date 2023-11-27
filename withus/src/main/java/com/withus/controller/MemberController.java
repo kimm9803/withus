@@ -20,6 +20,7 @@ import com.withus.domain.MemberReportVo;
 import com.withus.domain.MemberVo;
 import com.withus.domain.MessageVo;
 import com.withus.domain.PageMaker;
+import com.withus.domain.QuestionVo;
 import com.withus.mapper.GroupsMapper;
 import com.withus.mapper.MemberMapper;
 import com.withus.service.MemberService;
@@ -101,6 +102,19 @@ public class MemberController {
 		model.addAttribute("myJoinList", myJoinList);
 		return "mypage/myJoinGroup";
 	}
+	
+	//	마이페이지 Q&A 조회
+	@GetMapping("/user/my-question")
+	public String myQuestion(Authentication authentication, Model model) {
+		String memberId = memberService.authMember(authentication);
+		
+		List<QuestionVo> questionList = memberMapper.findMyQuestion(memberId);
+		model.addAttribute("questionList", questionList);
+		return "mypage/myQuestion";
+	}
+	
+	
+	
 	// 메시지 작성 페이지
 	@GetMapping("/user/message")
 	public String getMessagePage(@RequestParam("memberId") String gLeaderId, Model model, Authentication authentication) {
