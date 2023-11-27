@@ -88,4 +88,13 @@
 		DELETE FROM GBREPLY
 		WHERE REPLYID = #{replyid} AND MEMBERID = #{memberid}
 	</delete>
+
+	<!-- 마이페이지 내가 작성한 게시물 LIST -->
+	<select id = "myCreateBoardList" resultType="com.withus.domain.GroupBoardVo">
+	select gr.gname, gb.title, gb.gbregdate, gc.gbcatename
+	from gboard gb
+	join groups gr on gb.gno = gr.gno
+	join gbcate gc on gc.gbcateid = gb.gbcateid
+	where gb.memberid = #{memberid}
+	</select>
 </mapper>

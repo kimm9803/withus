@@ -104,5 +104,29 @@
 
     </delete>
 
+    <!--내가만든 정모 리스트 -->
+    <select id ="myCreateMeetingList" resultType="com.withus.domain.GroupMeetingVo">
+        select gm.meetingid,gm.memberid,gm.gno,gm.title,gm.meeting_date,gm.deadline_date,gm.location,gm.cost,gm.capacity,gr.gname
+             ,(SELECT COUNT(at.attendance_id) FROM attendance at WHERE at.meetingid = gm.meetingid) AS attendanceCnt
+               from gmeeting gm
+               join groups gr on gm.gno = gr.gno
+        WHERE gm.memberid = #{memberid}
+        ORDER BY gm.meetingid desc
+    </select>
+    <!--내가만든 정모MeetingId -->
+    <select id = "myMeetingId" resultType="int">
+        select meetingid
+        from attendance
+        where memberid = #{memberid}
+        order by meetingid desc
+    </select>
+
+    <!-- 정모 가입한 사람 이름 -->
+    <select id ="gMeetingAttendName" resultType="com.withus.domain.GroupMeetingVo">
+        select mr.name, mr.regdate
+            from attendance at
+            join member mr on at.memberid = mr.memberid
+            where meetingid = #{meetingid}
+    </select>
 
 </mapper>

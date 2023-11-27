@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
@@ -6,62 +7,150 @@
   Time: 오전 10:10
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 <head>
     <title>Group Board Detail</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h2 {
+            color: #007bff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #007bff;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #ccc2c2;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+
+            margin: 5px 0 10px;
+            padding: 10px;
+        }
+
+        button {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        textarea {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        input[type="button"] {
+            background-color: #000000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .separator {
+            border-top: 2px solid #ccc;
+            margin: 20px 0;
+        }
+
+        .container {
+            max-width: 70%; /* Adjust the percentage as needed */
+        }
+        .post-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto; /* Center the card */
+        }
+        .post-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .post-details {
+            font-size: 14px;
+            color: #6c757d;
+            text-align: center;
+        }
+
+        header{
+            position: fixed;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 107%;
+            margin-left: -20px;
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+
 </head>
 <body>
 
-<h2>Group Board Detail</h2>
+
+
+<!-- test 디자인 -->
+
+<header><%@ include file="../header.jsp" %></header>
+
+<div class="container mt-4" style="margin-top: 100px;">
+    <div class="post-card">
+        <h2 class="post-title">${groupBoardView.title}</h2>
+        <p class="post-details">
+            <small>
+                작성자 : ${groupBoardView.name} |
+                쟉성일 : ${groupBoardView.gbregdate} |
+                카테고리 : ${groupBoardView.gbcatename}
+            </small>
+        </p>
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="post-card">
+
+        <p class="post-details">${groupBoardView.content}</p>
+
+        <!-- 수정 버튼 추가 -->
+        <a href="/gboard/modifypage/${groupBoardView.gbno}/${groupBoardView.gno}">수정</a>
+        <a href="/gboard/delete/${groupBoardView.gbno}/${groupBoardView.gno}">삭제</a>
+    </div>
 
 <!-- 정보 -->
 
 
-<table border="1">
-    <tr>
-        <th>작성자</th>
-        <td>${groupBoardView.name}</td>
-    </tr>
-    <tr>
-        <th>카테고리</th>
-        <td>${groupBoardView.gbcatename}</td>
-    </tr>
-    <tr>
-        <th>작성일</th>
-        <td>${groupBoardView.gbregdate}</td>
-    </tr>
-    <tr>
-        <th>제목</th>
-        <td>${groupBoardView.title}</td>
-    </tr>
-    <tr>
-        <th>내용</th>
-        <td>${groupBoardView.content}</td>
-    </tr>
-
-    <tr>
-        <th>gbno</th>
-        <td>${groupBoardView.gbno}</td>
-    </tr>
-    <tr>
-        <th>gno</th>
-        <td>${groupBoardView.gno}</td>
-    </tr>
-    <tr>
-        <th>memberid</th>
-        <td>${groupBoardView.memberid}</td>
-    </tr>
-
-</table>
-<!-- 수정 버튼 추가 -->
-<a href="/gboard/modifypage/${groupBoardView.gbno}/${groupBoardView.gno}">수정 페이지</a>
-<a href="/gboard/delete/${groupBoardView.gbno}/${groupBoardView.gno}">삭제</a>
 
 
 <!-- 댓글 조회 -->
-<h3>댓글 조회</h3>
+
 <ul id = "commentList">
     <!-- 댓글 목록 받아서 동적 추가 -->
 </ul>
@@ -82,6 +171,7 @@
 
 </form>
 
+</div>
 <script>
     // 페이지 로딩 시에 댓글 목록을 불러와 화면에 표시
     $(document).ready(function () {
@@ -102,6 +192,7 @@
             success: function(){
                 //댓글 추가 성공시 댓글 목록 갱신
                 loadComments();
+                $('#content').val('');
             },
             error: function(){
                 alert('댓글 추가에 실패했습니다.');
@@ -128,7 +219,7 @@
 
                 for (var i = 0; i < comments.length; i++) {
                     let comment = comments[i];
-                    let listItem = $('<li>').text(comment.replyid + ' - ' + comment.name + ' - ' + comment.content + ' - ' + comment.gbreplydate);
+                    let listItem = $('<li>').text(comment.name + ' : ' + comment.content + '\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0' + comment.gbreplydate +'\n');
 
                     //수정 버튼 추가 및 클릭 이벤트 설정
                     var modifyButton = $('<button>').text('수정').click(function(){
@@ -210,5 +301,9 @@
 </script>
 <!-- 좋아요  -->
 <!-- 댓글추가  -->
+
+
+
+<footer><%@ include file="../footer.jsp" %></footer>
 </body>
 </html>

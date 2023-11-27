@@ -19,6 +19,13 @@ public class GroupMeetingVo {
     private String cost;
     private Integer capacity;
     private int attend_count;
-    private String name; // 추가: memberid 조인을 통해 가져온 이름
+    private String name;        // 추가: memberid 조인을 통해 가져온 이름
+
+    private String regdate;    //추가: memberid 조인을 통해 가져온 이름
+
+    private String gname;
+
+    private int attendanceCnt;
+
 
 }

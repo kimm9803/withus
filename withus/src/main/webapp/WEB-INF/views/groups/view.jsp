@@ -195,12 +195,13 @@
                             <p>비용: ${meeting.cost}</p>
                             <p>일시: ${meeting.meeting_date}</p>
                             <p>마감: ${meeting.deadline_date}</p>
+                            <hr>
                             <!-- 정기모임 참가 Form -->
                             <form action="/gmattendance/create/${meeting.meetingid}/${group.gno}" method="post">
                                 <!-- 참석 버튼 -->
                                 <button type="submit">참석</button>
                             </form>
-
+                            <hr>
 
                         </c:if>
                      </c:forEach>
@@ -218,6 +219,7 @@
                              <p>날짜: ${board.gbregdate}</p>
                              <p>제목: <a href="/gboard/view?gbno=${board.gbno}"><b>${board.title}</b></a></p>
                              <p>내용: ${board.content}</p>
+                             <hr>
                          </c:if>
                      </c:forEach>
                      <button class="group-board-button"><a href="/gboard/list/${gno}">더보기</a></button>

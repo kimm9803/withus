@@ -224,45 +224,36 @@
 	               </div>               
 	            </div>
 	         </div>
-	         <div style="margin-top: 40px; text-align: center;"><h2 style="font-weight: bold;">마이 페이지</h2></div>
-	         <!-- 회원 정보 카드 -->
-			<div style="margin-top: 40px;">
-			    <div class="card" style="width: 60%; margin: 0 auto;">
-			        <div class="card-body" style="text-align: left";>
-			            <h3 class="card-title" style="font-weight: bold;">회원 정보</h3>
-			            <hr>
-			            <p class="card-text">이름: ${member.name}</p>
-			            <hr>
-			            <p class="card-text">아이디: ${member.memberId}</p>
-			            <hr>
-			            <p class="card-text">성별: 
-						    <c:choose>
-						        <c:when test="${member.gender eq 'male'}">남자</c:when>
-						        <c:when test="${member.gender eq 'female'}">여자</c:when>						        
-						    </c:choose>
-						</p>
-			            <hr>
-			            <p class="card-text">가입일: ${member.regDate}</p>
-			            <hr>			
-			            <p class="card-text">선호 카테고리: 
-			            <c:forEach items="${favorCateList}" var="favorCate">
-			            <span style="background-color: #f5f5f5; padding: 5px; margin-right: 5px; border-radius: 5px;">
-                            ${favorCate.cateName}
-                        </span>
-			            </c:forEach>
-			            </p>
-			            <hr>			
-			            <p class="card-text">선호 지역: 
-			            <c:forEach items="${favorRegionList}" var="favorRegion">
-			            <span style="background-color: #f5f5f5; padding: 5px; margin-right: 5px; border-radius: 5px;">
-                            ${favorRegion.rname}
-                        </span>
-			            </c:forEach>
-			            </p>
-			            <hr>
-			        </div>
-			    </div>
-			</div>
+	         <div style="margin-top: 40px; text-align: center;"><h2 style="font-weight: bold;">내가 만든 그룹</h2></div>
+	         <div style="margin-top: 40px;">
+	         	<table class="table table-hover">
+					<thead>
+						<tr style="text-align: center;">
+							<th scope="col">#</th>
+							<th scope="col">그룹명</th>
+							<th scope="col">제목</th>
+							<th scope="col">정모 날짜</th>
+							<th scope="col">위치</th>
+							<th scope="col">비용</th>
+							<th scope="col">참가인원/정원</th>
+						</tr>
+					</thead>
+					<tbody>
+					<c:forEach items="${myCreateMeetingList}" var="myMeeting" varStatus="loop">
+						<tr class="clickable-row"  data-href="" style="text-align: center;">			
+							<td>${loop.index + 1}</td>
+			                <td>${myMeeting.gname}</td>
+			                <td>${myMeeting.title}</td>
+			                <td>${myMeeting.meeting_date}</td>
+			                <td>${myMeeting.location}</td>
+			                <td>${myMeeting.cost}</td>
+			                <td>${myMeeting.attendanceCnt}/${myMeeting.capacity}</td>
+						</tr>
+					</c:forEach>
+					</tbody>
+				</table>
+		      </div>
+		  	</div>
 	</main>
 	<footer><%@ include file="../footer.jsp" %></footer>
 </body>

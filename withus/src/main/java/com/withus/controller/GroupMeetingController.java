@@ -42,11 +42,27 @@ public class GroupMeetingController {
     //정모 리스트 조회
     @Secured("ROLE_USER")
     @GetMapping("/list/{gno}")
-    public ModelAndView list(@PathVariable int gno, GroupBoardReplyVo vo) {
+    public ModelAndView list(@PathVariable int gno,
+                             @RequestParam(name = "page", defaultValue = "1") int page,
+                             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+                             GroupBoardReplyVo vo) {
+        /* 페이징관련
+        int totalCount = groupMeetingMapper.getTotalCount(gno);  전체 데이터 개수를 가져오는 메서드
+        적절한 범위의 데이터만을 가져오는 메서드
+        List<GroupMeetingVo> paginatedGroupMeetingList = groupMeetingMapper.getPaginatedGMeetingList(gno, page, pageSize);
+        */
         List<GroupMeetingVo> groupMeetingList = groupMeetingMapper.gMeetingList(gno);
+
         ModelAndView mv = new ModelAndView();
         mv.addObject("groupMeetingList", groupMeetingList);
+        /*페이징 관련
+        mv.addObject("totalCount", totalCount);
+        mv.addObject("currentPage", page);
+        mv.addObject("pageSize", pageSize);
+        mv.addObject("totalPages", (int) Math.ceil((double) totalCount / pageSize));
+        */
         mv.setViewName("/gmeeting/list");
+
         return mv;
     }
 
@@ -64,9 +80,11 @@ public class GroupMeetingController {
     public ModelAndView view(@PathVariable("meetingid") int meetingid,
                              @PathVariable("gno") int gno){
         GroupMeetingVo groupMeetingView = groupMeetingMapper.gMeetingView(meetingid, gno);
+        List<GroupMeetingVo> groupMeetingAttendName = groupMeetingMapper.gMeetingAttendName(meetingid);
+
         int attendCount = meetingAttendanceMapper.attendCount(meetingid);
         ModelAndView mv = new ModelAndView();
-
+        mv.addObject("groupMeetingAttendName", groupMeetingAttendName);
         mv.addObject("groupMeetingView",groupMeetingView);
         mv.addObject("attendCount", attendCount);
         mv.setViewName("/gmeeting/view");
