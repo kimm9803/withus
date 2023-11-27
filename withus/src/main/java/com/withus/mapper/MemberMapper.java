@@ -11,12 +11,16 @@ import com.withus.domain.FavorCateVo;
 import com.withus.domain.MemberReportVo;
 import com.withus.domain.MemberVo;
 import com.withus.domain.MessageVo;
+import com.withus.domain.QuestionVo;
 
 @Mapper
 public interface MemberMapper {
 
 	// 회원가입
 	void join(MemberVo member);
+	
+	// 회원탈퇴
+	void delete(String memberId);
 	
 	// 아이디로 회원 찾기
 	MemberVo findById(String memberId);
@@ -71,5 +75,7 @@ public interface MemberMapper {
 
 	//관심 지역 찾기
 	List<FavorCateVo> favorRegionList(String memberId);
-	
+
+	// 마이페이지 질문
+	List<QuestionVo> findMyQuestion(String memberId);
 }
