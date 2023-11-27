@@ -121,6 +121,11 @@
         main{        	 
         	margin-bottom: 100px;    	
         }
+		#card {
+		    min-height: 70vh;
+		    height: auto; /* 높이를 자동으로 조절하도록 설정 */
+		}
+        
     </style>
 </head>
 <body>
@@ -202,6 +207,7 @@
 		    </form>
 		</div>
 	<!--  그룹 부분 -->
+	<div id="card">
 	<div class="card-container" id="groupContainer">
        <c:forEach var="group" items="${cateGroupList}"> 
             <div class='card border-dark'>
@@ -239,11 +245,11 @@
                 </div>
             </div>
         </c:forEach>
-    </div>
-
+    </div>	
     <!-- "더보기" 버튼 -->
     <div class="loadMore">
         <button type="button" class="btn btn-dark" id="loadMoreBtn">더보기</button>
+    </div>
     </div>
 
     <script>
