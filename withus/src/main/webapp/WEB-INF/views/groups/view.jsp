@@ -264,7 +264,14 @@ a {
                              <p>분류: ${board.gbcatename}</p>
                              <p>이름: ${board.name}</p>
                              <p>날짜: ${board.gbregdate}</p>
-                             <p>제목: <a href="/gboard/view?gbno=${board.gbno}"><b>${board.title}</b></a></p>
+                             <c:choose>
+                                <c:when test="${isGroupMember}">
+                                    <p>제목: <a href="/gboard/view?gbno=${board.gbno}"><b>${board.title}</b></a></p>
+                                </c:when>
+                                <c:otherwise>
+                                    <p>제목: ${board.title}</p>
+                                </c:otherwise>
+                             </c:choose>
                              <p>내용: ${board.content}</p>
                              <hr>
                          </c:if>
