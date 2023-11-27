@@ -48,4 +48,12 @@ public interface GroupMeetingMapper {
 	//정모 가입 이름
 	List<GroupMeetingVo> gMeetingAttendName(int meetingid);
 
+	//그룹장 확인
+	boolean groupMasterContain(int gno, String memberid);
+
+	//그룹 멤버 확인
+	boolean groupMemberContain(int gno, String memberid);
+
+	//정모 작성한 사람인지 여부
+	boolean isCreateMeeting(int gno, int meetingid, String memberid);
 }

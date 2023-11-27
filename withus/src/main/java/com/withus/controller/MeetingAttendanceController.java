@@ -7,6 +7,7 @@ import com.withus.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ public class MeetingAttendanceController {
     private MemberService memberService;
 
     //정기 모임 참가
+    @Secured("ROLE_USER")
     @PostMapping("/create/{meetingid}/{gno}")
     public String createMeeting(@PathVariable("meetingid") int meetingid,
                                 @PathVariable("gno") int gno,

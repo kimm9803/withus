@@ -73,7 +73,7 @@
       <c:forEach var="meetingAttend" items="${groupMeetingAttendName}" varStatus="loopStatus">
         ${meetingAttend.name}
 
-        ${meetingAttend.regdate}
+
         <br>
       </c:forEach>
     </div>
@@ -89,10 +89,17 @@
       <!-- 참석 버튼 -->
       <button type="submit">참석</button>
     </form>
-
-    <!-- 수정 삭제 버튼 추가 -->
-    <a href="/gmeeting/modifypage/${groupMeetingView.gno}/${groupMeetingView.meetingid}" class="btn btn-primary ml-2">수정 페이지</a>
-    <a href="/gmeeting/delete/${groupMeetingView.gno}/${groupMeetingView.meetingid}" class="btn btn-danger ml-2">삭제</a>
+    <!-- 본인만 수정 및 삭제 버튼 표시 -->
+    <c:choose>
+      <c:when test="${isCreateMeeting}">
+        <!-- 수정 삭제 버튼 추가 -->
+        <a href="/gmeeting/modifypage/${groupMeetingView.gno}/${groupMeetingView.meetingid}" class="btn btn-primary ml-2">수정 페이지</a>
+        <a href="/gmeeting/delete/${groupMeetingView.gno}/${groupMeetingView.meetingid}" class="btn btn-danger ml-2">삭제</a>
+      </c:when>
+      <c:otherwise>
+        <!-- 그 외의 경우에는 버튼을 숨김 -->
+      </c:otherwise>
+    </c:choose>
 
   </div>
 

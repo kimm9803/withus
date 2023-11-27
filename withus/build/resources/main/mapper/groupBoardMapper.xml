@@ -97,4 +97,12 @@
 	join gbcate gc on gc.gbcateid = gb.gbcateid
 	where gb.memberid = #{memberid}
 	</select>
+
+	<!-- 그룹 게시판 본인 여부 확인 -->
+	<select id = "isCreateBoard" resultType="boolean">
+		select count(gbno)
+		from gboard
+		where gbno = #{gbno} and memberid = #{memberid}
+
+	</select>
 </mapper>

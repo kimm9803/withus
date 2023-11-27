@@ -129,4 +129,26 @@
             where meetingid = #{meetingid}
     </select>
 
+    <!-- 그룹장인지 확인 -->
+    <select id ="groupMasterContain" resultType="boolean">
+        SELECT COUNT(*)
+        FROM groups
+        WHERE gno = #{gno} AND memberid = #{memberid}
+    </select>
+
+    <!-- 그룹 멤버인지 확인 -->
+    <select id="groupMemberContain" resultType="boolean">
+        SELECT COUNT(*)
+        FROM gmember
+        WHERE gno = #{gno} AND memberid = #{memberid}
+    </select>
+
+    <!-- 정모 작성한 사람인지 여부 -->
+    <select id = "isCreateMeeting" resultType="boolean">
+        SELECT COUNT(*)
+        FROM gmeeting
+        WHERE gno = #{gno} AND memberid = #{memberid} AND meetingid = #{meetingid}
+    </select>
+
+
 </mapper>

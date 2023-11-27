@@ -68,11 +68,15 @@ public class GroupBoardController {
 	//그룹 게시판 View 조회
 	@Secured("ROLE_USER")
 	@GetMapping("/view")
-	public ModelAndView view(@RequestParam("gbno") int gbno) {
-
+	public ModelAndView view(@RequestParam("gbno") int gbno,
+							 Authentication authentication) {
+		String memberId = memberService.authMember(authentication);
 		GroupBoardVo groupBoardView = groupBoardMapper.gBoardView(gbno);
 		ModelAndView mv = new ModelAndView();
+		//수정 삭제 본인만 표시
+		boolean isCreateBoard = groupBoardMapper.isCreateBoard(gbno, memberId);
 
+		mv.addObject("isCreateBoard", isCreateBoard);
 		mv.addObject("groupBoardView", groupBoardView);
 		mv.setViewName("/gboard/view");
 
@@ -175,6 +179,7 @@ public class GroupBoardController {
 		return groupBoardMapper.getComments(gbno, gno, memberid);
 	}
 	//그룹 게시글 댓글 수정
+	@Secured("ROLE_USER")
 	@PostMapping("/commentModify")
 	@ResponseBody
 	public void commentModify(@RequestParam("replyid") int replyid,
@@ -186,6 +191,7 @@ public class GroupBoardController {
 	}
 
 	//그룹 게시글 댓글 삭제
+	@Secured("ROLE_USER")
 	@PostMapping("/deleteComment")
 	@ResponseBody
 	public void deleteComment(@RequestParam("replyid") int replyid,
