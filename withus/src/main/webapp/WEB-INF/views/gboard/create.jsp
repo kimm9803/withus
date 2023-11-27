@@ -12,6 +12,7 @@
     <title>Title</title>
 </head>
 <body>
+
     <form action="/gboard/create" method="post">
         <label for="title">제목</label>
         <input id="title" type="text" name="title"/>
