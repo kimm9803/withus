@@ -128,7 +128,7 @@
 							<a class="a-seq" href="#">< &nbsp; 이전글</a>
 						</c:when>
 						<c:otherwise>
-							<a class="a-seq" href="/question/view/${prevQuestion.qno - 1}">< &nbsp; 이전글</a>
+							<a class="a-seq" href="/question/view/${prevQuestion.qno}">< &nbsp; 이전글</a>
 						</c:otherwise>
 					</c:choose>
 					
@@ -151,7 +151,14 @@
 					</div>
 				</div>
 				<div>
-					<a class="a-seq" href="#">다음글&nbsp; ></a>
+					<c:choose>
+						<c:when test="${nextIsNull == 1}">
+							<a class="a-seq" href="#">다음글&nbsp; ></a>
+						</c:when>
+						<c:otherwise>
+							<a class="a-seq" href="/question/view/${nextQuestion.qno}">다음글&nbsp; ></a>
+						</c:otherwise>
+					</c:choose>
 					<div>
 						<c:choose>
 							<c:when test="${nextIsNull == 1}">

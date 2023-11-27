@@ -59,9 +59,43 @@ public class QnAController {
 	@GetMapping("/question/view/{qno}")
 	public String getQuestionView(@PathVariable("qno") int qno, Authentication authentication, Model model) {
 		QuestionVo questionVo = questionMapper.getQuestionView(qno);
-		QuestionVo prevQuestionVo = questionMapper.getQuestionView(qno-1);
-		QuestionVo nextQuestionVo = questionMapper.getQuestionView(qno+1);
+		
+		List<QuestionVo> questionList = questionMapper.getQuestionList();
+		int lastQno = questionList.get(0).getQno();
+		
 		List<AnswerVo> answerVo = answerMapper.getAnswerList(qno);
+		
+		// 이전 & 다음글 유무
+		int prevIsNull = 1;
+		int nextIsNull = 1;
+		
+		// 이전 질문
+		for (int i = qno+1; i <= lastQno; i++) {
+			if (questionMapper.getQuestionView(i) != null) {
+				QuestionVo prevQuestionVo = questionMapper.getQuestionView(i);
+				prevIsNull = 0;
+				model.addAttribute("prevQuestion", prevQuestionVo);
+				model.addAttribute("prevIsNull", prevIsNull);
+				break;
+			} else {
+				prevIsNull = 1;
+			}
+		}
+		if (prevIsNull == 1)	model.addAttribute("prevIsNull", prevIsNull);
+		
+		// 다음 질문
+		for (int i = qno-1; i >= 0; i--) {
+			if (questionMapper.getQuestionView(i) != null) {
+				QuestionVo nextQuestionVo = questionMapper.getQuestionView(i);
+				nextIsNull = 0;
+				model.addAttribute("nextQuestion", nextQuestionVo);
+				model.addAttribute("nextIsNull", nextIsNull);
+				break;
+			} else {
+				nextIsNull = 1;
+			}
+		}
+		if (nextIsNull == 1)	model.addAttribute("nextIsNull", nextIsNull);
 		
 		// 작성자와 로그인된 사용자가 같은지 여부
 		boolean tr = false;
@@ -83,20 +117,7 @@ public class QnAController {
 		}
 		
 		
-		// -----------------------
-		if (prevQuestionVo == null) {
-			model.addAttribute("prevIsNull", 1);
-		} else {
-			model.addAttribute("prevIsNull", 0);
-			model.addAttribute("prevQuestion", prevQuestionVo);
-		}
 		
-		if (nextQuestionVo == null) {
-			model.addAttribute("nextIsNull", 1);
-		} else {
-			model.addAttribute("nextIsNull", 0);
-			model.addAttribute("nextQuestion", nextQuestionVo);
-		}
 		model.addAttribute("question", questionVo);
 		model.addAttribute("answer", answerVo);
 		
