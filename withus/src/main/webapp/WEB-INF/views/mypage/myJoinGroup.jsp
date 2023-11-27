@@ -172,16 +172,15 @@
 	         <div class="listContainer">
 			  <div class="listGroup">
 			    <div class="listGroupTitle">회원</div>
-			    <a href="/admin/user/list" class="item">		      
-			      <div class="text">회원 전체 목록</div>		      
+			    <a href="/user/mycreatemeeting" class="item">
+			      <div class="text">내가 만든 정모</div>
 			    </a>
-			    <!-- 
-			    <a href="#" class="item">		      
-			      <div class="text">상품후기</div>		      
+			    
+			    <a href="/user/mycreateboard" class="item">
+			      <div class="text">내가 작성한 게시물</div>
 			    </a>
-			     -->
-			    <a href="/admin/user/report-list" class="item">		      
-			      <div class="text">회원 신고 내역</div>		      
+			    <a href="/user/mypage" class="item">
+			      <div class="text">회원 정보</div>
 			    </a>
 			    
 			  </div>		  
@@ -198,20 +197,10 @@
 			  <!-- Q & A 조회 추가 일단 num 안받고 리스트만 받기-->
 					<div class="listGroup">
 						<div class="listGroupTitle">Q&A</div>
-						<a href="/question/adminListPageSearch?num=1" class="item">
-							<div class="text">내가 한 질문</div>
+						<a href="/user/my-question" class="item">
+							<div class="text">Q&A 조회</div>
 						</a>
 					</div>
-			  		  
-			  <div class="listGroup">
-			    <div class="listGroupTitle">공지사항</div>
-			    <a href="/admin/notice/write" class="item">		      
-			      <div class="text">공지사항 등록</div>		      
-			    </a>
-			    <a href="/admin/notice/list" class="item">		      
-			      <div class="text">공지사항 목록</div>		      
-			    </a>
-			  </div>
 			</div>         
 	      </div>
 	

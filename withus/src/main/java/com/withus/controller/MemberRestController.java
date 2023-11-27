@@ -60,4 +60,11 @@ public class MemberRestController {
 	public void deleteMember(@RequestParam("memberId") String memberId) {
 		memberMapper.delete(memberId);
 	}
+	
+	// 쪽지 삭제
+	@PostMapping("/user/mymessage/delete")
+	public void deleteMessage(@RequestParam("messageId") int messageId) {
+		memberMapper.messageDelete(messageId);
+	}
+	
 }

@@ -2,12 +2,13 @@ package com.withus.mapper;
 
 
 
-import com.withus.domain.GroupBoardVo;
-import com.withus.domain.GroupMeetingVo;
-import org.apache.ibatis.annotations.Mapper;
-
 import java.util.HashMap;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import com.withus.domain.GroupMeetingVo;
 
 
 @Mapper
@@ -22,10 +23,10 @@ public interface GroupMeetingMapper {
 	void gMeetingCreate(GroupMeetingVo meetingVo);
 
 	//정기모임 VIEW
-	GroupMeetingVo gMeetingView(int meetingid, int gno);
+	GroupMeetingVo gMeetingView(@Param("meetingid") int meetingid, @Param("gno") int gno);
 
 	//정기모임 페이지
-	GroupMeetingVo gMeetingModifyPage(String memberid, int gno, int meetingid);
+	GroupMeetingVo gMeetingModifyPage(@Param("memberid")String memberid, @Param("gno") int gno, @Param("meetingid") int meetingid);
 
 	//정기모임 수정
 	void gMeetingModify(HashMap<String, Object> map);
@@ -42,7 +43,7 @@ public interface GroupMeetingMapper {
 	int getTotalCount(int gno);
 
 	//적절한 범위의 데이터만을 가져오는 메서드
-	List<GroupMeetingVo> getPaginatedGMeetingList(int gno, int page, int pageSize);
+	List<GroupMeetingVo> getPaginatedGMeetingList(@Param("gno") int gno, @Param("page") int page, @Param("pageSize") int pageSize);
 
 	//정모 가입 이름
 	List<GroupMeetingVo> gMeetingAttendName(int meetingid);
