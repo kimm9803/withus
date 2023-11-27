@@ -70,7 +70,7 @@
 			margin-bottom: 20px; /* 그룹장 정보와 그룹 정보 사이 간격 조절 */
 		}
 		
-		.group-details, .group-intro {
+		.group-details, .group-intro, .group-regular-meeting, .group-board{
 			margin-top: 20px; /* 그룹 정보와 그룹 소개 사이 간격 조절 */
 			border: 1px solid #ccc; /* 테두리 추가 */
 			padding: 15px; /* 안쪽 여백 추가 */
@@ -84,18 +84,15 @@
 		.group-intro{
 			white-space: pre-line;
 		}
-		
 		#modifyBtn {
         background-color: olive;       
         border: none;
         
 	    }
-	
 	    #modifyBtn:hover {
 	        background-color: darkgreen;
 	        color: white;
 	    }
-
 </style>
 </head>
 <body>
@@ -185,19 +182,44 @@
 		        	<h5>그룹 소개</h5>
 		            <p class="card-text">${group.gintro}</p>
 		        </div>
+
+                 <!-- 추가 정기 모임-->
+                 <div class="group-regular-meeting">
+                     <p class="card-txt"><h4>정기모임</h4></p>
+                     <c:forEach var="meeting" items="${groupMeetingList}" varStatus="loopStatus">
+                        <c:if test="${loopStatus.index < 2}">
+                            <p>주최자: ${meeting.name}</p>
+                            <p>제목: <a href ="/gmeeting/view/${meeting.meetingid}/${group.gno}">${meeting.title}</a></p>
+                            <p>내용: ${meeting.content}</p>
+                            <p>위치: ${meeting.location}</p>
+                            <p>비용: ${meeting.cost}</p>
+                            <p>일시: ${meeting.meeting_date}</p>
+                            <p>마감: ${meeting.deadline_date}</p>
+                            <hr>
+                            <!-- 정기모임 참가 Form -->
+                            <form action="/gmattendance/create/${meeting.meetingid}/${group.gno}" method="post">
+                                <!-- 참석 버튼 -->
+                                <button type="submit">참석</button>
+                            </form>
+                            <hr>
+
+                        </c:if>
+                     </c:forEach>
+                     <button class="group-board-button"><a href="/gmeeting/createMeeting/${group.gno}">정모 만들기</a></button>
+                     <button class="group-board-button"><a href="/gmeeting/list/${group.gno}">더보기</a></button>
+                 </div>
+
                  <!-- 추가 그룹 게시판  -->
                  <div class="group-board">
-                     <hr>
                      <h4>게시판</h4>
-                     <hr>
                      <c:forEach var="board" items="${groupBoardList}"  varStatus="loopStatus">
                          <c:if test="${loopStatus.index < 2}">
-                             <p>${board.gbcatename}</p>
-                             <p>${board.name}</p>
-                             <p>${board.gbregdate}</p>
-                             <p><a href="/gboard/view?gbno=${board.gbno}"><b>${board.title}</b></a></p>
-                             <p>${board.content}</p>
-                            <hr>
+                             <p>분류: ${board.gbcatename}</p>
+                             <p>이름: ${board.name}</p>
+                             <p>날짜: ${board.gbregdate}</p>
+                             <p>제목: <a href="/gboard/view?gbno=${board.gbno}"><b>${board.title}</b></a></p>
+                             <p>내용: ${board.content}</p>
+                             <hr>
                          </c:if>
                      </c:forEach>
                      <button class="group-board-button"><a href="/gboard/list/${gno}">더보기</a></button>

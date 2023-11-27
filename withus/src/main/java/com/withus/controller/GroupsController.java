@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 
-import com.withus.domain.GroupBoardVo;
+import com.withus.domain.*;
 import com.withus.mapper.GroupBoardMapper;
 import javax.websocket.server.PathParam;
+
+import com.withus.mapper.GroupMeetingMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -20,10 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.withus.domain.GroupJoinVo;
-import com.withus.domain.GroupMemberVo;
-import com.withus.domain.GroupReportVo;
-import com.withus.domain.GroupsVo;
 import com.withus.mapper.GroupsMapper;
 import com.withus.service.MemberService;
 
@@ -33,6 +31,8 @@ public class GroupsController {
 	//groupBoardMapper 추가
 	@Autowired
 	private GroupBoardMapper groupBoardMapper;
+	@Autowired
+	private GroupMeetingMapper groupMeetingMapper;
 
 	@Autowired
 	private GroupsMapper groupsMapper;	
@@ -99,10 +99,17 @@ public class GroupsController {
 
 	  //그룹 내용 보기
 	  @GetMapping("/view/{gno}")
+
 	  public ModelAndView view(@PathVariable int gno, Authentication authentication) {
 		  
 		  //그룹 게시판 목록
+		  /*
+		   * groupBoardList 추가
+		   * groupMeetingList 추가
+		   */
 		  List<GroupBoardVo> groupBoardList = groupBoardMapper.gBoardViewList(gno);
+		  List<GroupMeetingVo> groupMeetingList = groupMeetingMapper.gMeetingViewList(gno);
+		  //int attendCount = groupMeetingMapper.gMeetingViewListCount(gno);
 
 		  //그룹원 수
 		  int memberCnt = (groupsMapper.memberCnt(gno)) + 1 ;
@@ -126,7 +133,14 @@ public class GroupsController {
 		  
 		  
 		  ModelAndView mv = new ModelAndView();
+
+		  /*
+		   * 추가 groupBoardList
+		   * 추가 groupMeetingList
+		   */
 		  mv.addObject("groupBoardList", groupBoardList);
+		  mv.addObject("groupMeetingList", groupMeetingList);
+		 // mv.addObject("attendCount", attendCount);
 		  mv.addObject("memberCnt", memberCnt);
 		  mv.addObject("group", groupview);		  
 		  mv.addObject("memberid", memberId);
@@ -157,7 +171,6 @@ public class GroupsController {
 		  mv.addObject("gno", gno);
 		  mv.addObject("memberlist", memberlist);
 		  return mv;
-		  
 	  }
 	  //그룹 신고창 열기
 	  @Secured("ROLE_USER")
