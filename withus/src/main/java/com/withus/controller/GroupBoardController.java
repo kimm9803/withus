@@ -60,6 +60,7 @@ public class GroupBoardController {
 		List<GroupBoardVo> groupBoardList = groupBoardMapper.gBoardList(gno);
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("groupBoardList", groupBoardList);
+		mv.addObject("gno", gno);
 		mv.setViewName("/gboard/list");
 
 		return mv;
