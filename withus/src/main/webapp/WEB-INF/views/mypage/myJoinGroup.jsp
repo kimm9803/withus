@@ -213,7 +213,7 @@
 	               </div>               
 	            </div>
 	         </div>
-	         <div style="margin-top: 40px; text-align: center;"><h2 style="font-weight: bold;">내가 만든 그룹</h2></div>
+	         <div style="margin-top: 40px; text-align: center;"><h2 style="font-weight: bold;">내가 가입한 그룹</h2></div>
 	         <div style="margin-top: 40px;">
 	         	<table class="table table-hover">
 					<thead>

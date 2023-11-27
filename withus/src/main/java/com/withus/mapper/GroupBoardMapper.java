@@ -47,6 +47,6 @@ public interface GroupBoardMapper {
 	List<GroupBoardVo> myCreateBoardList(String memberId);
 
 	//본인이 작성한 게시물만 수정
-	boolean isCreateBoard(int gbno, String memberid);
+	boolean isCreateBoard(@Param("gbno") int gbno, @Param("memberid") String memberid);
 
 }

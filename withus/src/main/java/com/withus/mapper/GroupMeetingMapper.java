@@ -49,11 +49,11 @@ public interface GroupMeetingMapper {
 	List<GroupMeetingVo> gMeetingAttendName(int meetingid);
 
 	//그룹장 확인
-	boolean groupMasterContain(int gno, String memberid);
+	boolean groupMasterContain(@Param("gno") int gno, @Param("memberid") String memberid);
 
 	//그룹 멤버 확인
-	boolean groupMemberContain(int gno, String memberid);
+	boolean groupMemberContain(@Param("gno") int gno, @Param("memberid") String memberid);
 
 	//정모 작성한 사람인지 여부
-	boolean isCreateMeeting(int gno, int meetingid, String memberid);
+	boolean isCreateMeeting(@Param("gno") int gno, @Param("meetingid") int meetingid, @Param("memberid") String memberid);
 }
