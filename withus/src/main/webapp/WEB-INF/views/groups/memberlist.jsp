@@ -49,7 +49,7 @@
 							<td>${memberlist.gjoindate}</td>
 							<td><c:if test="${memberlist.gauth eq 1}">회원</c:if> <c:if
 									test="${memberlist.gauth ne 1}">간부진</c:if></td>
-							<td>
+							<td style="width:150px;">
 								<button type="button" id="ban" class="btn btn-dark"
 									data-memberid="${memberlist.memberid}">회원 추방</button>
 							</td>
@@ -58,10 +58,16 @@
 				</tbody>
 			</table>
 		</c:if>
-		<div class="btn-group">
+		<div class="btn-group mt-3 mr-2">
 			<button type="button" class="btn btn-warning"
 				onclick="location.href='/groups/loadall'">목록으로</button>
 		</div>
+		<div class="btn-group mt-3 mr-2">
+            <button type="button" class="btn btn-secondary" onclick="history.back()">이전으로</button>
+        </div>
+        <div class="btn-group mt-3">
+            <button type="button" class="btn btn-primary" onclick="location.href='/'">홈으로</button>
+        </div>    
 	</div>
 </main>
 <footer><%@ include file="../footer.jsp" %></footer>
