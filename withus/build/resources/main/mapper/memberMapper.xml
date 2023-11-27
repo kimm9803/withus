@@ -169,4 +169,10 @@
 		INNER JOIN member m ON q.writer = m.memberId
 		WHERE writer = #{memberId}
 	</select>
+	
+	<!-- 쪽지 삭제 -->
+	<delete id="messageDelete">
+		DELETE FROM message
+		WHERE messageId = #{messageId}
+	</delete>
 </mapper>

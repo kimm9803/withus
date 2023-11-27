@@ -226,10 +226,12 @@ a {
                                     </form>
                                 </c:when>
                                 <c:otherwise>
+                                    <hr>
                                     <!-- 버튼 숨김 -->
                                 </c:otherwise>
                             </c:choose>
                         </c:if>
+
                      </c:forEach>
 
                      <c:choose>

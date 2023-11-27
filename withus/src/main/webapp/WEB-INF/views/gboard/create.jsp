@@ -23,6 +23,7 @@
             background-color: #f8f9fa;
             text-align: center;
             padding: 10px;
+            margin-left: -5px;
         }
 
         .create-form {
