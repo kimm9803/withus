@@ -119,8 +119,12 @@ public class MemberController {
 	public String myQuestion(Authentication authentication, Model model) {
 		String memberId = memberService.authMember(authentication);
 		
+		// 회원정보, 관심카테고리 목록 받아오기
+		MemberVo member = memberMapper.findById(memberId);		
+		
 		List<QuestionVo> questionList = memberMapper.findMyQuestion(memberId);
 		model.addAttribute("questionList", questionList);
+		model.addAttribute("member", member);	
 		return "mypage/myQuestion";
 	}
 
@@ -128,6 +132,9 @@ public class MemberController {
 	@GetMapping("/user/mycreatemeeting")
 	public String myCreateMeeting(Authentication authentication, Model model){
 		String memberId = memberService.authMember(authentication);
+		
+		// 회원정보, 관심카테고리 목록 받아오기
+		MemberVo member = memberMapper.findById(memberId);		
 
 		//내가만든 정모 리스트
 		List<GroupMeetingVo> myCreateMeetingList = groupMeetingMapper.myCreateMeetingList(memberId);
@@ -137,6 +144,7 @@ public class MemberController {
 		//int myAttendCnt = groupMeetingMapper.myAttendCnt()
 		model.addAttribute("myCreateMeetingList", myCreateMeetingList);
 		model.addAttribute("meetingIds", meetingIds);
+		model.addAttribute("member", member);	
 		return "mypage/myMeetingList";
 	}
 
@@ -147,8 +155,12 @@ public class MemberController {
 
 		//내가 만든 게시판 리스트
 		List<GroupBoardVo> myCreateBoardList = groupBoardMapper.myCreateBoardList(memberId);
+		
+		// 회원정보, 관심카테고리 목록 받아오기
+		MemberVo member = memberMapper.findById(memberId);		
 
 		model.addAttribute("myCreateBoardList", myCreateBoardList);
+		model.addAttribute("member", member);	
 
 		return "mypage/myBoardList";
 	}
