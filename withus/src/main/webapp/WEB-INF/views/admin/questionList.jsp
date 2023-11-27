@@ -1,31 +1,25 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>회원 신고 상세 정보</title>
-<script src="https://kit.fontawesome.com/51db22a717.js"
-	crossorigin="anonymous"></script>
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap">
+<title>Q&A</title>
+<script src="https://kit.fontawesome.com/51db22a717.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap">
 <link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-	crossorigin="anonymous">
+   href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+   rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-	crossorigin="anonymous"></script>
-
+   src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 <style>
 	* {
 		font-family: 'Sunflower', sans-serif;
 	}
+	
 	main {
 		margin-top: 140px;
 	}
@@ -145,7 +139,7 @@
 	   margin-left: 40px;
 	   margin-top: 60px;
 	}
-
+	
 	
 	/* listGroupTitle에 스타일 추가 */
 	.listGroupTitle {
@@ -158,70 +152,16 @@
 	  border-bottom: 1px solid gray;
 	  border-top: 1px solid gray;
 	}
-
-	table {
-            background-color: #fff;
-            border-collapse: separate; /* border-collapse 추가 */
-            border-spacing: 0; /* border-spacing 추가 */
-        }
-
-        th, td {
-            text-align: center;
-            border: 1px solid #dee2e6; /* 안쪽 선 색상 지정 */
-            padding:8px;
-        }
-
-        .clickable-row {
-            cursor: pointer;
-        }
-
-        .dropdown-menu {
-            min-width: auto;
-        }
-        
-        .custom-table {
-            border-radius: 15px;
-            overflow: hidden;
-            border: 1px solid black; /* 테두리 추가 */
-        }
-
-       
-        .custom-table th,
-        .custom-table td {
-            vertical-align: middle;
-        }table {
-            background-color: #fff;
-            border-collapse: separate; /* border-collapse 추가 */
-            border-spacing: 0; /* border-spacing 추가 */
-        }
-
-        th, td {
-            text-align: center;
-            border: 1px solid #dee2e6; /* 안쪽 선 색상 지정 */
-            padding:8px;
-        }
-
-        .clickable-row {
-            cursor: pointer;
-        }
-
-        .dropdown-menu {
-            min-width: auto;
-        }
-        
-        .custom-table {
-            border-radius: 15px;
-            overflow: hidden;
-            border: 1px solid black; /* 테두리 추가 */
-        }
-
-       
-        .custom-table th,
-        .custom-table td {
-            vertical-align: middle;
-        }
+	
 	footer {
 		margin-top: 100px;
+	}
+	
+	.title {
+		margin-top: 40px;
+		margin-bottom: 40px;
+		text-align: center;
+		font-weight: bold;
 	}
 </style>
 </head>
@@ -276,7 +216,7 @@
 			    <a href="/admin/notice/write" class="item">		      
 			      <div class="text">공지사항 등록</div>		      
 			    </a>
-			    <a href="/admin/notice/list" class="item">      
+			    <a href="/admin/notice/list" class="item">		      
 			      <div class="text">공지사항 목록</div>		      
 			    </a>
 			  </div>
@@ -292,83 +232,51 @@
 	               </div>               
 	            </div>
 	         </div>
-	         <div style="margin-top: 40px; text-align: center;"><h2 style="font-weight: bold;">그룹 신고 상세</h2></div>
-	         <div style="margin-top: 40px;">
-	         	<table class="table custom-table">
-		            <thead>
-		                <tr>
-		                    <th>신고자 아이디</th>
-		                    <td>${report.memberid}</td>
-		                </tr>
-		                <tr>
-		                    <th>신고 그룹명</th>
-		                    <td>${report.gname}</td>
-		                </tr>
-		                <tr>
-		                    <th>신고 사유</th>
-		                    <td>${report.rpcate}</td>
-		                </tr>
-		                <tr>
-		                    <th>신고 날짜</th>
-		                    <td>${report.reportdate}</td>
-		                </tr>
-		                <tr>
-		                    <th>신고 진행상태</th>
-		                    <c:choose>
-							  <c:when test="${report.rpstatus eq 0}">
-							    <td>확인중</td>
-							  </c:when>
-							  <c:when test="${report.rpstatus eq 1}">
-							    <td>확인</td>
-							  </c:when>
-							  <c:when test="${report.rpstatus eq 2}">
-							    <td>거부</td>
-							  </c:when>
-							  <c:otherwise>
-							    <td>알 수 없음</td>
-							  </c:otherwise>
-							</c:choose>		
-		                </tr>
-		                <tr>
-		                    <th>신고 내용</th>
-		                    <td>
-		                        <textarea class="form-control" rows="5" readonly>${report.rpcontent}</textarea>
-		                    </td>
-		                </tr>
-		                <!-- 추가적인 필드들을 여기에 추가할 수 있습니다. -->
-		            </thead>
-		        </table>
-		        <div class="mt-5" style="display: flex; justify-content: space-between;">
-		        	<div>
-		        		<a href="#" onclick="history.go(-1)" class="btn btn-secondary">이전</a>
-		            	<a href="/admin/group/reportlist" class="btn btn-primary">목록</a>
-		        	</div>
-		            <c:if test="${report.rpstatus eq 0}">
-		            <div>		            
-			            <a href="/admin/group/reportadmit/${report.greportid}" class="btn btn-secondary" id="confirmAdmitBtn">확인</a>
-			            <a href="/admin/group/reportreject/${report.greportid}" class="btn btn-danger" id="confirmRejectBtn">거부</a>
-		            </div>
-		            </c:if>
-		        </div>
+	         <div>
+	         	<h1 class="title">Q & A</h1>
+	         	<table class="table table-hover">
+				  <thead>
+				    <tr style="text-align: center; border-bottom: 1px solid black;">
+				      <th scope="col" style="width: 100px; padding: 15px 0;">#</th>
+				      <th scope="col" style="padding: 15px 0;">제목</th>
+				      <th scope="col" style="width: 300px; padding: 15px 0;">작성자</th>
+				      <th scope="col" style="width: 150px; padding: 15px 0;">처리상태</th>
+				      <th scope="col" style="width: 200px; padding: 15px 0;">작성일</th>
+				    </tr>
+				  </thead>
+				  <tbody>		    
+					<c:forEach items="${questionList}" var="question">
+						<tr class="clickable-row" data-href="/question/view/${question.qno}">
+					      <th scope="row" style="text-align: center; padding: 15px 0;">${question.qno}</th>
+					      <td style="padding-left: 20px; padding: 15px 0;">
+					            <c:choose>
+					              <c:when test="${fn:length(question.title) > 50}">
+					                  ${fn:substring(question.title, 0, 50)}...
+					              </c:when>
+					              <c:otherwise>
+					                  ${question.title}
+					              </c:otherwise>
+					          </c:choose>
+					      </td>
+					      <td style="text-align: center; padding: 15px 0;">${question.name}(${question.writer})</td>
+					      <td style="text-align: center; padding: 15px 0;">
+					      	<c:choose>
+					      		<c:when test="${question.status == 0}">
+					      			미답변
+					      		</c:when>
+					      		<c:otherwise>
+					      			답변완료
+					      		</c:otherwise>
+					      	</c:choose>
+					      </td>
+					      <td style="text-align: center; padding: 15px 0;">${question.regDate}</td>
+					    </tr>
+					</c:forEach>
+				  </tbody>
+				</table>
 	         </div>
 	      </div>
 	</main>
 	<footer><%@ include file="../footer.jsp" %></footer>
-	
-	<script>
-		document.getElementById('confirmAdmitBtn').addEventListener('click', function() {
-	        var isConfirmed = confirm('신고를 허락하시겠습니까?');
-	        if (isConfirmed) {
-	            window.location.href = '/admin/group/reportadmit/${report.greportid}';
-	        }
-	    });
-	
-	    document.getElementById('confirmRejectBtn').addEventListener('click', function() {
-	        var isConfirmed = confirm('신고를 거부하시겠습니까?');
-	        if (isConfirmed) {
-	            window.location.href = '/admin/group/reportreject/${report.greportid}';
-	        }
-	    });
-	</script> 
 </body>
 </html>

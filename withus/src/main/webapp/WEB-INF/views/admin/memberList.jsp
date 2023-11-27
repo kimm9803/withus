@@ -233,7 +233,7 @@
 			  <!-- Q & A 조회 추가 일단 num 안받고 리스트만 받기-->
 					<div class="listGroup">
 						<div class="listGroupTitle">Q&A</div>
-						<a href="/question/adminListPageSearch?num=1" class="item">
+						<a href="/admin/questionlist" class="item">
 							<div class="text">Q&A 조회</div>
 						</a>
 					</div>

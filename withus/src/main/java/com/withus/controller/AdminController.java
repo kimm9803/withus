@@ -18,10 +18,12 @@ import com.withus.domain.GroupsVo;
 import com.withus.domain.MemberReportVo;
 import com.withus.domain.MemberVo;
 import com.withus.domain.PageMaker;
+import com.withus.domain.QuestionVo;
 import com.withus.mapper.AdminMapper;
 import com.withus.mapper.GroupsMapper;
 import com.withus.mapper.MemberMapper;
 import com.withus.mapper.NoticeMapper;
+import com.withus.mapper.QuestionMapper;
 
 @Controller
 @RequestMapping("/admin")
@@ -39,7 +41,8 @@ public class AdminController {
 	@Autowired
 	private NoticeMapper noticeMapper;
 	
-	
+	@Autowired
+	private QuestionMapper questionMapper;
 
 	// 관리자 페이지
 	@GetMapping("/page")
@@ -195,6 +198,14 @@ public class AdminController {
 		pageMaker.setTotalCount(noticeMapper.totalNoticeCount());
 		model.addAttribute("pageMaker", pageMaker);
 		return "admin/noticeList";
+	}
+	
+	// Q&A 조회
+	@GetMapping("/questionlist")
+	public String questionList(Model model) {
+		List<QuestionVo> questionList = questionMapper.getQuestionList();
+		model.addAttribute("questionList", questionList);
+		return "admin/questionList";
 	}
 
 }
