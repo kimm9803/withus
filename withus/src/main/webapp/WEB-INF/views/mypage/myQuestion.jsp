@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -133,12 +134,10 @@
 	   margin-right: 5px;
 	}
 	
-	
 	.rightArea {
 	   margin-left: 40px;
 	   margin-top: 60px;
 	}
-	
 	
 	/* listGroupTitle에 스타일 추가 */
 	.listGroupTitle {
@@ -154,6 +153,12 @@
 	
 	footer {
 		margin-top: 100px;
+	}
+	.title {
+		margin-top: 40px;
+	}
+	.tb {
+		margin-top: 40px;
 	}
 </style>
 </head>
@@ -172,16 +177,16 @@
 	         <div class="listContainer">
 			  <div class="listGroup">
 			    <div class="listGroupTitle">회원</div>
-			    <a href="/user/mycreatemeeting" class="item">
-			      <div class="text">내가 만든 정모</div>
+			    <a href="/admin/user/list" class="item">		      
+			      <div class="text">회원 전체 목록</div>		      
 			    </a>
 			    <!-- 
 			    <a href="#" class="item">		      
 			      <div class="text">상품후기</div>		      
 			    </a>
 			     -->
-			    <a href="/user/mycreateboard" class="item">
-			      <div class="text">내가 작성한 게시물</div>
+			    <a href="/admin/user/report-list" class="item">		      
+			      <div class="text">회원 신고 내역</div>		      
 			    </a>
 			    
 			  </div>		  
@@ -223,76 +228,61 @@
 	               </div>               
 	            </div>
 	         </div>
-	         <div style="margin-top: 40px; text-align: center;"><h2 style="font-weight: bold;">마이 페이지</h2></div>
-	         <!-- 회원 정보 카드 -->
-			<div style="margin-top: 40px;">
-			    <div class="card" style="width: 60%; margin: 0 auto;">
-			        <div class="card-body" style="text-align: left";>
-			            <h3 class="card-title" style="font-weight: bold;">회원 정보</h3>
-			            <hr>
-			            <p class="card-text">이름: ${member.name}</p>
-			            <hr>
-			            <p class="card-text">아이디: ${member.memberId}</p>
-			            <hr>
-			            <p class="card-text">성별: 
-						    <c:choose>
-						        <c:when test="${member.gender eq 'male'}">남자</c:when>
-						        <c:when test="${member.gender eq 'female'}">여자</c:when>						        
-						    </c:choose>
-						</p>
-			            <hr>
-			            <p class="card-text">가입일: ${member.regDate}</p>
-			            <hr>			
-			            <p class="card-text">선호 카테고리: 
-			            <c:forEach items="${favorCateList}" var="favorCate">
-			            <span style="background-color: #f5f5f5; padding: 5px; margin-right: 5px; border-radius: 5px;">
-                            ${favorCate.cateName}
-                        </span>
-			            </c:forEach>
-			            </p>
-			            <hr>			
-			            <p class="card-text">선호 지역: 
-			            <c:forEach items="${favorRegionList}" var="favorRegion">
-			            <span style="background-color: #f5f5f5; padding: 5px; margin-right: 5px; border-radius: 5px;">
-                            ${favorRegion.rname}
-                        </span>
-			            </c:forEach>
-			            </p>
-			            
-			        </div>
-				    <div style="margin-bottom: 20px; text-align: right; margin-right: 20px;">
-				    	<button type="button" class="btn btn-dark delete-btn">탈퇴</button>
-				    </div>
-			    </div>
-			</div>
+	         <div class="title"><h1>My Q&A</h1></div>
+	         <div class="tb">
+	         	<table class="table table-hover" style="border-top: 1px solid black;">
+				  <thead>
+				    <tr style="text-align: center; border-bottom: 1px solid black;">
+				      <th scope="col" style="width: 100px; padding: 15px 0;">#</th>
+				      <th scope="col" style="padding: 15px 0;">제목</th>
+				      <th scope="col" style="width: 300px; padding: 15px 0;">작성자</th>
+				      <th scope="col" style="width: 150px; padding: 15px 0;">처리상태</th>
+				      <th scope="col" style="width: 200px; padding: 15px 0;">작성일</th>
+				    </tr>
+				  </thead>
+				  <tbody>		    
+					<c:forEach items="${questionList}" var="question">
+						<tr class="clickable-row" data-href="/question/view/${question.qno}">
+					      <th scope="row" style="text-align: center; padding: 15px 0;">${question.qno}</th>
+					      <td style="padding-left: 20px; padding: 15px 0;">
+					            <c:choose>
+					              <c:when test="${fn:length(question.title) > 50}">
+					                  ${fn:substring(question.title, 0, 50)}...
+					              </c:when>
+					              <c:otherwise>
+					                  ${question.title}
+					              </c:otherwise>
+					          </c:choose>
+					      </td>
+					      <td style="text-align: center; padding: 15px 0;">${question.name}(${question.writer})</td>
+					      <td style="text-align: center; padding: 15px 0;">
+					      	<c:choose>
+					      		<c:when test="${question.status == 0}">
+					      			미답변
+					      		</c:when>
+					      		<c:otherwise>
+					      			답변완료
+					      		</c:otherwise>
+					      	</c:choose>
+					      </td>
+					      <td style="text-align: center; padding: 15px 0;">${question.regDate}</td>
+					    </tr>
+					</c:forEach>
+				  </tbody>
+				</table>
+	         </div>
 	</main>
 	<footer><%@ include file="../footer.jsp" %></footer>
 	
 	<script>
 		$(document).ready(function() {
+			$('.write').on('click', function() {
+				location.href = '/user/question';
+			});
 			
-			
-			
-			$('.delete-btn').on('click', function() {
-				const confirmMessage = confirm('정말로 탈퇴하시겠습니까?');
-				var memberId = '${member.memberId}';
-				if (confirmMessage) {				
-					$.ajax({
-						url: '/user/delete',
-						type: 'POST',
-						data: {
-							memberId : memberId
-						},
-						success: function() {
-							location.href = '/logout';
-						},
-						error: function() {
-							alert('에러 발생');
-						}
-					})	
-				} else {
-					
-				}
+			$('.clickable-row').on('click', function() {
+				var href = $(this).data('href');
+				window.location.href = href; // 클릭한 링크로 이동
 			});
 		})
 	</script>

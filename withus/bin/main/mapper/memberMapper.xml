@@ -8,6 +8,12 @@
 		VALUES (#{memberId}, #{password}, #{name}, #{gender}, #{role})
 	</insert>
 	
+	<!-- 회원탈퇴 -->
+	<delete id="delete">
+		DELETE FROM member
+		WHERE memberId = #{memberId}
+	</delete>
+	
 	<!-- 아이디로 회원찾기 -->
 	<select id="findById" resultType="com.withus.domain.MemberVo">
 		SELECT memberId, password, name, gender, role, regDate
@@ -155,4 +161,12 @@
 		INSERT INTO favorRegion (memberId, rno)
 		VALUES (#{memberId}, #{rno})
 	</insert>
+	
+	<!-- 마이페이지 질문 찾기 -->
+	<select id="findMyQuestion" resultType="com.withus.domain.QuestionVo">
+		SELECT q.qno, q.title, q.writer, q.regDate, q.status, m.name
+		FROM question q
+		INNER JOIN member m ON q.writer = m.memberId
+		WHERE writer = #{memberId}
+	</select>
 </mapper>

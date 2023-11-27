@@ -15,7 +15,7 @@ public interface QuestionMapper {
 
 	// 질문 리스트
 	List<QuestionVo> getQuestionList();
-
+	
 	// 질문 상세
 	QuestionVo getQuestionView(int qno);
 
