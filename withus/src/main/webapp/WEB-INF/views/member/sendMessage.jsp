@@ -30,7 +30,7 @@
 .pagination {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 80px;
 }
 
 .pagination ul {
@@ -104,7 +104,7 @@ main {
 			<c:forEach items="${sendMessage}" var="message" varStatus="loop">
 				<tr class="clickable-row"
 					data-href="/user/mymessage/view/${message.messageId}" >
-					<td style="text-align: center; padding: 15px 0;">${loop.index + 1}</td>
+					<td style="text-align: center; padding: 15px 0;">${message.messageId}</td>
 					<td style="padding-left: 20px; text-align: center; padding: 15px 0;">${message.title}</td>
 					<td style="padding: 15px 0;text-align: center;">${message.name}</td>
 					<td style="padding: 15px 0;text-align: center;">${message.sendDate}</td>
@@ -117,17 +117,17 @@ main {
 		<ul>
 			<c:if test="${pageMaker.prev}">
 				<li><a
-					href="/user/mymessage${pageMaker.makeQuery(pageMaker.startPage - 1)}">이전</a></li>
+					href="/user/send-message${pageMaker.makeQuery(pageMaker.startPage - 1)}">이전</a></li>
 			</c:if>
 
 			<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
 				var="idx">
-				<li><a href="/user/mymessage${pageMaker.makeQuery(idx)}">${idx}</a></li>
+				<li><a href="/user/send-message${pageMaker.makeQuery(idx)}">${idx}</a></li>
 			</c:forEach>
 
 			<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
 				<li><a
-					href="/user/mymessage${pageMaker.makeQuery(pageMaker.endPage + 1)}">다음</a></li>
+					href="/user/send-message${pageMaker.makeQuery(pageMaker.endPage + 1)}">다음</a></li>
 			</c:if>
 		</ul>
 	</div>

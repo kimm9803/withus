@@ -24,7 +24,7 @@ public interface GroupBoardMapper {
 	List<GroupBoardVo> gBoardViewList(int gno);
 
 	//그룹 게시판 게시물 수정 페이지
-	GroupBoardVo gBoardModifyPage(String memberid,int gbno ,int gno);
+	GroupBoardVo gBoardModifyPage(@Param("memberid") String memberid, @Param("gbno") int gbno ,@Param("gno") int gno);
 	//그룹 게시판 게시물 수정
 	void gBoardModify(HashMap<String, Object> map);
 	//그룹 게시판 게시물 삭제
@@ -41,7 +41,7 @@ public interface GroupBoardMapper {
 	void commentModify(GroupBoardReplyVo replyVo);
 
 	//댓글 삭제
-	void commentDelete(int replyid, String memberid);
+	void commentDelete(@Param("replyid") int replyid, @Param("memberid") String memberid);
 
 	//마이 페이지 내가 작성한 게시물
 	List<GroupBoardVo> myCreateBoardList(String memberId);

@@ -6,7 +6,7 @@
         SELECT COUNT(*) FROM attendance WHERE memberid = #{memberid} AND meetingid = #{meetingid}
     </select>
 
-    <!-- 정기모임 생성 -->
+    <!-- 정기모임 참석 -->
     <insert id="gMeetingAttend">
         INSERT INTO attendance (attendance_id, meetingid, memberid)
         VALUES (attendance_seq.nextval, #{meetingid}, #{memberid})
