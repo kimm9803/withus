@@ -46,4 +46,7 @@ public interface GroupBoardMapper {
 	//마이 페이지 내가 작성한 게시물
 	List<GroupBoardVo> myCreateBoardList(String memberId);
 
+	//본인이 작성한 게시물만 수정
+	boolean isCreateBoard(int gbno, String memberid);
+
 }

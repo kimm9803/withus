@@ -93,7 +93,7 @@
             text-align: center;
         }
         .post-details {
-            font-size: 14px;
+            font-size: 16px;
             color: #6c757d;
             text-align: center;
         }
@@ -140,8 +140,17 @@
         <p class="post-details">${groupBoardView.content}</p>
 
         <!-- 수정 버튼 추가 -->
-        <a href="/gboard/modifypage/${groupBoardView.gbno}/${groupBoardView.gno}">수정</a>
-        <a href="/gboard/delete/${groupBoardView.gbno}/${groupBoardView.gno}">삭제</a>
+        <c:choose>
+            <c:when test="${isCreateBoard}">
+                <!-- 본인만 수정 삭제 버튼 확인  -->
+                <a href="/gboard/modifypage/${groupBoardView.gbno}/${groupBoardView.gno}">수정</a>
+                <a href="/gboard/delete/${groupBoardView.gbno}/${groupBoardView.gno}">삭제</a>
+            </c:when>
+            <c:otherwise>
+                <!-- 그 외의 경우에는 버튼을 숨김 -->
+            </c:otherwise>
+        </c:choose>
+
     </div>
 
 <!-- 정보 -->

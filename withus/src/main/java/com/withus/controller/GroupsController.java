@@ -100,16 +100,21 @@ public class GroupsController {
 	  //그룹 내용 보기
 	  @GetMapping("/view/{gno}")
 
-	  public ModelAndView view(@PathVariable int gno, Authentication authentication) {
+	  public ModelAndView view(@PathVariable int gno, Authentication authentication, Model model) {
 		  
 		  //그룹 게시판 목록
 		  /*
 		   * groupBoardList 추가
 		   * groupMeetingList 추가
+		   * isGroupMember 추가
 		   */
+
 		  List<GroupBoardVo> groupBoardList = groupBoardMapper.gBoardViewList(gno);
 		  List<GroupMeetingVo> groupMeetingList = groupMeetingMapper.gMeetingViewList(gno);
 		  //int attendCount = groupMeetingMapper.gMeetingViewListCount(gno);
+
+
+
 
 		  //그룹원 수
 		  int memberCnt = (groupsMapper.memberCnt(gno)) + 1 ;
@@ -117,7 +122,9 @@ public class GroupsController {
 		  GroupsVo groupview = groupsMapper.groupview(gno);		  
 		  String memberId = null;
 		  if(authentication != null) {
-			  memberId = memberService.authMember(authentication);			  
+			  memberId = memberService.authMember(authentication);
+			  boolean isGroupMember = groupMeetingMapper.groupMasterContain(gno, memberId) || groupMeetingMapper.groupMemberContain(gno, memberId);
+			  model.addAttribute("isGroupMember", isGroupMember);
 		  }else {
 			  memberId = "";
 		  }
@@ -130,8 +137,7 @@ public class GroupsController {
 		  
 		  //그룹 가입신청 존재 여부
 		  int fingByJoin = groupsMapper.fingByJoin(params);
-		  
-		  
+
 		  ModelAndView mv = new ModelAndView();
 
 		  /*
