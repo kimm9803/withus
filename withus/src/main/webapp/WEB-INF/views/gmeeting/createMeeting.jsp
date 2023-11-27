@@ -10,6 +10,60 @@
 <html>
 <head>
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .main-container {
+            margin-top: 100px;
+            text-align: center;
+        }
+
+        .card {
+            width: 300px;
+            height: 500px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            box-sizing: border-box;
+            margin: 0 auto; /* 중앙 정렬을 위해 추가 */
+        }
+
+        .card input[type="text"] {
+            width: 100%; /* 제목(input 태그의 name이 "title")을 더 넓게 조정 */
+            padding: 10px;
+            margin-bottom: 10px;
+            display: inline-block;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .card input[type="number"],
+        .card input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: inline-block;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .card button {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
         footer {
             position: fixed;
             bottom: 0;
@@ -17,22 +71,6 @@
             background-color: #f8f9fa;
             text-align: center;
             padding: 10px;
-            margin-left: -5px;
-        }
-        .main-container{
-            margin-top: 100px;
-
-        }
-        .card {
-            width: 300px; /* 카드의 너비를 조정할 수 있습니다. */
-            height: 200px; /* 카드의 높이를 조정할 수 있습니다. */
-            background-color: #fff; /* 흰색 배경 색상을 지정합니다. */
-            border: 1px solid #ddd; /* 테두리를 추가할 수 있습니다. */
-            border-radius: 8px; /* 카드의 모서리를 둥글게 만듭니다. */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과를 추가합니다. */
-            padding: 20px; /* 카드 내부 여백을 조정할 수 있습니다. */
-            box-sizing: border-box; /* 박스 모델의 크기를 테두리와 여백을 포함하여 지정합니다. */
-            
         }
     </style>
 
@@ -48,7 +86,7 @@
 
     <input type="text" name="title" placeholder="제목" required>
     <br>
-    <input type="text" name="content" placeholder="내용" required>
+    <input type="text" name="content" placeholder="내용" required >
     <br>
     <input type="text" name="location" placeholder="위치" required>
     <br>

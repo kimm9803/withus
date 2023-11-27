@@ -93,6 +93,25 @@
 	        background-color: darkgreen;
 	        color: white;
 	    }
+.group-board-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 10px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #000;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+a {
+    font-size:16px;
+    text-decoration: none; /* 밑줄 제거 */
+}
+
 </style>
 </head>
 <body>
@@ -195,18 +214,36 @@
                             <p>비용: ${meeting.cost}</p>
                             <p>일시: ${meeting.meeting_date}</p>
                             <p>마감: ${meeting.deadline_date}</p>
-                            <hr>
-                            <!-- 정기모임 참가 Form -->
-                            <form action="/gmattendance/create/${meeting.meetingid}/${group.gno}" method="post">
-                                <!-- 참석 버튼 -->
-                                <button type="submit">참석</button>
-                            </form>
-                            <hr>
 
+                            <c:choose>
+                                <c:when test="${isGroupMember}">
+                                    <!-- 그룹 멤버 또는 마스터인 경우에만 참석 버튼 표시 -->
+                                    <!-- 정기모임 참가 Form -->
+                                    <form action="/gmattendance/create/${meeting.meetingid}/${group.gno}" method="post">
+                                        <!-- 참석 버튼 -->
+                                        <button class="btn btn-dark" type="submit"><div style ="font-size:16px;">참석</div></button>
+                                        <hr>
+                                    </form>
+                                </c:when>
+                                <c:otherwise>
+                                    <!-- 버튼 숨김 -->
+                                </c:otherwise>
+                            </c:choose>
                         </c:if>
                      </c:forEach>
-                     <button class="group-board-button"><a href="/gmeeting/createMeeting/${group.gno}">정모 만들기</a></button>
-                     <button class="group-board-button"><a href="/gmeeting/list/${group.gno}">더보기</a></button>
+
+                     <c:choose>
+                        <c:when test="${isGroupMember}">
+                            <!-- 그룹 멤버 또는 마스터인 경우에만 버튼 표시 -->
+                            <button class="btn btn-dark"><a  href="/gmeeting/createMeeting/${group.gno}" style="color:white">정모 만들기</a></button>
+                            <button class="btn btn-dark"><a href="/gmeeting/list/${group.gno}" style="color:white">더보기</a></button>
+                        </c:when>
+                        <c:otherwise>
+                            <!-- 버튼 숨김 -->
+                        </c:otherwise>
+                     </c:choose>
+
+
                  </div>
 
                  <!-- 추가 그룹 게시판  -->
@@ -222,8 +259,19 @@
                              <hr>
                          </c:if>
                      </c:forEach>
-                     <button class="group-board-button"><a href="/gboard/list/${gno}">더보기</a></button>
-                     <hr>
+
+                     <c:choose>
+                         <c:when test="${isGroupMember}">
+                             <!-- 그룹 멤버 또는 마스터인 경우에만 버튼 표시 -->
+                             <button class="btn btn-dark"><a href="/gboard/list/${gno}" style="color:white">더보기</a></button>
+                             <button class="btn btn-dark"><a href="/gboard/create/${gno}" style="color:white">작성</a></button>
+                         </c:when>
+                         <c:otherwise>
+                             <!-- 버튼 숨김 -->
+                         </c:otherwise>
+                     </c:choose>
+
+
                  </div>
 		    </div>
 		</div>
@@ -257,7 +305,6 @@
                 <button type="button" class="btn btn-light" onclick="location.href='/groups/memberlist/${group.gno}'">그룹원 목록</button>
             </div>
         </c:if>
-        <a href="/gboard/create/${group.gno}">gboard작성</a>
     </div>
 </div>
 </main>

@@ -34,10 +34,16 @@ public class GroupMeetingController {
     @GetMapping("/createMeeting/{gno}")
     public String gBoardCreatePage(@PathVariable("gno") int gno, Model model, Authentication authentication) {
         String memberId = memberService.authMember(authentication);
-        model.addAttribute("memberid", memberId);
-        model.addAttribute("gno", gno);
+        boolean isGroupMember = groupMeetingMapper.groupMasterContain(gno, memberId) || groupMeetingMapper.groupMemberContain(gno, memberId);
+        model.addAttribute("isGroupMember", isGroupMember);
 
-        return "gmeeting/createMeeting" ;
+        if(isGroupMember) { //1 true 0 false
+            model.addAttribute("memberid", memberId);
+            model.addAttribute("gno", gno);
+            return "gmeeting/createMeeting" ;
+        }else {
+            return "gmeeting/duplicateError";
+        }
     }
     //정모 리스트 조회
     @Secured("ROLE_USER")
@@ -66,24 +72,44 @@ public class GroupMeetingController {
         return mv;
     }
 
-    //작성버튼 눌렀을때
+    //모임생성 눌렀을때
+    @Secured("ROLE_USER")
     @PostMapping("/create/{gno}")
-    public String createMeeting(@PathVariable("gno") int gno, @ModelAttribute GroupMeetingVo meetingVo) {
-        groupMeetingMapper.gMeetingCreate(meetingVo);
-        return "redirect:/groups/view/" + gno; // 생성된 모임 목록 페이지로 리다이렉트
+    public String createMeeting(@PathVariable("gno") int gno,
+                                @ModelAttribute GroupMeetingVo meetingVo,
+                                Authentication authentication) {
+        String memberId = memberService.authMember(authentication);
+
+        //groupMeetingMapper.groupMemberContain 그룹 멤버 확인
+
+        if(groupMeetingMapper.groupMasterContain(gno, memberId) || groupMeetingMapper.groupMemberContain(gno, memberId)) { //1 true 0 false
+            groupMeetingMapper.gMeetingCreate(meetingVo);
+            return "redirect:/groups/view/" + gno; // 생성된 모임 목록 페이지로 리다이렉트
+        }else {
+            return "gmeeting/duplicateError";
+        }
+
+
     }
 
     //정모 VIEW
     @Secured("ROLE_USER")
     @GetMapping("/view/{meetingid}/{gno}")
-    //그룹 게시판 View 조회
+    //그룹 정모 View 조회
     public ModelAndView view(@PathVariable("meetingid") int meetingid,
-                             @PathVariable("gno") int gno){
+                             @PathVariable("gno") int gno,
+                             Authentication authentication){
+        String memberId = memberService.authMember(authentication);
+
         GroupMeetingVo groupMeetingView = groupMeetingMapper.gMeetingView(meetingid, gno);
         List<GroupMeetingVo> groupMeetingAttendName = groupMeetingMapper.gMeetingAttendName(meetingid);
-
+        //정모 작성한 사람 여부
+        boolean isCreateMeeting = groupMeetingMapper.isCreateMeeting(gno, meetingid, memberId);
+        //정모 참가인원
         int attendCount = meetingAttendanceMapper.attendCount(meetingid);
+
         ModelAndView mv = new ModelAndView();
+        mv.addObject("isCreateMeeting", isCreateMeeting);
         mv.addObject("groupMeetingAttendName", groupMeetingAttendName);
         mv.addObject("groupMeetingView",groupMeetingView);
         mv.addObject("attendCount", attendCount);
