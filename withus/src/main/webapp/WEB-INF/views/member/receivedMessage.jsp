@@ -30,7 +30,7 @@
 .pagination {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 80px;
 }
 
 .pagination ul {
