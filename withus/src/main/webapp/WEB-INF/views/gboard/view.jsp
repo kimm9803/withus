@@ -93,7 +93,7 @@
             text-align: center;
         }
         .post-details {
-            font-size: 14px;
+            font-size: 16px;
             color: #6c757d;
             text-align: center;
         }

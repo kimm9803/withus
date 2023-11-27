@@ -14,6 +14,7 @@
     <title>Title</title>
   <style>
     footer {
+      margin-left: -5px;
       position: fixed;
       bottom: 0;
       width: 100%;
