@@ -208,7 +208,15 @@ a {
                      <c:forEach var="meeting" items="${groupMeetingList}" varStatus="loopStatus">
                         <c:if test="${loopStatus.index < 2}">
                             <p>주최자: ${meeting.name}</p>
-                            <p>제목: <a href ="/gmeeting/view/${meeting.meetingid}/${group.gno}">${meeting.title}</a></p>
+
+                            <c:choose>
+                                <c:when test="${isGroupMember}">
+                                    <p>제목: <a href ="/gmeeting/view/${meeting.meetingid}/${group.gno}"><b>${meeting.title}</b></a></p>
+                                </c:when>
+                                <c:otherwise>
+                                    <p>제목: ${meeting.title}</p>
+                                </c:otherwise>
+                            </c:choose>
                             <p>내용: ${meeting.content}</p>
                             <p>위치: ${meeting.location}</p>
                             <p>비용: ${meeting.cost}</p>

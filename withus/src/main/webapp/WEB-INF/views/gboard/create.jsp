@@ -1,84 +1,98 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: Mjjeon
-  Date: 2023-11-15
-  Time: 오전 10:17
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <title>질문 작성</title>
+    <script src="https://kit.fontawesome.com/51db22a717.js"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap">
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
     <style>
-
-        label {
-            display: block;
-            margin-top: 10px;
+        * {
+            font-family: 'Sunflower', sans-serif;
         }
 
-        footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #f8f9fa;
-            text-align: center;
-            padding: 10px;
-            margin-left: -5px;
+        main {
+            width: 50%;
+            margin: 150px auto;
+            height: 70vh;
         }
 
-        .create-form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin: 20px auto; /* Center the card */
+        .q-container {
+            background-color: #F0F1F2;
+            padding: 50px;
+            border-radius: 20px;
         }
-        .container {
-            max-width: 70%;
-            margin: 100px auto; /* Center the container */
+
+        h1 {
+            margin-bottom: 40px;
         }
-        input[type="text"],
-        textarea,
-        select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            display: inline-block;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
+
+        .button-group {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 25px;
+        }
+        #gbcateid{
+            font-size:16px;
             border-radius: 5px;
+            width:15%;
+            text-align:center;
+            padding-bottom:8px;
+            padding-top:8px
         }
     </style>
-    <title>Title</title>
 </head>
 <body>
-
-
 <header><%@ include file="../header.jsp" %></header>
-<div class="container mt-4" style="margin-top: 100px;">
-<div class ="create-form">
-    <form action="/gboard/create" method="post">
 
-        <label for="title">제목</label>
-        <input id="title" type="text" name="title"/>
+<main>
+    <div class="q-container">
+        <h1>Q&A</h1>
+        <form action="/gboard/create" method="post">
+            <div class="mb-3">
+                <label for="title" class="form-label">제목</label>
+                <input type="text" id="title" class="form-control" name="title" placeholder="질문 제목을 작성해주세요." required>
+            </div>
 
-        <label for="cont">내용</label>
-        <textarea id="cont"  name="content"></textarea>
+            <div class ="mb-3">
+                <label for="gbcateid">카테고리 : </label>
+                <select id="gbcateid" name="gbcateid">
+                    <option value="1">자유글</option>
+                    <option value="2">모임 후기</option>
+                    <option value="3">가입 인사 </option>
+                </select>
+            </div>
 
-        <label for="gbcateid">카테고리 선택:</label>
-            <select id="gbcateid" name="gbcateid">
-                <option value="1">자유글</option>
-                <option value="2">모임 후기</option>
-                <option value="3">가입 인사 </option>
-            </select>
+            <div class="mb-3">
+                <label for="content" class="form-label">내용</label>
+                <textarea class="form-control" id="content" name="content" rows="15" required></textarea>
+            </div>
 
-        <input type="hidden" name="memberid" value="${memberid}">
-        <input type="hidden" name="gno" value="${gno}">
+            <div class="button-group">
+                <button type="submit" class="btn btn-dark" style="margin-right: 10px;">작성</button>
+                <button type="button" class="btn btn-secondary" onclick="history.go(-1)">취소</button>
+            </div>
+            <input type="hidden" name="memberid" value="${memberid}">
+            <input type="hidden" name="gno" value="${gno}">
 
-        <input type="submit" value="등록"/>
-    </form>
+        </form>
     </div>
-</div>
-<footer style="height: 20px"><%@ include file="../footer.jsp" %></footer>
+</main>
+
+<footer><%@ include file="../footer.jsp" %></footer>
 </body>
 </html>
