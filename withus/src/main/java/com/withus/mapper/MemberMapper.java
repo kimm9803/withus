@@ -78,4 +78,7 @@ public interface MemberMapper {
 
 	// 마이페이지 질문
 	List<QuestionVo> findMyQuestion(String memberId);
+
+	// 쪽지 삭제
+	void messageDelete(int messageId);
 }
