@@ -45,7 +45,7 @@
 
       input[type="text"],
       textarea,
-      input[type="date"] {
+      input[type="datetime-local"] {
         width: 100%;
         padding: 10px;
         margin: 5px 0 15px;
@@ -76,7 +76,7 @@
 	    <div class="container mt-4">
 	      <div class="post-card">
 	      	<h1 style="margin-bottom: 40px;">정모 수정</h1>
-	        <form action="/gmeeting/modify/${gno}/${meetingid}" method="post">
+	        <form id ="meetingForm" action="/gmeeting/modify/${gno}/${meetingid}" method="post">
 	          <!-- 모임 정보 입력 폼 -->
 	          <label for="title">제목</label>
 	          <input type="text" id="title" name="title" value="${modifyView.title}" required><br>
@@ -94,11 +94,13 @@
 	          <input type="text" id="capacity" name="capacity" value="${modifyView.capacity}" required><br>
 	
 	          <label for="meetingDate">정모 날짜</label>
-	          <input type="date" id="meetingDate" name="meeting_date" value="${modifyView.meeting_date}" required><br>
+	          <input type="datetime-local" id="meetingDate" name="meeting_date" value="${modifyView.meeting_date}" required><br>
 	
 	          <label for="deadlineDate">마감 날짜</label>
-	          <input type="date" id="deadlineDate" name="deadline_date" value="${modifyView.deadline_date}" required><br>
-	
+	          <input type="datetime-local" id="deadlineDate" name="deadline_date" value="${modifyView.deadline_date}" required><br>
+
+				<p id="warningMessage" class="warning"></p>
+
 	          <!-- 폼 제출 버튼 -->
 	          <button type="submit">수정</button>
 	
@@ -110,6 +112,40 @@
 	    </div>
 	</main>
     <footer><%@ include file="../footer.jsp" %></footer>
+
+	<script>
+		$(document).ready(function() {
+			// 폼 제출 이벤트를 가로채서 폼을 서버로 직접 제출
+			$('form').submit(function(event) {
+				checkDeadlineDate(); // 날짜 체크
+			});
+
+			// 마감 날짜의 변경을 감지하여 처리
+			$('#deadlineDate').on('change', function() {
+				checkDeadlineDate();
+			});
+
+			// 정모 날짜의 변경을 감지하여 처리
+			$('#meetingDate').on('change', function() {
+				checkDeadlineDate();
+			});
+		});
+
+		function checkDeadlineDate() {
+			var meetingDate = new Date($('#meetingDate').val() );
+			var deadlineDate = new Date($('#deadlineDate').val() );
+
+			// 마감 날짜가 정모 날짜 이전으로 선택되어야 함
+			if (deadlineDate > meetingDate) {
+				$('#warningMessage').text('마감 날짜는 정모 날짜 이전으로 설정되어야 합니다.');
+			} else {
+				$('#warningMessage').text('');
+				// 마감 날짜가 정모 날짜 이전 경우에만 서버로 제출됩니다.
+			}
+		}
+
+	</script>
+
 
 </body>
 </html>

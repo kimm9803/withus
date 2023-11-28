@@ -125,10 +125,8 @@ hr.dotted {
 		          <!-- 그 외의 경우에는 버튼을 숨김 -->
 		        </c:otherwise>
 		      </c:choose>
-		
-		      
 			</div>
-		
+		</div>
 	</main>
 
 	<footer><%@ include file="../footer.jsp" %></footer>
