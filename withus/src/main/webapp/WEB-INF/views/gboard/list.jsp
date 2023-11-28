@@ -41,6 +41,9 @@
 		margin-bottom: 40px;
 	}
 
+	.title-link {
+		text-decoration: none;
+	}
 </style>
 </head>
 <body>
@@ -59,9 +62,9 @@
 		  </thead>
 		  <tbody>		    
 			<c:forEach var="board" items="${groupBoardList}">
-	            <tr>
+	            <tr style="text-align: center;">
 	                <td>${board.gbcatename}</td>
-	                <td><a href = "/gboard/view?gbno=${board.gbno}">${board.title}</a></td>
+	                <td style="text-align: left;"><a class="title-link" href = "/gboard/view?gbno=${board.gbno}">${board.title}</a></td>
 	                <td>${board.name}</td>
 	                <td>${board.gbregdate}</td>
 	            </tr>
