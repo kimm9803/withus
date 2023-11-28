@@ -143,7 +143,7 @@
 	
 	.rightArea {
 	   margin-left: 40px;
-	   margin-top: 60px;
+	   margin-top: 20px;
 	}
 
 	
@@ -202,7 +202,7 @@
 	<main>	      
 	      <!-- 오른쪽 콘텐츠 영역 -->
 	      <div class="rightArea" style="flex: 4;">	         
-	         <div style="margin-top: 40px; text-align: center;"><h2 style="font-weight: bold;">공지사항</h2></div>
+	         <div style="text-align: center;"><h2 style="font-weight: bold;">공지사항</h2></div>
 	         <div style="margin-top: 40px;">
 	         	<div id="write"><a href="/admin/notice/write" class="btn btn-dark">공지사항 등록</a></div>
 				<table class="table table-hover" id="noticelist">

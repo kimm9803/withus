@@ -79,7 +79,8 @@
         CAPACITY,
         MEETING_DATE,
         GNO,
-        MEMBERID
+        MEMBERID,
+        DEADLINE_DATE
     FROM GMEETING
         WHERE GNO = #{gno}
         AND   MEETINGID = #{meetingid}
@@ -89,12 +90,15 @@
     <!--정기모임 수정-->
     <update id="gMeetingModify" parameterType="HashMap">
         update GMEETING
-        SET title =#{vo.title}, CONTENT = #{vo.content}, LOCATION = #{vo.location},
-            COST = #{vo.cost} , CAPACITY = #{vo.capacity}, MEETING_DATE = #{vo.meeting_date}
+        SET title = #{vo.title}, CONTENT = #{vo.content}, LOCATION = #{vo.location},
+            COST = #{vo.cost}, CAPACITY = #{vo.capacity},
+            MEETING_DATE = TO_DATE(#{vo.meeting_date}, 'YYYY-MM-DD"T"HH24:MI:SS'),
+            DEADLINE_DATE = TO_DATE(#{vo.deadline_date}, 'YYYY-MM-DD"T"HH24:MI:SS')
         where memberid = #{memberid}
-        And gno = #{gno}
-        AND meetingid = #{meetingid}
+          AND gno = #{gno}
+          AND meetingid = #{meetingid}
     </update>
+
     <!--정기모임 삭제-->
     <delete id="gMeetingDelete">
         DELETE FROM GMEETING
