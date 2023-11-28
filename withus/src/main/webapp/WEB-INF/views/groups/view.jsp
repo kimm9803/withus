@@ -374,7 +374,7 @@ a {
                     success: function(response) {
                         // 성공 시 동작
                         alert("삭제 성공");
-                        location.href = "/groups/list";
+                        location.href = "/groups/loadall";
                     },
                     error: function(error) {
                         // 실패 시 동작

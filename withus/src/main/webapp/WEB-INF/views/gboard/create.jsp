@@ -61,7 +61,7 @@
 
 <main>
     <div class="q-container">
-        <h1>Q&A</h1>
+        <h1>정모 생성</h1>
         <form action="/gboard/create" method="post">
             <div class="mb-3">
                 <label for="title" class="form-label">제목</label>
