@@ -2,6 +2,8 @@
 
 ![rect](https://capsule-render.vercel.app/api?type=rect&color=gradient&text=%20WU%20&fontAlign=40&fontSize=30&textBg=true&desc=With%20Us&descAlign=60&descAlignY=50)
 
+노션 : https://happy-radish-7e8.notion.site/With-Us-Team-460aa9d826e0488daedc34192fb044b0?pvs=4
+
 ## 🛠 Stacks
 
 - Front
